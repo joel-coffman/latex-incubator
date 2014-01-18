@@ -1,0 +1,19 @@
+syntax: glob
+
+.*.swp  # vi temporary files
+
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.pdf
+*.snm
+*.svt
+*.toc
+
+*.synctex.gz
+
