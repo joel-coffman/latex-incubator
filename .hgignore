@@ -5,6 +5,9 @@ syntax: glob
 *.aux
 *.bbl
 *.blg
+*.glo
+*.idx
+*.ins
 *.lof
 *.log
 *.lot
