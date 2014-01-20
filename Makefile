@@ -19,7 +19,8 @@ DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 	$(TEX) -draftmode $*.dtx
 	$(TEX) $*.dtx
 
-%.sty: %.dtx %.ins hgid.tex
+%.sty: %.dtx %.ins hgversion
+	$(MAKE) hgversion
 	$(TEX) -draftmode $*.ins
 	$(TEX) -draftmode $*.dtx
 	makeindex -s gind.ist -o $*.ind $*.idx
@@ -42,10 +43,10 @@ veryclean: clean
 force: veryclean default 
 
 
-HGID:=$(shell hg parents --template "{node|short}" | sed 's/.*/\\\\providecommand{\\hgid}{&}/')
+HGVERSION:=$(shell hg parents --template "{node|short}" | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
 
-.PHONY: hgstamp
-hgid.tex:
+.PHONY: hgversion
+hgversion:
 	[ -f $@ ] || touch $@
-	echo '$(HGID)' | cmp -s $@ - || echo '$(HGID)' > $@
+	echo '$(HGVERSION)' | cmp -s $@ - || echo '$(HGVERSION)' > $@
 
