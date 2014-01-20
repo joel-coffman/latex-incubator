@@ -21,8 +21,9 @@ DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 
 %.sty: %.dtx %.ins hgid.tex
 	$(TEX) -draftmode $*.ins
-	#makeindex -s gind.ist $*.ind $*.idx
-	#makeindex -s gglo.ist $*.gls $*.glo
+	$(TEX) -draftmode $*.dtx
+	makeindex -s gind.ist -o $*.ind $*.idx
+	makeindex -s gglo.ist -o $*.gls $*.glo
 	$(TEX) -draftmode $*.dtx
 	$(TEX) $*.dtx
 
