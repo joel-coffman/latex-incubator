@@ -6,7 +6,10 @@ syntax: glob
 *.bbl
 *.blg
 *.glo
+*.gls
 *.idx
+*.ilg
+*.ind
 *.ins
 *.lof
 *.log
