@@ -3,13 +3,13 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 
 # set search path -- because we're using symbolic links to a "generic" Makefile,
 # use the path of the referenced file
-VPATH=$(shell dirname `readlink Makefile || pwd`) 
+VPATH=$(shell dirname `readlink Makefile || pwd`)
 DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 
 # note that glossary.tex and references.bib are found via VPATH
 %.pdf: %.tex $(DEPENDENCIES) $(wildcard *.cls) $(wildcard *.sty)
 	$(TEX) -draftmode $*
-	# 
+	#
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
@@ -40,7 +40,7 @@ veryclean: clean
 	$(RM) *.pdf
 
 .PHONY: force
-force: veryclean default 
+force: veryclean default
 
 
 HGVERSION:=$(shell hg parents --template "{node|short}" | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
