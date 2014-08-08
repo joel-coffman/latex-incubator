@@ -27,6 +27,7 @@ DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 	makeindex -s gglo.ist -o $*.gls $*.glo
 	$(TEX) -draftmode $*.dtx
 	$(TEX) $*.dtx
+	$(RM) hgversion
 
 
 .PHONY: clean
