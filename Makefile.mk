@@ -44,7 +44,7 @@ veryclean: clean
 force: veryclean default
 
 
-HGVERSION:=$(shell hg parents --template "{node|short}" | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
+HGVERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
 
 .PHONY: hgversion
 hgversion:
