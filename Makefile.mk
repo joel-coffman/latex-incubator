@@ -7,13 +7,13 @@ VPATH=$(shell dirname `readlink Makefile || pwd`)
 DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 
 # note that glossary.tex and references.bib are found via VPATH
-%.pdf: %.tex $(DEPENDENCIES) $(wildcard *.cls) $(wildcard *.sty)
+%.pdf: %.tex $(DEPENDENCIES) $(wildcard *.cls) $(wildcard *.sty) hgversion
 	$(TEX) -draftmode $*
 	#
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
-%.cls: %.dtx %.ins
+%.cls: %.dtx %.ins hgversion
 	$(TEX) -draftmode $*
 	#
 	$(TEX) -draftmode $*.dtx
