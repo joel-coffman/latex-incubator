@@ -1,5 +1,6 @@
 syntax: glob
 
+.DS_Store  # OS X folder metadata
 .*.swp  # vi temporary files
 
 *.aux
@@ -10,7 +11,6 @@ syntax: glob
 *.idx
 *.ilg
 *.ind
-*.ins
 *.lof
 *.log
 *.lot
@@ -25,4 +25,5 @@ syntax: glob
 
 # derivative files generated via .ins and .dtx
 jhuapl.edu/RoW/RoW.sty
+virginia.edu/resume/resume.sty
 
