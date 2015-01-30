@@ -1,0 +1,352 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2015 by Joel Coffman
+% -----------------------------------
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{resume}
+%<package>  [2015/01/26 v0.1.2 Style file for resume]
+%<package>\RequirePackage{enumitem}
+%<package>\RequirePackage{microtype}
+%<package>\RequirePackage[
+%<package>    inner=0.75in,% toward binding (i.e., left)
+%<package>    outer=0.75in,% away from binding
+%<package>    top=0.75in,%
+%<package>    bottom=0.75in,%
+%<package>    %includeheadfoot,
+%<package>    asymmetric% twosided layout where margins are *not* swapped on alternate pages
+%<package>  ]{geometry}
+%<package>\RequirePackage{parskip}
+%
+%<*driver>
+\documentclass{ltxdoc}
+\input{hgversion}
+\usepackage{resume}
+\geometry{reset}  % use settings from before loading geometry package
+\makeatletter
+\let\@oldmaketitle=\maketitle\relax
+\renewcommand*{\maketitle}{%
+  \@oldmaketitle%
+  \begin{center}
+    \large%
+    \@author%
+  \end{center}
+  \vspace{-1ex}%
+}
+\makeatother
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{resume.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2015/01/25}{Initial version}
+% \changes{0.1.1}{2015/01/25}{
+%   Remove \textsf{xcolor} package
+% }
+%
+% \GetFileInfo{resume.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{resume} package\thanks{This document
+% corresponds to \textsf{resume}~\fileversion-\hgversion,
+% dated \filedate.}}
+% \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% The \textsf{resume} package facilitates typesetting resumes.
+% Like many other \LaTeX\ packages, \textsf{resume} forces the author to focus on writing content rather than endlessly changing the document's formatting.
+% \end{abstract}
+%
+% \StopEventually{
+%  \PrintChanges
+%  \PrintIndex
+% }
+%
+% \appendix
+%
+% \section{Implementation}
+%    \begin{macrocode}
+\clubpenalty=9999  % nearly infinite -- avoid orphans
+\widowpenalty=9999  % nearly infinite -- avoid widows
+%    \end{macrocode}
+% \changes{0.1.1}{2015/01/25}{
+%   Avoid orphans and windows
+% }
+%
+% \begin{macro}{setlist}
+%   Modify default list styles (via \textsf{enumitem} package).
+%    \begin{macrocode}
+\setlist{
+  noitemsep,  % remove all vertical spacing between items and paragraphs
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{abstract}
+%   Overwrite \textbackslash abstractname so it does not appear.
+%    \begin{macrocode}
+\let\abstractname=\relax
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{maketitle}
+%   Redefine maketitle to print the title using a custom color.
+%    \begin{macrocode}
+\renewcommand{\maketitle}{%
+  \thispagestyle{plain}%
+  %
+  \begin{center}%
+    \huge%
+    \textsc{\@title}%
+    \@thanks%
+  \end{center}%
+  \vspace{-1ex}%
+}
+%    \end{macrocode}
+% \changes{0.1.2}{2015/01/25}{
+%   Replace \texttt{minipage} with \texttt{center} environment and remove vertical space
+% }
+% \changes{0.1.2}{2015/01/25}{
+%   Use \texttt{\textbackslash @title} rather than \texttt{\textbackslash @author} for title
+% }
+% \end{macro}
+%
+% \begin{macro}{section}
+% Modify the section command to omit the number.
+%
+% The \texttt{section} command supports starred and non-starred versions;
+% because section titles never include the number, the same command can be used in both instances.
+% The \texttt{@ifstar} command invokes its first argument if the command is starred and the second argument if not.
+%    \begin{macrocode}
+\renewcommand*{\section}{
+  \@ifstar\resume@section\resume@section%
+}%
+\newcommand*{\resume@section}[1]{%
+  \vspace{2ex}%
+  \nopagebreak[4]%
+  \makebox[\linewidth][c]{%
+    \noindent{\large\bfseries \MakeUppercase{#1}}%
+  }\\[-2ex]%
+  \nopagebreak[4]\hrule\nopagebreak[4]%
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/01/25}{
+%   Center section title
+% }
+% \changes{0.1.2}{2015/01/25}{
+%   Reduce vertical space before section title
+% }
+% \changes{0.1.2}{2015/01/26}{
+%   Correct handling of starred section command
+% }
+% \end{macro}
+%
+% \begin{macro}{subsection}
+%    \begin{macrocode}
+\renewcommand*{\subsection}{
+  \@ifstar\resume@subsection\resume@subsection%
+}%
+\newcommand*{\resume@subsection}[1]{%
+  \vspace{1ex}%
+  \nopagebreak[4]%
+  \noindent{\large\bfseries #1}%
+  \nopagebreak[4]%
+}
+%    \end{macrocode}
+% \changes{0.1.2}{2015/01/25}{
+%   Reduce vertical space before section title
+% }
+% \changes{0.1.2}{2015/01/26}{
+%   Correct handling of starred subsection command
+% }
+% \end{macro}
+%
+% \begin{macro}{subsubsection}
+%    \begin{macrocode}
+\renewcommand*{\subsubsection}{
+  \@ifstar\resume@subsubsection\resume@subsubsection%
+}%
+\newcommand*{\resume@subsubsection}[1]{%
+  \noindent{\bfseries #1}%
+}
+%    \end{macrocode}
+% \changes{0.1.2}{2015/01/25}{
+%   Remove vertical space before section title
+% }
+% \changes{0.1.2}{2015/01/26}{
+%   Correct handling of starred susubsection command
+% }
+% \end{macro}
+%
+% \begin{macro}{personal}
+% Environment for personal information.
+%    \begin{macrocode}
+\newenvironment{personal}{%
+  \newcommand{\separator}{%
+    $\:\diamond\:$
+  }%
+  %
+  \begin{minipage}{\linewidth}%
+    \centering%
+    %
+    \small%
+}{%
+  \end{minipage}%
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/01/25}{
+%   Add personal environment
+% }
+% \changes{0.1.2}{2015/01/25}{
+%   Increase space around separator
+% }
+% \end{macro}{personal}
+%
+% \begin{macro}{institution}
+% Command to standardize formatting of institutions (for education and employment).
+%
+% The \texttt{makebox} command forces the information to consume an entire line.
+% This approach is better than manually breaking the line because manual line breaks add vertical space that should not always be present (e.g., when followed by a section heading).
+%    \begin{macrocode}
+\newcommand{\institution}[2]{%
+  \makebox[\linewidth][l]{%
+    \textbf{#1},
+    #2%
+  }%
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/01/25}{
+%   Add institution command
+% }
+% \end{macro}
+%
+% \begin{macro}{degree}
+% Command to standardize formatting of educational degrees.
+%
+% This command invokes the \texttt{position} command internally.
+%    \begin{macrocode}
+\newcommand{\degree}[2]{%
+  \position{#1}{#2}%
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/01/25}{
+%   Add degree command
+% }
+% \end{macro}
+%
+% \begin{macro}{position}
+% Command to standardize formatting of positions.
+%
+% The \texttt{makebox} command forces the information to consume an entire line.
+% This approach is better than manually breaking the line because manual line breaks add vertical space that should not always be present (e.g., when followed by a section heading).
+%    \begin{macrocode}
+\newcommand{\position}[2]{%
+  \makebox[\linewidth][l]{%
+    #1%
+    \hfill #2%
+  }%
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/01/25}{
+%   Add position command
+% }
+% \end{macro}
+%
+% \begin{macro}{project}
+%   Environment to name project and dates of work.
+%    \begin{macrocode}
+\newenvironment{project}[2]{%
+  \textbf{#1}\hfill #2\\
+}{%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{publications}
+%   Environment to list publications.
+%    \begin{macrocode}
+\newcounter{c@reference}
+\newcounter{c@publication}
+\newenvironment{publications}[1]{%
+  \subsection{#1}%
+  %
+  \raggedright%
+  \begin{list}{%
+      \@biblabel{\arabic{c@publication}}%
+  }{%
+      \usecounter{c@publication}
+      \setcounter{c@publication}{\value{c@reference}}%
+      \setlength{\topsep}{0ex}%
+  }%
+}{%
+  \setcounter{c@reference}{\value{c@publication}}%
+  \end{list}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{ps@myheadings}
+%    \begin{macrocode}
+\def\ps@myheadings{%
+  \def\@oddhead{%
+    \hfill\@author\ CV (\@date)%
+  }%
+  \def\@evenhead{%
+    \hfill\@author\ CV (\@date)%
+  }%
+  \def\@oddfoot{%
+    \hfill\thepage\hfill%
+  }%
+  \def\@evenfoot{%
+    \hfill\thepage\hfill%
+  }%
+}
+%\pagestyle{myheadings}
+%    \end{macrocode}
+% \end{macro}
+
+% \Finale
+\endinput
