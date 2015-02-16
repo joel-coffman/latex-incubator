@@ -1,6 +1,6 @@
 syntax: glob
 
-.DS_Store  # OS X folder metadata
+.DS_Store  # OS X metadata
 .*.swp  # vi temporary files
 
 *.aux
