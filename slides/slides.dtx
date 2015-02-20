@@ -116,7 +116,58 @@
 \setbeamerfont{quote}{series=\normalfont}
 \setbeamerfont{quotation}{series=\normalfont}
 %    \end{macrocode}
-
+%
+% Set hooks to insert outline slides at start of parts, sections, etc.
+%
+%    \begin{macrocode}
+\mode<presentation>{
+%    \end{macrocode}
+%
+% \begin{macro}{AtBeginPart}
+%    \begin{macrocode}
+  \AtBeginPart
+  {
+    \begin{frame}{Outline}
+      \partpage
+    \end{frame}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{AtBeginSection}
+%    \begin{macrocode}
+  \AtBeginSection[]
+  {
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          hidesubsections,
+      ]
+    \end{frame}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{AtBeginSubsection}
+%    \begin{macrocode}
+  \AtBeginSubsection[]
+  {
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsectionstyle=show/shaded/hide,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
+  }
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/02/20}{
+%   Add hooks to insert outline slides automatically
+% }
+%
 % \subsection{Commands}
 % \begin{macro}{continued}
 % The |continued| command prints a notice that the current slide is a continuation of the prior one.
