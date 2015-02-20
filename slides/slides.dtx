@@ -87,39 +87,42 @@
 % \appendix
 %
 % \section{Implementation}
+%
+% \subsection{Options}
+% The |handout| option prints two slides per page.
 %    \begin{macrocode}
-%% =============================================================================
-%% Option parsing
-%% =============================================================================
-
 \DeclareOption{handout}{%
   \AtEndOfPackage{%
     \RequirePackage{pgfpages}%
     \pgfpagesuselayout{2 on 1}[letterpaper,border shrink=2em]%
   }
 }
-
-%% Process the specified options. (NOTE: No packages allowed above here.)
+%    \end{macrocode}
+% Process the specified options.
+% |\relax| avoids unnecessary lookahead due to starred version of |\ProcessOptions|.
+%    \begin{macrocode}
 \ProcessOptions\relax
-
-%% =============================================================================
-%% Required packages
-%% =============================================================================
-
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load required and optional packages.
+%    \begin{macrocode}
 \RequirePackage[absolute,overlay]{textpos}
-
-%% =============================================================================
-%%
-%% =============================================================================
-
-\mode<presentation>
-
+%    \end{macrocode}
+%
+% \subsection{Configuration}
+% Stylistic settings
+%    \begin{macrocode}
 \setbeamerfont{quote}{series=\normalfont}
 \setbeamerfont{quotation}{series=\normalfont}
-
-\newcommand{\continued}[0]{(continued)}
-
-\mode<all>
 %    \end{macrocode}
+
+% \subsection{Commands}
+% \begin{macro}{continued}
+% The |continued| command prints a notice that the current slide is a continuation of the prior one.
+%    \begin{macrocode}
+\newcommand{\continued}[0]{(continued)}
+%    \end{macrocode}
+% \end{macro}
 % \Finale
 \endinput
