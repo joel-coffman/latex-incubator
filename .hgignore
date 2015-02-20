@@ -1,6 +1,7 @@
 syntax: glob
 
 .DS_Store  # OS X metadata
+*.orig  # files reverted by Mercurial
 .*.swp  # vi temporary files
 
 *.aux
