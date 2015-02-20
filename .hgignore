@@ -27,4 +27,5 @@ syntax: glob
 # derivative files generated via .ins and .dtx
 RoW.sty
 resume.sty
+slides.sty
 
