@@ -24,6 +24,6 @@ syntax: glob
 *.synctex.gz
 
 # derivative files generated via .ins and .dtx
-jhuapl.edu/RoW/RoW.sty
-virginia.edu/resume/resume.sty
+RoW.sty
+resume.sty
 
