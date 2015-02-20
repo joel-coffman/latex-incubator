@@ -1,5 +1,5 @@
 .PHONY: default
 default: resume.sty
 
-include ../../Makefile.mk
+include ../Makefile.mk
 
