@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/02/10 v0.1.4 Style file for resume]
+%<package>  [2015/03/04 v0.1.5 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -289,6 +289,7 @@
 %    \begin{macrocode}
 \newcommand{\institution}[2]{%
   \makebox[\linewidth][l]{%
+    \hspace{0em}%  insert space to avoid weird problems with draft mode
     \textbf{#1},
     #2%
   }%
@@ -296,6 +297,9 @@
 %    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
 %   Add institution command
+% }
+% \changes{0.1.5}{2015/03/04}{
+%   Add \texttt{hspace} to avoid issues when draft mode not enabled
 % }
 % \end{macro}
 %
