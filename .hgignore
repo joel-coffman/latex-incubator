@@ -24,8 +24,18 @@ syntax: glob
 
 *.synctex.gz
 
-# derivative files generated via .ins and .dtx
-RoW.sty
-resume.sty
-slides.sty
 
+syntax: regexp
+
+# derivative files generated via .ins and .dtx
+^ep.jhu.edu/beamerthemejhu/beamerthemejhu.sty
+^ep.jhu.edu/syllabus/syllabus.sty
+^jhu.edu/beamerthemejhu/apl.logo.small.horizontal.white.eps
+^jhu.edu/beamerthemejhu/beamerthemejhu.sty
+^jhu.edu/beamerthemejhu/beamerthemejhuapl.sty
+^jhu.edu/beamerthemejhu/beamerthemejhuwhiting.sty
+^jhu.edu/beamerthemejhu/university.logo.small.horizontal.white.eps
+^jhu.edu/beamerthemejhu/whiting.logo.small.horizontal.white.eps
+^jhuapl.edu/RoW/RoW.sty
+^resume/resume.sty
+^slides/slides.sty
