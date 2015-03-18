@@ -1,15 +1,11 @@
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
 
-# set search path -- because we're using symbolic links to a "generic" Makefile,
-# use the path of the referenced file
-VPATH=$(shell dirname `readlink Makefile || pwd`)
-DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
-
 # note that glossary.tex and references.bib are found via VPATH
-%.pdf: %.tex $(DEPENDENCIES) $(wildcard *.cls) $(wildcard *.sty) hgversion
+%.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty) hgversion
 	$(TEX) -draftmode $*
-	#
+	-grep -E "^No \\@istfilename found in '$*.aux'.$" $*.aux || makeglossaries $*
+	-grep -E '\\(citation|bibdata|bibstyle)' $*.aux && bibtex $*
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
@@ -22,6 +18,8 @@ DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 %.sty: %.dtx %.ins hgversion
 	$(MAKE) hgversion
 	$(TEX) -draftmode $*.ins
+	-grep -E "^No \\@istfilename found in '$*.aux'.$" $*.aux || makeglossaries $*
+	-grep -E '\\(citation|bibdata|bibstyle)' $*.aux && bibtex $*
 	$(TEX) -draftmode $*.dtx
 	makeindex -s gind.ist -o $*.ind $*.idx
 	makeindex -s gglo.ist -o $*.gls $*.glo
@@ -32,7 +30,7 @@ DEPENDENCIES=$(shell find ../ -name "*.tex" -or -name "*.eps")
 
 .PHONY: clean
 clean:
-	$(RM) *.acn *acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.ist *.idx *.ind *.ilg *.log *.lof *.lot *.out *.toc
+	$(RM) *.acn *.acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.ist *.idx *.ind *.ilg *.log *.lof *.lot *.nav *.out *.snm *.toc
 	find . -name "*.bak" -print0 | xargs -0 $(RM)
 
 .PHONY: veryclean
