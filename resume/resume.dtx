@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/03/04 v0.1.6 Style file for resume]
+%<package>  [2015/03/18 v0.1.7 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -159,6 +159,17 @@
 % \end{macro}
 %
 % \begin{macro}{abstract}
+% Do not indent paragraph at beginning of abstract.
+%    \begin{macrocode}
+\let\resume@old@abstract=\abstract\relax
+\def\abstract{\resume@old@abstract\noindent\ignorespaces}
+%    \end{macrocode}
+% \changes{0.1.7}{2015/03/18}{
+%   Remove indentation at beginning of abstract
+% }
+% \end{macro}
+%
+% \begin{macro}{abstractname}
 %   Overwrite \textbackslash abstractname so it does not appear.
 %    \begin{macrocode}
 \let\abstractname=\relax
