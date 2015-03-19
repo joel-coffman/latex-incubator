@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/03/18 v0.1.7 Style file for resume]
+%<package>  [2015/03/19 v0.2.0 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -78,6 +78,9 @@
 % \changes{0.1.0}{2015/01/25}{Initial version}
 % \changes{0.1.1}{2015/01/25}{
 %   Remove \textsf{xcolor} package
+% }
+% \changes{0.2.0}{2015/03/19}{
+%   Remove \texttt{ps@myheadings} definition
 % }
 %
 % \GetFileInfo{resume.sty}
@@ -405,25 +408,5 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{ps@myheadings}
-%    \begin{macrocode}
-\def\ps@myheadings{%
-  \def\@oddhead{%
-    \hfill\@author\ CV (\@date)%
-  }%
-  \def\@evenhead{%
-    \hfill\@author\ CV (\@date)%
-  }%
-  \def\@oddfoot{%
-    \hfill\thepage\hfill%
-  }%
-  \def\@evenfoot{%
-    \hfill\thepage\hfill%
-  }%
-}
-%\pagestyle{myheadings}
-%    \end{macrocode}
-% \end{macro}
-
 % \Finale
 \endinput
