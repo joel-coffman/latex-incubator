@@ -198,7 +198,7 @@
 % \end{macro}
 %
 % \begin{macro}{maketitle}
-%   Redefine maketitle to print the title using a custom color.
+%   Redefine maketitle to print the title in small capitals.
 %    \begin{macrocode}
 \renewcommand{\maketitle}{%
   \thispagestyle{plain}%
@@ -319,16 +319,19 @@
 %
 % \begin{macro}{institution}
 % Command to standardize formatting of institutions (for education and employment).
-%
+%    \begin{macrocode}
+\newcommand{\institution}[2]{
+%    \end{macrocode}
 % The \texttt{makebox} command forces the information to consume an entire line.
 % This approach is better than manually breaking the line because manual line breaks add vertical space that should not always be present (e.g., when followed by a section heading).
 %    \begin{macrocode}
-\newcommand{\institution}[2]{%
   \makebox[\linewidth][l]{%
     \hspace{0em}%  insert space to avoid weird problems with draft mode
     \textbf{#1},
     #2%
   }%
+%    \end{macrocode}
+%    \begin{macrocode}
 }
 %    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
@@ -341,11 +344,14 @@
 %
 % \begin{macro}{degree}
 % Command to standardize formatting of educational degrees.
-%
-% This command invokes the \texttt{position} command internally.
 %    \begin{macrocode}
-\newcommand{\degree}[2]{%
-  \position{#1}{#2}%
+\newcommand{\degree}[2]{
+%    \end{macrocode}
+% Reuse the \texttt{position} command for consistency.
+%    \begin{macrocode}
+  \position{#1}{#2}
+%    \end{macrocode}
+%    \begin{macrocode}
 }
 %    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
@@ -355,16 +361,19 @@
 %
 % \begin{macro}{position}
 % Command to standardize formatting of positions.
-%
+%    \begin{macrocode}
+\newcommand{\position}[2]{%
+%    \end{macrocode}
 % The \texttt{makebox} command forces the information to consume an entire line.
 % This approach is better than manually breaking the line because manual line breaks add vertical space that should not always be present (e.g., when followed by a section heading).
 %    \begin{macrocode}
-\newcommand{\position}[2]{%
   \makebox[\linewidth][l]{%
     \hspace{0em}%  insert space to avoid weird problems with draft mode
     #1%
     \hfill #2%
   }%
+%    \end{macrocode}
+%    \begin{macrocode}
 }
 %    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
