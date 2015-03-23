@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2015/03/23 v0.1.3 Slides package with common commands for presentations]
+  [2015/03/23 v0.2.0 Slides package with common commands for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -98,42 +98,12 @@
   }
 }
 %    \end{macrocode}
-% Process the specified options.
-% |\relax| avoids unnecessary lookahead due to starred version of |\ProcessOptions|.
+%
+% The |outline| option includes outline slides at the beginning of parts, sections, and subsections.
 %    \begin{macrocode}
-\ProcessOptions\relax
+\DeclareOption{outline}{
 %    \end{macrocode}
-%
-% \subsection{Packages}
-% Load required and optional packages.
-%    \begin{macrocode}
-\RequirePackage[absolute,overlay]{textpos}
-%    \end{macrocode}
-%
-% \subsection{Configuration}
-% Stylistic settings
-%    \begin{macrocode}
-\setbeamerfont{quote}{series=\normalfont}
-\setbeamerfont{quotation}{series=\normalfont}
-%    \end{macrocode}
-%
-% Replace icon in bibliography with citation text (e.g., number or alphanumeric identifier).
-%    \begin{macrocode}
-\setbeamertemplate{bibliography entry title}{}
-\setbeamertemplate{bibliography entry location}{}
-\setbeamertemplate{bibliography entry note}{}
-\setbeamertemplate{bibliography item}[text]
-%    \end{macrocode}
-% \changes{0.1.2}{2015/03/23}{
-%   Replace icons in bibliography
-% }
-%
-% Set hooks to insert outline slides at start of parts, sections, etc.
-%
-%    \begin{macrocode}
-\mode<presentation>{
-%    \end{macrocode}
-%
+% 
 % \begin{macro}{AtBeginPart}
 %    \begin{macrocode}
   \AtBeginPart
@@ -177,6 +147,40 @@
 %    \end{macrocode}
 % \changes{0.1.1}{2015/02/20}{
 %   Add hooks to insert outline slides automatically
+% }
+% \changes{0.2.0}{2015/03/23}{
+%   Add \texttt{outline} option to enable outline slides
+% }
+%
+%
+% Process the specified options.
+% |\relax| avoids unnecessary lookahead due to starred version of |\ProcessOptions|.
+%    \begin{macrocode}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load required and optional packages.
+%    \begin{macrocode}
+\RequirePackage[absolute,overlay]{textpos}
+%    \end{macrocode}
+%
+% \subsection{Configuration}
+% Stylistic settings
+%    \begin{macrocode}
+\setbeamerfont{quote}{series=\normalfont}
+\setbeamerfont{quotation}{series=\normalfont}
+%    \end{macrocode}
+%
+% Replace icon in bibliography with citation text (e.g., number or alphanumeric identifier).
+%    \begin{macrocode}
+\setbeamertemplate{bibliography entry title}{}
+\setbeamertemplate{bibliography entry location}{}
+\setbeamertemplate{bibliography entry note}{}
+\setbeamertemplate{bibliography item}[text]
+%    \end{macrocode}
+% \changes{0.1.2}{2015/03/23}{
+%   Replace icons in bibliography
 % }
 %
 % \begin{macro}{indexspace}
