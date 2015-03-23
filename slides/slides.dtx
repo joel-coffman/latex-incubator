@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2015/02/20 v0.1.0 Slides package with common commands for presentations]
+  [2015/03/23 v0.1.2 Slides package with common commands for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -116,6 +116,17 @@
 \setbeamerfont{quote}{series=\normalfont}
 \setbeamerfont{quotation}{series=\normalfont}
 %    \end{macrocode}
+%
+% Replace icon in bibliography with citation text (e.g., number or alphanumeric identifier).
+%    \begin{macrocode}
+\setbeamertemplate{bibliography entry title}{}
+\setbeamertemplate{bibliography entry location}{}
+\setbeamertemplate{bibliography entry note}{}
+\setbeamertemplate{bibliography item}[text]
+%    \end{macrocode}
+% \changes{0.1.2}{2015/03/23}{
+%   Replace icons in bibliography
+% }
 %
 % Set hooks to insert outline slides at start of parts, sections, etc.
 %
