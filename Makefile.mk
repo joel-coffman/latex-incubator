@@ -16,7 +16,6 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 	$(TEX) $*.dtx
 
 %.sty: %.dtx %.ins hgversion
-	$(MAKE) hgversion
 	$(TEX) -draftmode $*.ins
 	-grep -E "^No \\@istfilename found in '$*.aux'.$" $*.aux || makeglossaries $*
 	-grep -E '\\(citation|bibdata|bibstyle)' $*.aux && bibtex $*
@@ -25,7 +24,6 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 	makeindex -s gglo.ist -o $*.gls $*.glo
 	$(TEX) -draftmode $*.dtx
 	$(TEX) $*.dtx
-	$(RM) hgversion
 
 
 .PHONY: clean
