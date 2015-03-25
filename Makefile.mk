@@ -2,20 +2,20 @@
 TEX=pdflatex -shell-escape #-interaction batchmode
 
 # note that glossary.tex and references.bib are found via VPATH
-%.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty) hgversion
+%.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty)
 	$(TEX) -draftmode $*
 	-grep -E "^No \\@istfilename found in '$*.aux'.$" $*.aux || makeglossaries $*
 	-grep -E '\\(citation|bibdata|bibstyle)' $*.aux && bibtex $*
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
-%.cls: %.dtx %.ins hgversion
+%.cls: %.dtx %.ins hgversion.tex
 	$(TEX) -draftmode $*
 	#
 	$(TEX) -draftmode $*.dtx
 	$(TEX) $*.dtx
 
-%.sty: %.dtx %.ins hgversion
+%.sty: %.dtx %.ins hgversion.tex
 	$(TEX) -draftmode $*.ins
 	-grep -E "^No \\@istfilename found in '$*.aux'.$" $*.aux || makeglossaries $*
 	-grep -E '\\(citation|bibdata|bibstyle)' $*.aux && bibtex $*
@@ -44,5 +44,7 @@ HGVERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
 
 .PHONY: hgversion
 hgversion:
-	[ -f $@ ] || touch $@
-	/bin/echo -e '$(HGVERSION)' | cmp -s $@ - || echo '$(HGVERSION)' > $@
+	[ -f $@ ] || touch $@.tex
+	/bin/echo -e '$(HGVERSION)' | cmp -s $@.tex - || echo '$(HGVERSION)' > $@.tex
+
+hgversion.tex: hgversion
