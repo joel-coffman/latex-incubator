@@ -115,19 +115,25 @@
 %
 % \subsection{Configuration}
 %
+% \begin{macro}{clubpenalty}
+% Avoid orphans (single line of paragraph at bottom of page) by setting the penalty to be ``nearly'' infinite.
+%    \begin{macrocode}
+\clubpenalty=9999
+%    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
 %   Avoid orphans
 % }
-% \changes{0.2.1}{2015/03/23}{
-%   Do not modify default penalty for orphans
-% }
-%
+% \end{macro}
+
+% \begin{macro}{widowpenalty}
+% Avoid widows (single line of paragraph at top of page) by setting the penalty to be ``nearly'' infinite.
+%   \begin{macrocode}
+\widowpenalty=9999  % nearly infinite -- avoid widows
+%    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
 %   Avoid windows
 % }
-% \changes{0.2.1}{2015/03/23}{
-%   Do not modify default penalty for widows
-% }
+% \end{macro}
 %
 % \begin{macro}{setlist}
 % Modify default list styles (via \textsf{enumitem} package).

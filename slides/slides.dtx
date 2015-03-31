@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2015/03/23 v0.2.2 Slides package with common commands for presentations]
+  [2015/03/23 v0.2.1 Slides package with common commands for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -161,9 +161,9 @@
 %
 % \subsection{Packages}
 % Load required and optional packages.
-% \changes{0.2.2}{2015/03/23}{
-%   Remove \textsf{textpos} package dependency
-% }
+%    \begin{macrocode}
+\RequirePackage[absolute,overlay]{textpos}
+%    \end{macrocode}
 %
 % Number frames in appendix separately -- i.e., frames in appendix do not count toward total number of frames in "main" presentation.
 %    \begin{macrocode}
