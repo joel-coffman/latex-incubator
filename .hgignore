@@ -18,6 +18,7 @@ syntax: glob
 *.nav
 *.out
 *.pdf
+*.pyg
 *.snm
 *.svt
 *.toc

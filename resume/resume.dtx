@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/03/23 v0.2.1 Style file for resume]
+%<package>  [2015/05/06 v0.3.0 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -35,6 +35,8 @@
 \documentclass{ltxdoc}
 \input{hgversion}
 \usepackage{resume}
+\usepackage{minted}
+\usepackage{url}
 \geometry{reset}  % use settings from before loading geometry package
 \makeatletter
 \let\@oldmaketitle=\maketitle\relax
@@ -103,6 +105,36 @@
 % Standard \LaTeX{} sectioning commands are used to partition the resume;
 % the emphasis is to reuse existing commands rather than defining new ones, which is the approach taken by many similar packages.
 % \end{abstract}
+%
+% \section{Usage}
+%
+% \subsection{Personal Information}
+%
+% \DescribeEnv{personal}
+% All resumes should include contact information for the individual, but
+% the contact information itself should not distract from the other content of the resume.
+% The \textsf{personal} environment typesets this information that typically appears immediately following the title.
+%
+% The \textsf{personal} environment is designed to be similar to list environments in \LaTeX.
+% Each bit of personal information is introduced via the \textsf{item} command;
+% each item is separated by a doodle that serves as a delimiter.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{personal.doc.out}
+% \begin{personal}
+%   \item 1 Main Street, City, State
+%   \item (555) 555-1212
+%   \item \url{john.doe@example.com}
+% \end{personal}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{personal.doc.out}
+% produces\\
+% \begin{personal}
+%   \item 1 Main Street, City, State
+%   \item (555) 555-1212
+%   \item \url{john.doe@example.com}
+% \end{personal}
+% If multiple lines of personal information are required, they should be grouped horizontally---i.e., related personal information appears in the same \textsf{personal} environment.
+% Use multiple \textsf{personal} environments when one line is insufficient.
 %
 % \StopEventually{
 %  \PrintChanges
@@ -289,16 +321,32 @@
 % Environment for personal information.
 % Personal information may appear at the beginning of the resume following the title.
 % It typically includes the individual's address, telephone number, email, etc.
+%
+% Create counter to track items.
+%    \begin{macrocode}
+\newcounter{c@resume@personal}
+%    \end{macrocode}
+%
+% Definition for the \texttt{personal} environment.
 %    \begin{macrocode}
 \newenvironment{personal}{%
-  \newcommand{\separator}{%
-    $\:\diamond\:$
-  }%
-  %
+  % reset counter to handle multiple personal environments
+  \setcounter{c@resume@personal}{0}
+%    \end{macrocode}
+% Redefine item to print a separator between successive pieces of information.
+%    \begin{macrocode}
+  \renewcommand{\item}[0]{%
+    \refstepcounter{c@resume@personal}%
+    \ifnum1<\value{c@resume@personal}%
+      $\:\diamond\:$
+    \fi
+  }
+%    \end{macrocode}
+% Center personal information.
+%    \begin{macrocode}
   \begin{minipage}{\linewidth}%
-    \centering%
-    %
-    \small%
+    \centering
+    \small
 }{%
   \end{minipage}%
 }
@@ -309,7 +357,10 @@
 % \changes{0.1.2}{2015/01/25}{
 %   Increase space around separator
 % }
-% \end{macro}{personal}
+% \changes{0.3.0}{2015/05/04}{
+%   Replace \texttt{separator} with \texttt{item}
+% }
+% \end{macro}
 %
 % \begin{macro}{institution}
 % Command to standardize formatting of institutions (for education and employment).
