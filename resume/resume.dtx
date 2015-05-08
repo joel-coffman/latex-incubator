@@ -33,22 +33,13 @@
 %
 %<*driver>
 \documentclass{ltxdoc}
+\let\oldmaketitle=\maketitle\relax
 \input{hgversion}
 \usepackage{resume}
+\let\maketitle=\oldmaketitle\relax
 \usepackage{minted}
 \usepackage{url}
 \geometry{reset}  % use settings from before loading geometry package
-\makeatletter
-\let\@oldmaketitle=\maketitle\relax
-\renewcommand*{\maketitle}{%
-  \@oldmaketitle%
-  \begin{center}
-    \large%
-    \@author%
-  \end{center}
-  \vspace{-1ex}%
-}
-\makeatother
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
