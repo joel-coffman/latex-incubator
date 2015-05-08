@@ -44,7 +44,7 @@ HGVERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
 
 .PHONY: hgversion
 hgversion:
-	[ -f $@ ] || touch $@.tex
+	[ -f $@.tex ] || touch $@.tex
 	/bin/echo -e '$(HGVERSION)' | cmp -s $@.tex - || echo '$(HGVERSION)' > $@.tex
 
 hgversion.tex: hgversion
