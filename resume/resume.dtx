@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/05/09 v0.3.1 Style file for resume]
+%<package>  [2015/05/09 v0.3.3 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -295,7 +295,7 @@
 % Print subsection title with large font size and bold font face.
 %    \begin{macrocode}
 \newcommand*{\resume@subsection}[1]{%
-  \large\bfseries #1\nopagebreak\\\nopagebreak%
+  \bfseries\MakeUppercase{#1}\nopagebreak\\\nopagebreak%
 }
 \renewcommand{\subsection}{%
   \@startsection{subsection}{2}{\z@}%
@@ -312,6 +312,9 @@
 % }
 % \changes{0.3.1}{2015/05/07}{
 %   Use \LaTeX's internal macros for sections
+% }
+% \changes{0.3.3}{2015/05/09}{
+%   Replace large font size with capitalized text
 % }
 % \end{macro}
 %
