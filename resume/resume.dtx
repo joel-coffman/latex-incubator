@@ -319,7 +319,7 @@
 % Print subsubsection title with bold font face.
 %    \begin{macrocode}
 \newcommand*{\resume@subsubsection}[1]{%
-  \bfseries #1%
+  \bfseries #1\\%
 }
 \renewcommand{\subsubsection}{%
   \@startsection{subsubsection}{3}{\z@}%
@@ -336,6 +336,9 @@
 % }
 % \changes{0.3.1}{2015/05/07}{
 %   Use \LaTeX's internal macros for sections
+% }
+% \changes{0.3.2}{2015/05/09}{
+%   Add newline after section header
 % }
 % \end{macro}
 %
