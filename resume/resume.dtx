@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/05/06 v0.3.0 Style file for resume]
+%<package>  [2015/05/09 v0.3.1 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -236,6 +236,22 @@
 % }
 % \end{macro}
 %
+% \begin{macro}{thesection}
+% Overwrite \texttt{\textbackslash thesection} to remove numbers in section headers.
+%    \begin{macrocode}
+\let\thesection=\relax
+%    \end{macrocode}
+% The appendix changes the arabic numbers to letters in section headers.
+% Hook the appendix to remove letters from the section headers.
+%    \begin{macrocode}
+\let\resume@old@appendix=\appendix\relax
+\renewcommand{\appendix}{
+  \resume@old@appendix
+  \let\thesection=\relax
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{section}
 % Modify the section command to omit the number.
 %
@@ -243,17 +259,20 @@
 % because section titles never include the number, the same command can be used in both instances.
 % The \texttt{@ifstar} command invokes its first argument if the command is starred and the second argument if not.
 %    \begin{macrocode}
-\renewcommand*{\section}{
-  \@ifstar\resume@section\resume@section%
-}%
-\newcommand*{\resume@section}[1]{%
-  \vspace{2ex}%
-  \nopagebreak[4]%
-  \makebox[\linewidth][c]{%
-    \noindent{\large\bfseries \MakeUppercase{#1}}%
-  }\nopagebreak[4]\\[-2ex]%
-  \nopagebreak[4]\hrule\nopagebreak[4]%
+\newcommand*{\resume@section}[1]{
+  \begin{minipage}{\linewidth}
+    \centering
+    \large\bfseries%
+    \MakeUppercase{#1}%
+  \end{minipage}\nopagebreak\\[-1.9ex]%
+  \nopagebreak\hrule\nopagebreak%
 }
+\renewcommand*{\section}{%
+  \@startsection{section}{1}{\z@}%
+      {2ex \@plus 0.35ex \@minus 0.1ex}%
+      {1pt \@plus 0.1ex}%
+      {\resume@section}%
+}%
 %    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
 %   Center section title
@@ -267,19 +286,22 @@
 % \changes{0.1.4}{2015/02/10}{
 %   Suppress page break between section title and line break
 % }
+% \changes{0.3.1}{2015/05/07}{
+%   Use \LaTeX's internal macros for sections
+% }
 % \end{macro}
 %
 % \begin{macro}{subsection}
 % Print subsection title with large font size and bold font face.
 %    \begin{macrocode}
-\renewcommand*{\subsection}{
-  \@ifstar\resume@subsection\resume@subsection%
-}%
 \newcommand*{\resume@subsection}[1]{%
-  \vspace{1ex}%
-  \nopagebreak[4]%
-  \noindent{\large\bfseries #1}%
-  \nopagebreak[4]%
+  \large\bfseries #1\nopagebreak\\\nopagebreak%
+}
+\renewcommand{\subsection}{%
+  \@startsection{subsection}{2}{\z@}%
+      {1ex \@plus 0.2ex \@minus 0.5ex}%
+      {\z@ \@plus 0.1ex}%
+      {\resume@subsection}*
 }
 %    \end{macrocode}
 % \changes{0.1.2}{2015/01/25}{
@@ -288,16 +310,22 @@
 % \changes{0.1.2}{2015/01/26}{
 %   Correct handling of starred subsection command
 % }
+% \changes{0.3.1}{2015/05/07}{
+%   Use \LaTeX's internal macros for sections
+% }
 % \end{macro}
 %
 % \begin{macro}{subsubsection}
 % Print subsubsection title with bold font face.
 %    \begin{macrocode}
-\renewcommand*{\subsubsection}{
-  \@ifstar\resume@subsubsection\resume@subsubsection%
-}%
 \newcommand*{\resume@subsubsection}[1]{%
-  \noindent{\bfseries #1}%
+  \bfseries #1%
+}
+\renewcommand{\subsubsection}{%
+  \@startsection{subsubsection}{3}{\z@}%
+      {\z@ \@plus 0.1ex \@minus 0.1ex}%
+      {\z@ \@plus 0.05ex}%
+      {\resume@subsubsection}*
 }
 %    \end{macrocode}
 % \changes{0.1.2}{2015/01/25}{
@@ -305,6 +333,9 @@
 % }
 % \changes{0.1.2}{2015/01/26}{
 %   Correct handling of starred susubsection command
+% }
+% \changes{0.3.1}{2015/05/07}{
+%   Use \LaTeX's internal macros for sections
 % }
 % \end{macro}
 %
