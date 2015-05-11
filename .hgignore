@@ -24,6 +24,7 @@ syntax: glob
 *.toc
 
 *.synctex.gz
+hgversion.tex
 
 
 syntax: regexp
