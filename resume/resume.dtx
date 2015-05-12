@@ -110,20 +110,16 @@
 % Each bit of personal information is introduced via the \textsf{item} command;
 % each item is separated by a doodle that serves as a delimiter.
 % For example,
-% \begin{VerbatimOut}[gobble=1]{personal.minted.out}
+% \begin{VerbatimOut}[gobble=1]{minted/personal.out}
 % \begin{personal}
 %   \item 1 Main Street, City, State
 %   \item (555) 555-1212
 %   \item \url{john.doe@example.com}
 % \end{personal}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{personal.doc.out}
+% \inputminted[gobble=1]{latex}{minted/personal.out}
 % produces\\
-% \begin{personal}
-%   \item 1 Main Street, City, State
-%   \item (555) 555-1212
-%   \item \url{john.doe@example.com}
-% \end{personal}
+% \input{minted/personal.out}
 % If multiple lines of personal information are required, they should be grouped horizontally---i.e., related personal information appears in the same \textsf{personal} environment.
 % Use multiple \textsf{personal} environments when one line is insufficient.
 %
@@ -134,12 +130,12 @@
 % The \texttt{\textbackslash institution} macro requires two arguments: the name of the institution and its location.
 %
 % The following example demonstrates the \texttt{\textbackslash institution} command:
-% \begin{VerbatimOut}[gobble=1]{institution.minted.out}
+% \begin{VerbatimOut}[gobble=1]{minted/institution.out}
 % \institution{Acme Corporation}{New York, NY}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{institution.minted.out}
+% \inputminted[gobble=1]{latex}{minted/institution.out}
 % produces\\
-% \input{institution.minted.out}
+% \input{minted/institution.out}
 % It is expected that additional information will follow each institution.
 %
 % \DescribeMacro{degree}
@@ -147,12 +143,12 @@
 % The \texttt{\textbackslash degree} command requires two arguments: the name of the degree and the date it was (or will be) granted.
 %
 % For example,
-% \begin{VerbatimOut}[gobble=1]{degree.minted.out}
+% \begin{VerbatimOut}[gobble=1]{minted/degree.out}
 % \degree{Bachelor of Science, Computer Science}{May 2000}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{degree.minted.out}
+% \inputminted[gobble=1]{latex}{minted/degree.out}
 % produces\\
-% \input{degree.minted.out}
+% \input{minted/degree.out}
 % Additional information regarding the degree such as one's advisor, thesis topic, etc. should follow the degree.
 %
 % \DescribeMacro{position}
@@ -161,12 +157,12 @@
 % Like academic degrees, the \texttt{\textbackslash position} macro requires two arguments: the title of the position and the dates it was held.
 %
 % For example,
-% \begin{VerbatimOut}[gobble=1]{position.minted.out}
+% \begin{VerbatimOut}[gobble=1]{minted/position.out}
 % \position{Widget Assembler, Second Class}{June 2000--December 2000}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{position.minted.out}
+% \inputminted[gobble=1]{latex}{minted/position.out}
 % produces\\
-% \input{position.minted.out}
+% \input{minted/position.out}
 % When multiple positions have been held at the same organization, ordinary paragraph breaks may be used to separate them.
 %
 %
