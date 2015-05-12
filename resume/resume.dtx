@@ -110,7 +110,7 @@
 % Each bit of personal information is introduced via the \textsf{item} command;
 % each item is separated by a doodle that serves as a delimiter.
 % For example,
-% \begin{VerbatimOut}[gobble=1]{personal.doc.out}
+% \begin{VerbatimOut}[gobble=1]{personal.minted.out}
 % \begin{personal}
 %   \item 1 Main Street, City, State
 %   \item (555) 555-1212
@@ -126,6 +126,49 @@
 % \end{personal}
 % If multiple lines of personal information are required, they should be grouped horizontally---i.e., related personal information appears in the same \textsf{personal} environment.
 % Use multiple \textsf{personal} environments when one line is insufficient.
+%
+% \subsection{Education and Employment}
+%
+% \DescribeMacro{institution}
+% Education and employment is organized by \emph{institutions}---e.g., the name of a university or place of employment.
+% The \texttt{\textbackslash institution} macro requires two arguments: the name of the institution and its location.
+%
+% The following example demonstrates the \texttt{\textbackslash institution} command:
+% \begin{VerbatimOut}[gobble=1]{institution.minted.out}
+% \institution{Acme Corporation}{New York, NY}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{institution.minted.out}
+% produces\\
+% \input{institution.minted.out}
+% It is expected that additional information will follow each institution.
+%
+% \DescribeMacro{degree}
+% Education is summarized via the \texttt{\textbackslash degree} command.
+% The \texttt{\textbackslash degree} command requires two arguments: the name of the degree and the date it was (or will be) granted.
+%
+% For example,
+% \begin{VerbatimOut}[gobble=1]{degree.minted.out}
+% \degree{Bachelor of Science, Computer Science}{May 2000}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{degree.minted.out}
+% produces\\
+% \input{degree.minted.out}
+% Additional information regarding the degree such as one's advisor, thesis topic, etc. should follow the degree.
+%
+% \DescribeMacro{position}
+% Most organizations provide a job title for employees.
+% Each position held within an organization may be described via the imagitively-named \texttt{\textbackslash position} macro.
+% Like academic degrees, the \texttt{\textbackslash position} macro requires two arguments: the title of the position and the dates it was held.
+%
+% For example,
+% \begin{VerbatimOut}[gobble=1]{position.minted.out}
+% \position{Widget Assembler, Second Class}{June 2000--December 2000}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{position.minted.out}
+% produces\\
+% \input{position.minted.out}
+% When multiple positions have been held at the same organization, ordinary paragraph breaks may be used to separate them.
+%
 %
 % \StopEventually{
 %  \PrintChanges
