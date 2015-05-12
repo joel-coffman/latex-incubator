@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/05/09 v0.3.3 Style file for resume]
+%<package>  [2015/05/11 v0.4.0 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -74,6 +74,9 @@
 % }
 % \changes{0.2.0}{2015/03/19}{
 %   Remove \texttt{ps@myheadings} definition
+% }
+% \changes{0.4.0}{2015/05/11}{
+%   Remove \texttt{project} environment
 % }
 %
 % \GetFileInfo{resume.sty}
@@ -494,16 +497,6 @@
 % \changes{0.1.6}{2015/03/04}{
 %   Add \texttt{hspace} to avoid issues when draft mode not enabled
 % }
-% \end{macro}
-%
-% \begin{macro}{project}
-%   Environment to name project and dates of work.
-%    \begin{macrocode}
-\newenvironment{project}[2]{%
-  \textbf{#1}\hfill #2\\
-}{%
-}
-%    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{publications}
