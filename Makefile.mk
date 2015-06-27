@@ -4,8 +4,9 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 # note that glossary.tex and references.bib are found via VPATH
 %.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty)
 	$(TEX) -draftmode $*
-	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
 	if grep -E '\\(citation|bibdata|bibstyle)' $*.aux; then bibtex $*; fi
+	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
+	-[ -f $*.idx ] && makeindex $*
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
