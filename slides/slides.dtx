@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2015/03/23 v0.2.2 Slides package with common commands for presentations]
+  [2015/08/15 v0.2.3 Slides package with common commands for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -108,11 +108,14 @@
 %    \begin{macrocode}
   \AtBeginPart
   {
-    \begin{frame}{Outline}
+    \begin{frame}
       \partpage
     \end{frame}
   }
 %    \end{macrocode}
+% \changes{0.2.3}{2015/08/15}{
+%   Remove ``title'' from part page
+% }
 % \end{macro}
 % \begin{macro}{AtBeginSection}
 %    \begin{macrocode}
