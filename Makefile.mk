@@ -33,8 +33,7 @@ clean:
 
 .PHONY: veryclean
 veryclean: clean
-	find . -name "*.aux" -print0 | xargs -0 $(RM)
-	$(RM) *.pdf
+	$(RM) *.aux *.pdf
 
 .PHONY: force
 force: veryclean default
