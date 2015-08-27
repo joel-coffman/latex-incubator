@@ -23,6 +23,7 @@ syntax: glob
 *.svt
 *.toc
 
+recipe/recipe.ist
 *.synctex.gz
 hgversion.tex
 
