@@ -28,7 +28,7 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 
 .PHONY: clean
 clean:
-	$(RM) *.acn *.acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.ist *.idx *.ind *.ilg *.log *.lof *.lot *.nav *.out *.snm *.toc
+	$(RM) *.acn *.acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.idx *.ind *.ilg *.log *.lof *.lot *.nav *.out *.snm *.toc
 	find . -name "*.bak" -print0 | xargs -0 $(RM)
 
 .PHONY: veryclean
