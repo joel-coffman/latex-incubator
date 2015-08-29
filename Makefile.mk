@@ -17,8 +17,8 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 
 %.sty: %.dtx %.ins hgversion.tex
 	$(TEX) -draftmode $*.ins
-	-grep -E "^No \\@istfilename found in '$*.aux'.$" $*.aux || makeglossaries $*
-	-grep -E '\\(citation|bibdata|bibstyle)' $*.aux && bibtex $*
+	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
+	if grep -E '\\(citation|bibdata|bibstyle)' $*.aux; then bibtex $*; fi
 	$(TEX) -draftmode $*.dtx
 	makeindex -s gind.ist -o $*.ind $*.idx
 	makeindex -s gglo.ist -o $*.gls $*.glo
