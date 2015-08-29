@@ -40,5 +40,6 @@ syntax: regexp
 ^jhu.edu/beamerthemejhu/university.logo.small.horizontal.white.eps
 ^jhu.edu/beamerthemejhu/whiting.logo.small.horizontal.white.eps
 ^manyauth/manyauth.sty
+^recipe/recipe.sty
 ^resume/resume.sty
 ^slides/slides.sty
