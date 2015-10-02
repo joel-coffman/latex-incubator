@@ -1,3 +1,6 @@
+# function to determine the current (included) Makefile
+where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
+
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
 
