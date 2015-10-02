@@ -25,6 +25,7 @@ syntax: glob
 
 *.synctex.gz
 hgversion.tex
+_minted-*
 
 
 syntax: regexp
