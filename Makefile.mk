@@ -9,7 +9,7 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 	$(TEX) -draftmode $*
 	if grep -E '\\(citation|bibdata|bibstyle)' $*.aux; then bibtex $*; fi
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
-	-[ -f $*.idx ] && makeindex $*
+	if [ -f $*.idx ]; then makeindex $*; fi
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
