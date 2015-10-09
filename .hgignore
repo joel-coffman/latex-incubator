@@ -39,6 +39,7 @@ syntax: regexp
 ^jhu.edu/beamerthemejhu/beamerthemejhuwhiting.sty
 ^jhu.edu/beamerthemejhu/university.logo.small.horizontal.white.eps
 ^jhu.edu/beamerthemejhu/whiting.logo.small.horizontal.white.eps
+^jhu.edu/beamercolorthemebluejay/beamercolorthemebluejay.sty
 ^manyauth/manyauth.sty
 ^recipe/recipe.ist
 ^recipe/recipe.sty
