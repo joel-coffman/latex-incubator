@@ -1,0 +1,280 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2014 by Joel Coffman
+% -----------------------------------
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{beamerouterthemelogo}
+%<package>  [2015/10/10 v0.1.0 Beamer outer theme for including organizational logos]
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{beamerarticle}
+
+\input{hgversion}
+\usepackage{beamerouterthemelogo}
+
+\usepackage{minted}
+\usepackage{ragged2e}
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{beamerouterthemelogo.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2015/10/10}{%
+%   Initial version
+% }
+%
+% \GetFileInfo{beamerouterthemelogo.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{%
+%   The \textsf{beamerouterthemelogo} package\thanks{%
+%     This document corresponds to \protect\textsf{beamerouterthemelogo}~\fileversion-\hgversion, dated \filedate.
+%   }
+% }
+% \author{%
+%   Joel Coffman\\
+%   \texttt{joel.coffman@jhu.edu}
+% }
+%
+% \maketitle
+%
+% \begin{abstract}
+% The \textsf{beamerouterthemelogo} package defines an outer theme for Beamer that displays an organizational logo.
+% \end{abstract}
+%
+% \section{Usage}
+% Per Beamer's documentation, this color theme should be loaded via the following command:
+% \begin{minted}[
+%   gobble=2,
+% ]{latex}
+  \useoutertheme{logo}
+% \end{minted}
+% Of course, this theme features the use of an organizational logo so it only makes sense to specify the logo using the following command:
+% \begin{minted}[
+%   gobble=2,
+% ]{latex}
+  \logo{
+    \includegraphics[
+        height=0.5in,  % minimum height of header
+        keepaspectratio,  % do not distort by exceeding specified dimensions
+        width=0.4\paperwidth,  % width of logo area
+    ]{organizational-logo}
+  }
+% \end{minted}
+% See Beamer's documentation~\cite{beamer:manual} for additional details regarding the \mintinline{latex}{logo} macro.
+%
+% {\RaggedRight
+%   \bibliographystyle{abbrv}
+%   \bibliography{../../../../references}
+% }
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% See Beamer's documentation~\cite{beamer:manual} and the implementation of various themes for more information about the various commands.
+%
+% \subsection{Options}
+% Declare options and corresponding \LaTeX{} conditionals.
+%
+%    \begin{macrocode}
+\newif\if@beamerouterthemelogo@right\relax
+\DeclareOption{right}{
+  \@beamerouterthemelogo@righttrue
+}
+%    \end{macrocode}
+%
+% Process options.
+% \mintinline{latex}{\relax} prevents unnecessary lookahead.
+%    \begin{macrocode}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% Set background color for logo and sections in header.
+%    \begin{macrocode}
+\setbeamercolor*{palette quaternary}{
+  bg=structure.fg,
+  fg=white,
+  use=structure,
+}
+%    \end{macrocode}
+%
+% Set background color for header and footer.
+%    \begin{macrocode}
+\setbeamercolor{author in head/foot}{
+  bg=PMS Gray 4,
+  fg=white,
+}
+\setbeamercolor{title in head/foot}{
+  bg=PMS Gray 4,
+  fg=white,
+}
+%    \end{macrocode}
+%
+% Use the \textsf{split} outer theme as the basis for this theme.
+% (This command must appear after setting colors.)
+%    \begin{macrocode}
+\useoutertheme{split}
+%    \end{macrocode}
+%
+% Add ``pop'' to the small text appearing in header and footer.
+%    \begin{macrocode}
+\usefonttheme[onlysmall]{structurebold}
+%    \end{macrocode}
+%
+% Override \mintinline{latex}{sidebar right} template to remove logo from the lower right corner.
+% This code is copied from the \mintinline{latex}{default} outer theme.\footnote{%
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/color/beamercolorthemedefault.sty}
+% }
+%    \begin{macrocode}
+\defbeamertemplate*{sidebar right}{logo theme}
+{
+  \vfill%
+  \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+  \vskip2pt%
+}
+%    \end{macrocode}
+%
+% Override \mintinline{latex}{headline} template.
+% This code is copied from the \mintinline{latex}{split} outer theme.\footnote{%
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/color/beamercolorthemesplit.sty}
+% }
+%    \begin{macrocode}
+\defbeamertemplate*{headline}{logo theme}
+{%
+  \leavevmode%
+%    \end{macrocode}
+% \TeX{} register for height of header.
+%    \begin{macrocode}
+  \@tempdimb=2.4375ex%
+%    \end{macrocode}
+% Increase header height to accommodate number of sections and subsections, whichever is greater.
+%    \begin{macrocode}
+  \ifnum\beamer@subsectionmax<\beamer@sectionmax%
+    \multiply\@tempdimb by\beamer@sectionmax%
+  \else%
+    \multiply\@tempdimb by\beamer@subsectionmax%
+  \fi%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \ifdim\@tempdimb>0pt%
+    \advance\@tempdimb by 1.125ex%
+%    \end{macrocode}
+% Ensure that height is at least 0.5-inch regardless of the number of (sub)sections.
+%    \begin{macrocode}
+    \ifdim\@tempdimb<.5in%
+      \@tempdimb=.5in%
+    \fi%
+%    \end{macrocode}
+% Insert logo with same background color as sections unless \mintinline{latex}{right} option specified.
+%    \begin{macrocode}
+    \if@beamerouterthemelogo@right\else%
+      \begin{beamercolorbox}[%
+          ht=\@tempdimb,%
+          wd=.4\paperwidth,%
+      ]{section in head/foot}%
+        \smash{\rlap{\insertlogo}}%
+      \end{beamercolorbox}%
+    \fi%
+%    \end{macrocode}
+% Insert section navigation.
+%    \begin{macrocode}
+    \begin{beamercolorbox}[%
+        ht=\@tempdimb,%
+        wd=.3\paperwidth,%
+    ]{section in head/foot}%
+      \vbox to\@tempdimb{%
+        \vfil%
+        \insertsectionnavigation{.3\paperwidth}%
+        \vfil%
+      }%
+    \end{beamercolorbox}%
+%    \end{macrocode}
+% Insert subsection navigation.
+%    \begin{macrocode}
+    \begin{beamercolorbox}[%
+        ht=\@tempdimb,
+        wd=.3\paperwidth,
+    ]{subsection in head/foot}%
+      \vbox to\@tempdimb{%
+        \vfil%
+        \insertsubsectionnavigation{.3\paperwidth}%
+        \vfil%
+      }%
+    \end{beamercolorbox}%
+%    \end{macrocode}
+% If \mintinline{latex}{right} option specified, insert logo with same background color as subsections.
+%    \begin{macrocode}
+    \if@beamerouterthemelogo@right%
+      \begin{beamercolorbox}[%
+          ht=\@tempdimb,%
+          wd=.4\paperwidth,%
+      ]{section in head/foot}%
+        \smash{\rlap{\insertlogo}}%
+      \end{beamercolorbox}%
+    \fi%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \fi%
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
