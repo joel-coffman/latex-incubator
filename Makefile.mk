@@ -4,7 +4,6 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
 
-# note that glossary.tex and references.bib are found via VPATH
 %.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty)
 	$(TEX) -draftmode $*
 	if grep -E '\\(citation|bibdata|bibstyle)' $*.aux; then bibtex $*; fi
