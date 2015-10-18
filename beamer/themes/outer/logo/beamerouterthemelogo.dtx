@@ -88,23 +88,29 @@
 %
 % \section{Usage}
 % Per Beamer's documentation, this color theme should be loaded via the following command:
-% \begin{minted}[
-%   gobble=2,
-% ]{latex}
-  \useoutertheme{logo}
-% \end{minted}
+% \begin{VerbatimOut}[
+%     gobble=1,
+% ]{minted/useroutertheme.out}
+% \useoutertheme{logo}
+% \end{VerbatimOut}
+% \inputminted[
+%     gobble=1,
+% ]{latex}{minted/useroutertheme.out}
 % Of course, this theme features the use of an organizational logo so it only makes sense to specify the logo using the following command:
-% \begin{minted}[
-%   gobble=2,
-% ]{latex}
-  \logo{
-    \includegraphics[
-        height=0.5in,  % minimum height of header
-        keepaspectratio,  % do not distort by exceeding specified dimensions
-        width=0.4\paperwidth,  % width of logo area
-    ]{organizational-logo}
-  }
-% \end{minted}
+% \begin{VerbatimOut}[
+%     gobble=1,
+% ]{minted/logo.out}
+% \logo{
+%   \includegraphics[
+%       height=0.5in,  % minimum height of header
+%       keepaspectratio,  % do not distort by exceeding specified dimensions
+%       width=0.4\paperwidth,  % width of logo area
+%   ]{organizational-logo}
+% }
+% \end{VerbatimOut}
+% \inputminted[
+%     gobble=1,
+% ]{latex}{minted/logo.out}
 % See Beamer's documentation~\cite{beamer:manual} for additional details regarding the \mintinline{latex}{logo} macro.
 %
 % {\RaggedRight
