@@ -1,5 +1,5 @@
 .PHONY: default
 default: beamercolorthemebluejay.sty
 
-include ../../Makefile.mk
+include ../../../../Makefile.mk
 

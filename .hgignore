@@ -31,6 +31,7 @@ _minted-*
 syntax: regexp
 
 # derivative files generated via .ins and .dtx
+^beamer/themes/color/bluejay/beamercolorthemebluejay.sty
 ^beamer/themes/outer/logo/beamerouterthemelogo.sty
 ^ep.jhu.edu/beamerthemejhu/beamerthemejhu.sty
 ^ep.jhu.edu/syllabus/syllabus.sty
@@ -40,7 +41,6 @@ syntax: regexp
 ^jhu.edu/beamerthemejhu/beamerthemejhuwhiting.sty
 ^jhu.edu/beamerthemejhu/university.logo.small.horizontal.white.eps
 ^jhu.edu/beamerthemejhu/whiting.logo.small.horizontal.white.eps
-^jhu.edu/beamercolorthemebluejay/beamercolorthemebluejay.sty
 ^manyauth/manyauth.sty
 ^recipe/recipe.ist
 ^recipe/recipe.sty
