@@ -279,6 +279,59 @@
 }
 %    \end{macrocode}
 %
+% Override \mintinline{latex}{footline} template.
+%    \begin{macrocode}
+\defbeamertemplate*{footline}{logo theme}
+{%
+  \leavevmode%
+  \hbox{%
+%    \end{macrocode}
+% Insert institute and author.
+%    \begin{macrocode}
+    \begin{beamercolorbox}[%
+        dp=1.125ex,%
+        ht=2.5ex,%
+        leftskip=1em,%
+        rightskip=1em,%
+        wd=0.4\paperwidth,%
+    ]{author in head/foot}%
+      {%
+        \usebeamerfont{institute in head/foot}
+        \insertshortinstitute%
+      }%
+      \hfill%
+      {%
+        \usebeamerfont{author in head/foot}%
+        \insertshortauthor%
+      }
+    \end{beamercolorbox}%
+%    \end{macrocode}
+% Insert title and frame number.
+%    \begin{macrocode}
+    \begin{beamercolorbox}[
+        dp=1.125ex,%
+        ht=2.5ex,%
+        leftskip=1em,%
+        rightskip=1em plus1fil,%
+        wd=0.6\paperwidth,%
+    ]{title in head/foot}%
+      {%
+        \usebeamerfont{title in head/foot}%
+        \insertshorttitle%
+      }%
+      \hfill%
+      {%
+        \usebeamerfont{page number in head/foot}%
+        \insertframenumber{} / \inserttotalframenumber%
+      }%
+    \end{beamercolorbox}%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \vskip0pt%
+}
+%    \end{macrocode}
+%
 % \iffalse
 %</package>
 % \fi
