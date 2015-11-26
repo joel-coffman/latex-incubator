@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2015/10/10 v0.1.0 Beamer outer theme for including organizational logos]
+%<package>  [2015/11/26 v0.1.1 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -232,7 +232,7 @@
           ht=\@tempdimb,%
           wd=.4\paperwidth,%
       ]{section in head/foot}%
-        \smash{\rlap{\insertlogo}}%
+        \smash{\rlap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
       \end{beamercolorbox}%
     \fi%
 %    \end{macrocode}
@@ -269,7 +269,7 @@
           ht=\@tempdimb,%
           wd=.4\paperwidth,%
       ]{section in head/foot}%
-        \smash{\rlap{\insertlogo}}%
+        \smash{\rlap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
       \end{beamercolorbox}%
     \fi%
 %    \end{macrocode}
@@ -278,6 +278,9 @@
   \fi%
 }
 %    \end{macrocode}
+% \changes{0.1.1}{2015/11/26}{
+%   Vertically center logo in \mintinline{latex}{vbox}
+% }
 %
 % Override \mintinline{latex}{footline} template.
 %    \begin{macrocode}
