@@ -33,14 +33,10 @@ syntax: regexp
 # derivative files generated via .ins and .dtx
 ^beamer/themes/color/bluejay/beamercolorthemebluejay.sty
 ^beamer/themes/outer/logo/beamerouterthemelogo.sty
+^beamer/themes/theme/jhu.edu/beamerthemejhu.edu.sty
+^beamer/themes/theme/jhu.edu/university.logo.small.horizontal.white.eps
 ^ep.jhu.edu/beamerthemejhu/beamerthemejhu.sty
 ^ep.jhu.edu/syllabus/syllabus.sty
-^jhu.edu/beamerthemejhu/apl.logo.small.horizontal.white.eps
-^jhu.edu/beamerthemejhu/beamerthemejhu.sty
-^jhu.edu/beamerthemejhu/beamerthemejhuapl.sty
-^jhu.edu/beamerthemejhu/beamerthemejhuwhiting.sty
-^jhu.edu/beamerthemejhu/university.logo.small.horizontal.white.eps
-^jhu.edu/beamerthemejhu/whiting.logo.small.horizontal.white.eps
 ^manyauth/manyauth.sty
 ^recipe/recipe.ist
 ^recipe/recipe.sty

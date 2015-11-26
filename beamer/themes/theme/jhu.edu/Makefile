@@ -1,8 +1,8 @@
 .PHONY: default
-default: minted beamerthemejhu.sty
+default: minted beamerthemejhu.edu.sty
 
 .PHONY: minted
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-include ../../Makefile.mk
+include ../../../../Makefile.mk
