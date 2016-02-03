@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2015/08/15 v0.2.3 Slides package with common commands for presentations]
+  [2016/02/03 v0.2.3 Slides package with common commands for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -77,6 +77,8 @@
 % \maketitle
 %
 % \begin{abstract}
+% The \textsf{slides} package complements \textsf{beamer} when creating presentations in \LaTeX.
+% This package's options control the style of the presentation and allows these settings to be easily reused across presentations.
 % \end{abstract}
 %
 % \StopEventually{
@@ -86,16 +88,22 @@
 %
 % \appendix
 %
-% \section{Implementation}
-%
-% \subsection{Options}
+% \section{Options}
 % The |handout| option prints two slides per page.
 %    \begin{macrocode}
 \DeclareOption{handout}{%
+%    \end{macrocode}
+% Specifying this option loads the \textsf{pgfpages} package to include two slides on each page.
+% |border shrink| reduces the size of the logical page on the physical page.
+%    \begin{macrocode}
   \AtEndOfPackage{%
-    \RequirePackage{pgfpages}%
-    \pgfpagesuselayout{2 on 1}[letterpaper,border shrink=2em]%
+    \RequirePackage{pgfpages}
+    \pgfpagesuselayout{2 on 1}[
+        border shrink=2em,
+    ]
   }
+%    \end{macrocode}
+%    \begin{macrocode}
 }
 %    \end{macrocode}
 %
@@ -105,6 +113,7 @@
 %    \end{macrocode}
 % 
 % \begin{macro}{AtBeginPart}
+% Insert a frame that identifies the current part of the presentation.
 %    \begin{macrocode}
   \AtBeginPart
   {
@@ -117,7 +126,11 @@
 %   Remove ``title'' from part page
 % }
 % \end{macro}
+%
 % \begin{macro}{AtBeginSection}
+% Insert a frame that identifies the current section of the presentation.
+% All subsections of the current section are shown;
+% subsections of other sections are hidden to minimize the vertical size of the outline.
 %    \begin{macrocode}
   \AtBeginSection[]
   {
@@ -125,12 +138,17 @@
       \tableofcontents[
           currentsection,
           hidesubsections,
+          subsubsectionstyle=show/shaded/hide,
       ]
     \end{frame}
   }
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{AtBeginSubsection}
+% Insert a frame that identifies the current section and subsection in the presentation.
+% Any subsubsections in the current subsection are shown;
+% those in other subsections are hidden.
 %    \begin{macrocode}
   \AtBeginSubsection[]
   {
@@ -164,6 +182,9 @@
 %
 % \subsection{Packages}
 % Load required and optional packages.
+% Some optional packages are loaded conditionally depending on the package options.
+% (See the package options for more details.)
+%
 % \changes{0.2.2}{2015/03/23}{
 %   Remove \textsf{textpos} package dependency
 % }
@@ -177,7 +198,7 @@
 % }
 %
 % \subsection{Configuration}
-% Stylistic settings
+% Display quotes in the normal font rather than italics.
 %    \begin{macrocode}
 \setbeamerfont{quote}{series=\normalfont}
 \setbeamerfont{quotation}{series=\normalfont}
@@ -210,7 +231,7 @@
 %
 % \subsection{Commands}
 % \begin{macro}{continued}
-% The |continued| command prints a notice that the current slide is a continuation of the prior one.
+% The |continued| command prints a notice that the material is a continuation from prior slides.
 %    \begin{macrocode}
 \newcommand{\continued}[0]{(continued)}
 %    \end{macrocode}
