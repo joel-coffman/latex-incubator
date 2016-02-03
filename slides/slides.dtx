@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/02/03 v0.2.3 Slides package with common commands for presentations]
+  [2016/02/03 v0.2.4 Slides package with common commands for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -198,6 +198,15 @@
 % }
 %
 % \subsection{Configuration}
+% Remove navigation symbols at the bottom of slides.
+% The navigation symbols are almost too small to see in many cases and rarely used in practice.
+%    \begin{macrocode}
+\setbeamertemplate{navigation symbols}{}
+%    \end{macrocode}
+% \changes{0.2.4}{2016/02/03}{
+%   Remove navigation symbols
+% }
+%
 % Display quotes in the normal font rather than italics.
 %    \begin{macrocode}
 \setbeamerfont{quote}{series=\normalfont}
