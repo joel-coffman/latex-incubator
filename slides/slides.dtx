@@ -22,13 +22,14 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/02/04 v0.2.4 Slides package for presentations]
+  [2016/02/04 v0.2.5 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
 %<*driver>
 \documentclass{ltxdoc}
 \input{hgversion}
+\usepackage{microtype}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -196,12 +197,15 @@
 % }
 %
 % \section{Configuration}
+%
+% \subsection{Fonts}
 % Display quotes in the normal font rather than italics.
 %    \begin{macrocode}
 \setbeamerfont{quote}{series=\normalfont}
 \setbeamerfont{quotation}{series=\normalfont}
 %    \end{macrocode}
 %
+% \subsection{Templates}
 % Remove navigation symbols at the bottom of slides.
 % The navigation symbols are almost too small to see in many cases and rarely used in practice.
 %    \begin{macrocode}
@@ -209,6 +213,27 @@
 %    \end{macrocode}
 % \changes{0.2.4}{2016/02/03}{
 %   Remove navigation symbols
+% }
+%
+% Remove part name and number from |partpage|.
+% The definition of the |part page| template is copied from Beamer's default inner theme.\footnote{%
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/inner/beamerinnerthemedefault.sty}
+% }
+%    \begin{macrocode}
+\setbeamertemplate{part page}{%
+  \begingroup
+    \centering
+    \begin{beamercolorbox}[
+        center,
+        sep=16pt,
+    ]{part title}
+      \usebeamerfont{part title}\insertpart\par
+    \end{beamercolorbox}
+  \endgroup
+}%
+%    \end{macrocode}
+% \changes{0.2.5}{2016/02/04}{
+%   Remove part name and number from part page
 % }
 %
 % Replace icon in bibliography with citation text (e.g., number or alphanumeric identifier).
