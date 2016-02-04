@@ -198,6 +198,12 @@
 % }
 %
 % \subsection{Configuration}
+% Display quotes in the normal font rather than italics.
+%    \begin{macrocode}
+\setbeamerfont{quote}{series=\normalfont}
+\setbeamerfont{quotation}{series=\normalfont}
+%    \end{macrocode}
+%
 % Remove navigation symbols at the bottom of slides.
 % The navigation symbols are almost too small to see in many cases and rarely used in practice.
 %    \begin{macrocode}
@@ -206,12 +212,6 @@
 % \changes{0.2.4}{2016/02/03}{
 %   Remove navigation symbols
 % }
-%
-% Display quotes in the normal font rather than italics.
-%    \begin{macrocode}
-\setbeamerfont{quote}{series=\normalfont}
-\setbeamerfont{quotation}{series=\normalfont}
-%    \end{macrocode}
 %
 % Replace icon in bibliography with citation text (e.g., number or alphanumeric identifier).
 %    \begin{macrocode}
@@ -223,6 +223,14 @@
 % \changes{0.1.2}{2015/03/23}{
 %   Replace icons in bibliography
 % }
+%
+% \subsection{Commands}
+% \begin{macro}{continued}
+% The |continued| command prints a notice that the material is a continuation from prior slides.
+%    \begin{macrocode}
+\newcommand{\continued}[0]{(continued)}
+%    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{indexspace}
 % Provide |indexspace| command as a workaround for \textsf{glossaries} \textless{} 4.13, which does not define it.
@@ -238,12 +246,5 @@
 % }
 % \end{macro}
 %
-% \subsection{Commands}
-% \begin{macro}{continued}
-% The |continued| command prints a notice that the material is a continuation from prior slides.
-%    \begin{macrocode}
-\newcommand{\continued}[0]{(continued)}
-%    \end{macrocode}
-% \end{macro}
 % \Finale
 \endinput
