@@ -6,7 +6,7 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 
 %.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty)
 	$(TEX) -draftmode $*
-	if grep -E '\\(citation|bibdata|bibstyle)' $*.aux; then bibtex $*; fi
+	if grep -E '\\citation' $*.aux; then bibtex $*; fi
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
 	if [ -f $*.idx ]; then makeindex $*; fi
 	$(TEX) -draftmode $*
@@ -21,7 +21,7 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 %.sty: %.dtx %.ins hgversion.tex
 	$(TEX) -draftmode $*.ins
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
-	if grep -E '\\(citation|bibdata|bibstyle)' $*.aux; then bibtex $*; fi
+	if grep -E '\\citation' $*.aux; then bibtex $*; fi
 	$(TEX) -draftmode $*.dtx
 	makeindex -s gind.ist -o $*.ind $*.idx
 	makeindex -s gglo.ist -o $*.gls $*.glo
