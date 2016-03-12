@@ -12,7 +12,8 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 
 %.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty) $(CWD)/references.bib
 	$(TEX) -draftmode $*
-	if grep -E '\\citation' $*.aux; then bibtex $*; fi
+	if sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux | \
+	        xargs grep -E '\\(citation)' $*.aux; then bibtex $*; fi
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
 	if [ -f $*.idx ]; then makeindex $*; fi
 	$(TEX) -draftmode $*
