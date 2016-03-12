@@ -1,10 +1,12 @@
 # function to determine the current (included) Makefile
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
 
+CWD := $(dir $(call where-am-i))
+
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
 
-%.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty)
+%.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty) $(CWD)/references.bib
 	$(TEX) -draftmode $*
 	if grep -E '\\citation' $*.aux; then bibtex $*; fi
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
