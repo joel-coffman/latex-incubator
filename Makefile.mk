@@ -1,7 +1,11 @@
 # function to determine the current (included) Makefile
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
-
+# location of this Makefile (presumably the root directory of a project)
 CWD := $(dir $(call where-am-i))
+
+# add texmf directory to TEXINPUTS environment variable to find included files
+# (e.g., packages)
+export TEXINPUTS := .:$(CWD)texmf//:${TEXINPUTS}
 
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
