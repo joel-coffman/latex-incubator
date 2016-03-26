@@ -19,13 +19,13 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
-%.cls: %.dtx %.ins hgversion.tex
+%.cls: %.dtx %.ins .version.tex
 	$(TEX) -draftmode $*
 	#
 	$(TEX) -draftmode $*.dtx
 	$(TEX) $*.dtx
 
-%.sty: %.dtx %.ins hgversion.tex
+%.sty: %.dtx %.ins .version.tex
 	$(TEX) -draftmode $*.ins
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
 	if grep -E '\\citation' $*.aux; then bibtex $*; fi
@@ -49,11 +49,11 @@ veryclean: clean
 force: veryclean default
 
 
-HGVERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\hgversion}{&}/')
+VERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\\\version}{&}/')
 
-.PHONY: hgversion
-hgversion:
+.PHONY: .version
+.version:
 	[ -f $@.tex ] || touch $@.tex
-	$(shell which echo) -e '$(HGVERSION)' | cmp -s $@.tex - || echo '$(HGVERSION)' > $@.tex
+	$(shell which echo) -e '$(VERSION)' | cmp -s $@.tex - || echo '$(VERSION)' > $@.tex
 
-hgversion.tex: hgversion
+.version.tex: .version
