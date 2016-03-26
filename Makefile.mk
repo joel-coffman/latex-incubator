@@ -49,7 +49,9 @@ veryclean: clean
 force: veryclean default
 
 
+ifneq ($(shell hg root 2> /dev/null),)
 VERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\\\version}{&}/')
+endif
 
 .PHONY: .version
 .version:
