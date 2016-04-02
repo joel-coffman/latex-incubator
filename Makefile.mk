@@ -1,7 +1,11 @@
 # function to determine the current (included) Makefile
-where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
+where-am-i = $(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
 # location of this Makefile (presumably the root directory of a project)
 CWD := $(dir $(call where-am-i))
+
+# empty recipes to avoid rebuilding Makefiles via implicit rules
+Makefile: ;
+$(CWD)Makefile.mk: ;
 
 # add texmf directory to TEXINPUTS environment variable to find included files
 # (e.g., packages)
