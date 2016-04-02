@@ -23,12 +23,6 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 	$(TEX) -draftmode $*
 	$(TEX) $*
 
-%.cls: %.dtx %.ins .version.tex
-	$(TEX) -draftmode $*
-	#
-	$(TEX) -draftmode $*.dtx
-	$(TEX) $*.dtx
-
 %.sty: %.dtx %.ins .version.tex
 	$(TEX) -draftmode $*.ins
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
