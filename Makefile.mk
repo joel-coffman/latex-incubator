@@ -37,11 +37,11 @@ TEX=pdflatex -shell-escape #-interaction batchmode
 .PHONY: clean
 clean:
 	$(RM) *.acn *.acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.idx *.ind *.ilg *.ist *.log *.lof *.lot *.nav *.out *.snm *.toc *.vrb
-	find . -name "*.bak" -print0 | xargs -0 $(RM)
 
 .PHONY: veryclean
 veryclean: clean
-	$(RM) *.aux *.pdf
+	find . -name "*.aux" -exec rm {} \;
+	$(RM) *.pdf
 
 .PHONY: force
 force: veryclean default
