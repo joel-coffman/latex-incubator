@@ -14,7 +14,10 @@ export TEXINPUTS := .:$(CWD)texmf//:${TEXINPUTS}
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
 
-%.pdf: %.tex $(wildcard *.cls) $(wildcard *.sty) $(CWD)/references.bib
+DEPENDENCIES = $(wildcard *.cls) $(wildcard *.sty) \
+               $(wildcard $(CWD)references.bib)
+
+%.pdf: %.tex $(DEPENDENCIES)
 	$(TEX) -draftmode $*
 	if sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux | \
 	        xargs grep -E '\\(citation)' $*.aux; then bibtex $*; fi
