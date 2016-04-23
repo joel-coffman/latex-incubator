@@ -31,6 +31,8 @@ _minted-*
 
 syntax: regexp
 
+^unversioned/
+
 # derivative files generated via .ins and .dtx
 ^beamer/themes/color/bluejay/beamercolorthemebluejay.sty
 ^beamer/themes/outer/logo/beamerouterthemelogo.sty
