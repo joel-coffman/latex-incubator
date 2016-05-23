@@ -43,8 +43,7 @@ clean:
 
 .PHONY: veryclean
 veryclean: clean
-	find . -name "*.aux" -exec rm {} \;
-	$(RM) *.pdf
+	$(RM) *.aux *.pdf
 
 .PHONY: force
 force: veryclean default
