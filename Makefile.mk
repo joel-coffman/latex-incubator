@@ -20,7 +20,7 @@ DEPENDENCIES = $(wildcard *.cls) $(wildcard *.sty) \
 %.pdf: %.tex $(DEPENDENCIES)
 	$(TEX) -draftmode $*
 	if sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux | \
-	        xargs grep -E '\\(citation)' $*.aux; then bibtex $*; fi
+	        xargs grep --quiet -E '\\(citation)' $*.aux; then bibtex $*; fi
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
 	if [ -f $*.idx ]; then makeindex $*; fi
 	$(TEX) -draftmode $*
