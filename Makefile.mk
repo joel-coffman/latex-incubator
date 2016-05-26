@@ -43,7 +43,7 @@ clean:
 
 .PHONY: veryclean
 veryclean: clean
-	$(RM) *.aux *.pdf
+	$(RM) *.pdf
 
 .PHONY: force
 force: veryclean default
