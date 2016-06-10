@@ -1,0 +1,460 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2015 by Joel Coffman
+% -----------------------------------
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%
+%<*driver>
+\documentclass{ltxdoc}
+\input{.version}
+\usepackage{exam}
+
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{minted}
+\usepackage{url}
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+
+\begin{document}
+  \DocInput{exam.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2016/06/10}{
+%    Initial version
+% }
+%
+% \GetFileInfo{exam.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{exam} package\thanks{This document
+% corresponds to \textsf{exam}~\fileversion-\version,
+% dated \filedate.}}
+% \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% The \textsf{exam} package provides macros and environments for graded assessments.
+% \end{abstract}
+%
+% \section{Usage}
+%
+% \DescribeEnv{question}
+% The \textsf{question} environment\dots
+%
+% \begin{VerbatimOut}[gobble=1]{minted/question.out}
+% \begin{question}
+%   What is $2 + 2$?
+% \end{question}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/question.out}
+% produces\\
+% \input{minted/question.out}
+%
+% The number of points for each question may be indicated as an optional argument to the environment.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/question-with-points.out}
+% \begin{question}[5]
+%   What is $2 + 2$?
+%
+%   \begin{answer}
+%     The answer is 4.
+%   \end{answer}
+% \end{question}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/question-with-points.out}
+% produces\\
+% \makeatletter\exam@option@keytrue\makeatother
+% \input{minted/question-with-points.out}
+% \makeatletter\exam@option@keyfalse\makeatother
+%
+% Answers may be included to create an answer key for grading.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/answer.out}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/answer.out}
+% produces\\
+% \input{minted/answer.out}
+%
+% The \textsf{question} environment is modified via the \textsf{prequestion} and \textsf{postquestion} macros.
+% One expected use for these macros is to number the questions---e.g., by making them part of an \textsf{enumerate} environment.
+%
+% The \textsf{prequestion} macro provides a hook to insert commands prior to the beginning of the \textsf{question} environment.
+% Users may use it to customize the \textsf{question} environment
+%
+% \StopEventually{
+%  \PrintChanges
+%  \PrintIndex
+% }
+%
+% \appendix
+%
+% \section{Implementation}
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+%
+% Identify the package and version.
+% The spaces between the date, version, and description are significant.
+%    \begin{macrocode}
+\ProvidesPackage{exam}[%
+    2016/06/10 %
+    v0.1.0 %
+    Style file for exams%
+]
+%    \end{macrocode}
+%
+% \subsection{Options}
+% Declare a conditional to control printing answers (i.e., solutions).
+%    \begin{macrocode}
+\newif\ifexam@option@key\relax
+%    \end{macrocode}
+% Declare the \textsf{key} option.
+%    \begin{macrocode}
+\DeclareOption{key}{
+%    \end{macrocode}
+% Set the \textsf{key} flag.
+%    \begin{macrocode}
+  \exam@option@keytrue
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% Process options.
+% \mintinline{latex}{\relax} avoids unnecessary lookahead due to the starred form of \mintinline{latex}{\ProcessOptions}.
+%    \begin{macrocode}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load required packages.
+%
+%    \begin{macrocode}
+\RequirePackage{enumitem}
+%    \end{macrocode}
+%
+% The \textsf{environ} package simplifies collecting the body of an environment for passing it to a macro.
+%    \begin{macrocode}
+\RequirePackage{environ}
+%    \end{macrocode}
+%
+% The \textsf{etoolbox} package is required to support the \textsf{prequestion} and \textsf{postquestion} hooks.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
+% \subsection{Configuration}
+%
+%    \begin{macrocode}
+\setlist{%
+}%
+%    \end{macrocode}
+%
+% \subsection{Macros / Environments}
+% Define the lengths and boxes used by the \textsf{answer} environment.
+% \textsf{answerheight} is the height of answer when typeset by \LaTeX.
+%    \begin{macrocode}
+\newlength{\answerheight}
+%    \end{macrocode}
+% \textsf{answerbox} contains the answer so its height can be measured.
+%    \begin{macrocode}
+\newsavebox{\answerbox}
+%    \end{macrocode}
+%
+% \begin{macro}{question}
+% Define the \textsf{question} environment.
+% The optional parameter is the number of points for the question.
+%    \begin{macrocode}
+\newenvironment{question}[1][]{%
+%    \end{macrocode}
+% Display the number of points, if specified.
+%    \begin{macrocode}
+  \exam@points{#1}%
+%    \end{macrocode}
+% Discard any spaces that appear prior to the start of the question's text.
+%    \begin{macrocode}
+  \ignorespaces%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+}{%
+}%
+%    \end{macrocode}
+%
+% \textsf{prequestion} and \textsf{postquestion} must appear before and after the environment's group to have the correct effect (e.g., when \textsf{prequestion} inserts a list \textsf{item}).
+% The \textsf{etoolbox} package provides hooks for this purpose.
+%    \begin{macrocode}
+\BeforeBeginEnvironment{question}{\prequestion}
+\AfterEndEnvironment{question}{\postquestion}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{prequestion}
+% Define the \textsf{prequestion} macro as a hook for the \textsf{question} environment.
+%    \begin{macrocode}
+\newcommand{\prequestion}{%
+%    \end{macrocode}
+% Do nothing by default.
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{postquestion}
+% Define the \textsf{postquestion} macro as a hook for the \textsf{question} environment.
+%    \begin{macrocode}
+\newcommand{\postquestion}{%
+%    \end{macrocode}
+% End horizontal mode to ship out the current box.
+%    \begin{macrocode}
+  \par%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{answer}
+% Define the \textsf{answer} environment.
+% The optional argument specifies the amount of space to reserve for the answer.
+%    \begin{macrocode}
+\NewEnviron{answer}[1][]{%
+%    \end{macrocode}
+% Collect the environment's body and pass it to the \textsf{exam@answer} macro.
+%    \begin{macrocode}
+  \exam@answer[#1]{\BODY}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{exam@answerfill}
+%    \begin{macrocode}
+\newlength{\answerlinespace}
+%    \end{macrocode}
+%    \begin{macrocode}
+\setlength{\answerlinespace}{0.3in}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\answerline}{\textcolor{lightgray}{\dotfill}}
+%    \end{macrocode}
+%
+% \textsf{exam@answerfill} repeats \textsf{answerline}s to fill the space allocated for an answer.
+%
+%    \begin{macrocode}
+\newcommand{\exam@answerfill}[1][\answerheight]{%
+%    \end{macrocode}
+% Ensure good height for the first line.
+%    \begin{macrocode}
+    \strut%
+%    \end{macrocode}
+% Remove extra vertical space between the question and answer.
+% Negative \textsf{answerlinespace} is used so that the space between the question and first answer line is roughly equal to the space between consecutive answer lines.
+%    \begin{macrocode}
+%    \end{macrocode}
+% Start a box.
+%    \begin{macrocode}
+  \setbox0=\vbox{%
+%    \end{macrocode}
+% Insert vertical spacing before first line
+%    \begin{macrocode}
+    \vspace{\ifdim#1<\answerlinespace#1\else\answerlinespace\fi}%
+%    \end{macrocode}
+% Insert \textsf{answerline}.
+%    \begin{macrocode}
+    \answerline%
+%    \end{macrocode}
+% End the box.
+%    \begin{macrocode}
+  }%
+%    \end{macrocode}
+% Repeat the box as much as necessary to fill the space allocated.
+%    \begin{macrocode}
+  \ifdim\ht0<\dimexpr0.5\answerheight\relax%
+    \vadjust{\vspace{-\answerlinespace}}\par%
+    \cleaders\copy0\vfill%
+  \else%
+    \usebox0%
+  \fi%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{exam@answer}
+% Define a helper macro to insert the answer and style it appropriately for the answer key.
+% The optional (first) argument is the amount of space to leave for the answer.
+% The required (second) argument is the answer itself.
+%    \begin{macrocode}
+\newcommand{\exam@answer}[2][]{%
+%    \end{macrocode}
+% Typeset the answer and save it for future use.
+%    \begin{macrocode}
+  \savebox{\answerbox}{%
+    \parbox[t]{\linewidth}{%
+      \vbox{%
+        % prevent vertical space when changing color (see http://goo.gl/FCfjdB)
+        \leavevmode\color{lightgray}%
+        #2%
+      }%
+    }%
+  }%
+%    \end{macrocode}
+% Calculate the size of the answer.
+%    \begin{macrocode}
+  \settoheight{\answerheight}{\usebox{\answerbox}}%
+%    \end{macrocode}
+% If the typeset answer's height is less than the requested amount of space, then the optional (first) argument determines the amount of space to leave for the answer.
+%    \begin{macrocode}
+  \ifdim\answerheight<#1%
+    \answerheight=#1%
+  \fi%
+%    \end{macrocode}
+% End horizontal mode and ship out the current box.
+%    \begin{macrocode}
+  \par%
+  \noindent%
+%    \end{macrocode}
+% Insert the answer.
+%    \begin{macrocode}
+  \parbox[t][\answerheight]{\linewidth}{%
+    \ifexam@option@key%
+      \usebox{\answerbox}%
+    \else%
+      \exam@answerfill%
+    \fi%
+  }%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{exam@points}
+% The \textsf{exam@points} macro is an internal macro that checks to see if the number of points has been specified, invoking \textsf{points} if so.
+%    \begin{macrocode}
+\newcommand{\exam@points}[1]{%
+%    \end{macrocode}
+% Ignore the argument if empty.
+%    \begin{macrocode}
+  \if\relax\detokenize{#1}\relax%
+  \else%
+%    \end{macrocode}
+% Use \textsf{hspace} to ensure that we're in horizontal mode.
+% Without this command, the points may appear in an unexpected location, particularly when inside a list environment.
+%    \begin{macrocode}
+    \hspace{0em}%
+%    \end{macrocode}
+% Use the \textsf{points} macro to show the number of points for the question.
+%    \begin{macrocode}
+    \points{#1}%
+  \fi%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{pointname}
+% Define the \textsf{pointname} macro.
+%    \begin{macrocode}
+\newcommand{\pointname}{%
+  point%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{pointnameplural}
+% Define the \textsf{pointnameplural} macro.
+%    \begin{macrocode}
+\newcommand{\pointnameplural}{%
+%    \end{macrocode}
+% Add an `s' to \mintinline{latex}{\pointname}.
+% The user should redefine the command if the plural form isn't correct.
+%    \begin{macrocode}
+  \pointname{}s%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{points}
+% The \textsf{points} macro inserts the number of points for a question.
+%    \begin{macrocode}
+\newcommand{\points}[1]{%
+%    \end{macrocode}
+% Put the number of points in the margin for easy reference.
+%    \begin{macrocode}
+  \marginpar{%
+    \small%
+    #1 \pointsname{#1}%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{pointsname}
+% The \textsf{pointsname} macro selects the appropriate grammatical number for the specified point value.
+%    \begin{macrocode}
+\newcommand{\pointsname}[1]{%
+%    \end{macrocode}
+% Use the plural form for all values not equal to 1.
+%    \begin{macrocode}
+  \ifnum1=#1\pointname\else\pointnameplural\fi%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \Finale
+\endinput
