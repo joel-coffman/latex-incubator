@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/02/04 v0.2.5 Slides package for presentations]
+  [2016/06/22 v0.2.6 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -30,6 +30,7 @@
 \documentclass{ltxdoc}
 \input{.version}
 \usepackage{microtype}
+\usepackage{minted}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -253,6 +254,30 @@
 %    \begin{macrocode}
 \newcommand{\continued}[0]{(continued)}
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{credits}
+% The |credits| macro adds an unobtrusive acknowledgment for material.
+% A primary use case is providing information about images in the presentation.
+%    \begin{macrocode}
+\newcommand<>{\credits}[1]{%
+%    \end{macrocode}
+% Force to bottom of the slide.
+%    \begin{macrocode}
+  \vfill%
+%    \end{macrocode}
+% Use smallest available font size.
+% \mintinline{latex}{\par} is required because the interline space is calculated at the end of the paragraph. ^^A http://goo.gl/ZeyUbN
+% Without \mintinline{latex}{\par}, the gap between successive lines is much too large.
+%    \begin{macrocode}
+  {\ignorespaces\tiny#1\ignorespacesafterend\par}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \changes{0.2.6}{2015/06/22}{
+%   Add \texttt{credits} macro
+% }
 % \end{macro}
 %
 % \begin{macro}{indexspace}
