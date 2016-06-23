@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/06/22 v0.2.6 Slides package for presentations]
+  [2016/06/23 v0.2.7 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -270,13 +270,16 @@
 % \mintinline{latex}{\par} is required because the interline space is calculated at the end of the paragraph. ^^A http://goo.gl/ZeyUbN
 % Without \mintinline{latex}{\par}, the gap between successive lines is much too large.
 %    \begin{macrocode}
-  {\ignorespaces\tiny#1\ignorespacesafterend\par}%
+  \uncover#2{\ignorespaces\tiny#1\ignorespacesafterend\par}%
 %    \end{macrocode}
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
 % \changes{0.2.6}{2015/06/22}{
 %   Add \texttt{credits} macro
+% }
+% \changes{0.2.7}{2015/06/23}{
+%   Add \texttt{uncover} to control which slides contain credits
 % }
 % \end{macro}
 %
