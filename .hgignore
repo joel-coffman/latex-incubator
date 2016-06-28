@@ -44,6 +44,7 @@ syntax: regexp
 ^beamer/themes/theme/jhu.edu/university.logo.small.horizontal.white.eps
 ^beamer/themes/theme/jhuapl.edu/beamerthemejhuapl.edu.sty
 ^beamer/themes/theme/jhuapl.edu/apl.logo.small.horizontal.white.eps
+^course-outline/course-outline.sty
 ^engineering.jhu.edu/syllabus/syllabus.sty
 ^engineering.jhu.edu/syllabus/whiting.logo.small.horizontal.black.eps
 ^ep.jhu.edu/beamerthemejhu/beamerthemejhu.sty

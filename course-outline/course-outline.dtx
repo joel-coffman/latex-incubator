@@ -1,0 +1,308 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2016 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+\input{.version}
+\usepackage{course-outline}
+\usepackage{hyperref}
+\usepackage{microtype}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{course-outline.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.0.1}{2016/06/28}{Initial version}
+%
+% \GetFileInfo{course-outline.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{course-outline} package\thanks{This
+% document corresponds to \textsf{course-outline~\fileversion-\version, dated \filedate.}}}
+% \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% A course outline provides an overview of the course schedule.
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+%
+% The |class| macro displays the current class meeting number.
+% It can be used to create a numbered list of meetings (or modules), e.g., as part of a table.
+%
+% Specify the meeting days for the class.
+% Most classes meet periodically (e.g., Monday, Wednesday, and Friday or Tuesday and Thursday).
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{course-outline}[%
+    2016/06/28 %
+    v0.0.1 %
+    A course outline provides an overview of the course schedule.%
+]
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%
+%    \begin{macrocode}
+\RequirePackage{datenumber}
+\RequirePackage{datetime}
+\RequirePackage{etoolbox}
+\RequirePackage{hanging}
+\RequirePackage{pgffor}
+%    \end{macrocode}
+%
+% \subsection{Configuration}
+%
+% \begin{macro}{bibentry}
+% The |bibentry| macro from the \textsf{bibentry} package does not work well with the default formatting.
+% Redefine it so the desired formatting is preserved.
+%    \begin{macrocode}
+\AtBeginDocument{
+  \@ifpackageloaded{bibentry}{
+%    \end{macrocode}
+% Save the existing |bibentry| macro.
+%    \begin{macrocode}
+    \let\@old@bibentry=\bibentry\relax
+%    \end{macrocode}
+% Redefine the |bibentry| macro.
+%    \begin{macrocode}
+    \renewcommand{\bibentry}[1]{%
+%    \end{macrocode}
+% The hanging indent is lost without setting the font shape.
+% (Undoubtedly setting the font shape has a convenient side effect that produces the desired behavior.)
+%    \begin{macrocode}
+      \textnormal{\@old@bibentry{#1}}%
+%    \begin{macrocode}
+    }%
+%    \end{macrocode}
+%    \begin{macrocode}
+  }{}%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{usdate}
+% Use the default date style for \TeX{} and \LaTeX{} rather than \textsf{datetime}'s default.
+%    \begin{macrocode}
+\usdate
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{course-outline} package.
+%
+% \begin{macro}{class}
+% Declare class meeting counter.
+%    \begin{macrocode}
+\newcounter{class}
+%    \end{macrocode}
+% Define the |class| macro.
+%    \begin{macrocode}
+\newcommand{\class}{%
+%    \end{macrocode}
+% Increment counter.
+%    \begin{macrocode}
+  \stepcounter{class}%
+%    \end{macrocode}
+% Display class meeting number.
+%    \begin{macrocode}
+  \arabic{class}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{setclassdays}
+% Define the |setclassdays| macro.
+%    \begin{macrocode}
+\newcommand{\setclassdays}[1]{%
+%    \end{macrocode}
+% Save the class's meeting days.
+% Global assignment is required so the information is accessible outside of enclosing groups.
+%    \begin{macrocode}
+  \global\def\classdays{#1}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{module@par}
+% Define the |module@par| macro.
+%    \begin{macrocode}
+\newcommand{\module@par}[1]{%
+%    \end{macrocode}
+% Fill available horizontal space.
+%    \begin{macrocode}
+  \parbox[t]{\linewidth}{%
+%    \end{macrocode}
+% Allow ragged breaks.
+% The available breaks in table columns are often limited and stretching makes the text can be difficult to read.
+%    \begin{macrocode}
+    \raggedright%
+%    \end{macrocode}
+% Use a hanging indent to differentiate paragraphs.
+% |strut| provides the typical spacing after the paragraph, which is otherwise lost when the parbox appears in a table.
+%    \begin{macrocode}
+    \begin{hangparas}{1em}{1}%
+      #1\strut%
+    \end{hangparas}%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{@parsedate}
+% Define a macro to parse dates in the form YYYY-MM-DD.
+%    \begin{macrocode}
+\def\@parsedate#1{\@@parsedate#1\relax}
+%    \end{macrocode}
+% Helper macro that actually sets the date.
+%    \begin{macrocode}
+\def\@@parsedate#1-#2-#3\relax{%
+  \setdatenumber{#1}{#2}{#3}%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{checkclassday}
+% Check the current weekday to see if it is a class meeting day.
+%
+% Define the |ifisclassday| conditional.
+%    \begin{macrocode}
+\newif\ifisclassday%
+%    \end{macrocode}
+% Define the |checkclassday| macro.
+%    \begin{macrocode}
+\newcommand{\checkclassday}[1]{%
+%    \end{macrocode}
+% Fully expand the argument.
+% Full expansion is necessary prior to comparison because the argument may be a macro.
+%    \begin{macrocode}
+  \edef\current{#1}%
+%    \end{macrocode}
+% Iterate over the classdays.
+%    \begin{macrocode}
+  \foreach \day in \classdays {%
+%    \end{macrocode}
+% Check to see if the current day is a class meeting day.
+%    \begin{macrocode}
+    \ifdefequal{\current}{\day}{%
+%    \end{macrocode}
+% It's a class meeting day.
+% Set the conditional (globally, so it is visible outside the current group) and break the loop.
+%    \begin{macrocode}
+      \global\isclassdaytrue%
+      \breakforeach%
+    }{}%
+%    \end{macrocode}
+%    \begin{macrocode}
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{module}
+% Define the |module| macro.
+%    \begin{macrocode}
+\newcommand{\module}[3][\thedateyear-\thedatemonth-\thedateday]{%
+%    \end{macrocode}
+% Display the class number, date, lecture topics, and assignments.
+%    \begin{macrocode}
+  \class
+  & \@parsedate{#1}\thedateday\ \shortmonthname[\thedatemonth]
+  & \module@par{#2} & \module@par{#3}%
+%    \end{macrocode}
+% Advance to the next class day.
+% ^^A FIXME: Use lazy iteration to avoid unnecessary computation
+%    \begin{macrocode}
+  \isclassdayfalse%
+  \foreach \i in {1,2,...,7}{%
+    \nextdate%
+    \edef\current{\datedayname}%
+    \checkclassday{\current}%
+    \ifisclassday%
+      \breakforeach%
+    \fi%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
