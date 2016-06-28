@@ -99,7 +99,7 @@
 %    \begin{macrocode}
 \ProvidesPackage{course-outline}[%
     2016/06/28 %
-    v0.0.2 %
+    v0.0.3 %
     A course outline provides an overview of the course schedule.%
 ]
 %    \end{macrocode}
@@ -284,16 +284,18 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{module}
-% Define the |module| macro.
+% \begin{macro}{classdate}
+% Define the |classdate| macro.
 %    \begin{macrocode}
-\newcommand{\module}[3][\thedateyear-\thedatemonth-\thedateday]{%
+\newcommand{\classdate}[1][\thedateyear-\thedatemonth-\thedateday]{%
 %    \end{macrocode}
-% Display the class number, date, lecture topics, and assignments.
+% Parse the date.
 %    \begin{macrocode}
-  \class
-  & \@parsedate{#1}\thedateday\ \shortmonthname[\thedatemonth]
-  & \module@par{#2} & \module@par{#3}%
+  \@parsedate{#1}%
+%    \end{macrocode}
+% Display the date.
+%    \begin{macrocode}
+  \thedateday\ \shortmonthname[\thedatemonth]%
 %    \end{macrocode}
 % Advance to the next class day.
 % ^^A FIXME: Use lazy iteration to avoid unnecessary computation
@@ -307,6 +309,24 @@
       \breakforeach%
     \fi%
   }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \changes{0.0.3}{2016/06/28}{
+%   Add the classdate macro
+% }
+% \end{macro}
+%
+% \begin{macro}{module}
+% Define the |module| macro.
+%    \begin{macrocode}
+\newcommand{\module}[3][\thedateyear-\thedatemonth-\thedateday]{%
+%    \end{macrocode}
+% Display the class number, date, lecture topics, and assignments.
+%    \begin{macrocode}
+  \class & \classdate[#1]%
+  & \module@par{#2} & \module@par{#3}%
 %    \end{macrocode}
 %    \begin{macrocode}
 }%
