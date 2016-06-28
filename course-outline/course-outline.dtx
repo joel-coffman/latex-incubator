@@ -99,7 +99,7 @@
 %    \begin{macrocode}
 \ProvidesPackage{course-outline}[%
     2016/06/28 %
-    v0.0.1 %
+    v0.0.2 %
     A course outline provides an overview of the course schedule.%
 ]
 %    \end{macrocode}
@@ -207,16 +207,29 @@
     \raggedright%
 %    \end{macrocode}
 % Use a hanging indent to differentiate paragraphs.
-% |strut| provides the typical spacing after the paragraph, which is otherwise lost when the parbox appears in a table.
 %    \begin{macrocode}
     \begin{hangparas}{1em}{1}%
-      #1\strut%
+%    \end{macrocode}
+% Print the contents.
+%    \begin{macrocode}
+      #1%
+%    \end{macrocode}
+% |strut| provides the typical spacing after the paragraph, which is otherwise lost when the parbox appears in a table.
+% If in vertical mode (e.g., following a list), then additional spacing is typically unnecessary, but
+% |strut| should follow the last itemize (see the \textsf{enumitem} package for information about adding a |strut| after the item).
+%    \begin{macrocode}
+      \ifvmode\else\strut\fi%
+%    \end{macrocode}
+%    \begin{macrocode}
     \end{hangparas}%
   }%
 %    \end{macrocode}
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
+% \changes{0.0.2}{2016/06/28}{
+%   Properly handle vertical spacing after lists
+% }
 % \end{macro}
 %
 % \begin{macro}{@parsedate}
