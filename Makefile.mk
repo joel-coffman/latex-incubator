@@ -19,8 +19,8 @@ DEPENDENCIES = $(wildcard *.cls) $(wildcard *.sty) \
 
 %.pdf: %.tex $(DEPENDENCIES)
 	$(TEX) -draftmode $*
-	if sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux | \
-	        xargs grep --quiet -E '\\(citation)' $*.aux; then bibtex $*; fi
+	if files=$$(sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux) \
+	        grep --quiet -E '\\(citation)' $*.aux $$files; then bibtex $*; fi
 	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
 	if [ -f $*.idx ]; then makeindex $*; fi
 	$(TEX) -draftmode $*
