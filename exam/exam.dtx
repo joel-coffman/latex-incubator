@@ -142,8 +142,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2016/08/09 %
-    v0.1.1 %
+    2016/08/11 %
+    v0.1.2 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -301,7 +301,7 @@
 %    \end{macrocode}
 % Ensure good height for the first line.
 %    \begin{macrocode}
-    \strut%
+  \strut%
 %    \end{macrocode}
 % Start a box.
 %    \begin{macrocode}
@@ -309,7 +309,7 @@
 %    \end{macrocode}
 % Insert vertical spacing before first line
 %    \begin{macrocode}
-    \vspace{\ifdim#1<\answerlinespace#1\else\answerlinespace\fi}%
+    \vspace{\answerlinespace}%
 %    \end{macrocode}
 % Insert \textsf{answerline}.
 %    \begin{macrocode}
@@ -319,18 +319,38 @@
 %    \begin{macrocode}
   }%
 %    \end{macrocode}
-% Repeat the box as much as necessary to fill the space allocated.
+% Use the box.
+%    \begin{macrocode}
+  \usebox0%
+%    \end{macrocode}
+% See if there's sufficient space to repeat the box.
 %    \begin{macrocode}
   \ifdim\ht0<\dimexpr0.5\answerheight\relax%
-    \vadjust{\vspace{-\answerlinespace}}\par%
-    \cleaders\copy0\vfill%
-  \else%
-    \usebox0%
+%    \end{macrocode}
+% Adjust the spacing before the first repeated answer line.
+% (These adjustments were determined by trial and error.)
+%    \begin{macrocode}
+    \addtolength{\answerheight}{-0.5\answerlinespace}%
+    \vadjust{\vspace{-\answerlinespace}}%
+%    \end{macrocode}
+% \mintinline{latex}{\par} is required prior to repeating the box.
+%    \begin{macrocode}
+    \par%
+%    \end{macrocode}
+% Repeat the box as much as necessary to fill the space allocated.
+%    \begin{macrocode}
+    \leaders\copy0\vskip\the\answerheight plus 1fil%
+%    \end{macrocode}
+%    \begin{macrocode}
   \fi%
 %    \end{macrocode}
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
+%
+% \changes{0.1.2}{2016/08/11}{
+%    Align answerline with existing baseline
+% }
 % \end{macro}
 %
 % \begin{macro}{exam@answer}
