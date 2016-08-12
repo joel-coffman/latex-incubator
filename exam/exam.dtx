@@ -22,9 +22,11 @@
 \input{.version}
 \usepackage{exam}
 
+\usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{minted}
+\usepackage{nicefrac}
 \usepackage{url}
 
 \EnableCrossrefs
@@ -283,9 +285,26 @@
 % \end{macro}
 %
 % \begin{macro}{exam@answerfill}
+% Define length for the amount of space between answer lines.
 %    \begin{macrocode}
 \newlength{\answerlinespace}
 %    \end{macrocode}
+% \begin{table}[tbh]
+%   \centering
+%   \begin{tabular}{l c@{$\;=\;$}r}
+%     \toprule
+%     Rule & \multicolumn{2}{c}{Inches}\\
+%     \midrule
+%     Narrow            & \nicefrac{1}{4}   & 0.25000\\
+%     Medium (College)  & \nicefrac{9}{32}  & 0.28125\\
+%     Wide (Legal)      & \nicefrac{11}{32} & 0.34375\\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{%
+%     Amount of spacing for ruled paper in the US.
+%   }
+% \end{table}
+% Set the length for the space between answer lines.
 %    \begin{macrocode}
 \setlength{\answerlinespace}{0.3in}
 %    \end{macrocode}
