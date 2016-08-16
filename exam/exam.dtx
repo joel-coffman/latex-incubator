@@ -156,7 +156,7 @@
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
     2016/08/16 %
-    v0.1.3 %
+    v0.1.4 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -415,6 +415,7 @@
 % End horizontal mode and ship out the current box.
 %    \begin{macrocode}
   \par%
+  \nopagebreak%
   \noindent%
 %    \end{macrocode}
 % Insert the answer.
@@ -428,6 +429,9 @@
   }%
 }%
 %    \end{macrocode}
+% \changes{0.1.4}{2016/08/16}{
+%    Discourage page breaks between question and answer
+% }
 % \end{macro}
 %
 % \begin{macro}{exam@points}
