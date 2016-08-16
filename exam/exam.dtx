@@ -126,6 +126,17 @@
 % The \textsf{prequestion} macro provides a hook to insert commands prior to the beginning of the \textsf{question} environment.
 % Users may use it to customize the \textsf{question} environment
 %
+% The \textsf{blank} macro may be used to insert a ``blank''---useful for fill-in-the-blank questions.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/fill-in-the-blank.out}
+% \begin{question}
+%   The \blank{} macro supports fill in the blank questions.
+% \end{question}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/fill-in-the-blank.out}
+% produces\\
+% \input{minted/fill-in-the-blank.out}
+%
 % \StopEventually{
 %  \PrintChanges
 %  \PrintIndex
@@ -144,8 +155,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2016/08/11 %
-    v0.1.2 %
+    2016/08/16 %
+    v0.1.3 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -497,6 +508,18 @@
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{blank}
+% The \textsf{blank} macro inserts a ``blank.''
+%    \begin{macrocode}
+\newcommand{\blank}[1][5em]{%
+  \rule{#1}{0.4pt}%
+}%
+%    \end{macrocode}
+% \changes{0.1.3}{2016/08/16}{
+%    Add \textsf{blank} macro
+% }
 % \end{macro}
 %
 % \Finale
