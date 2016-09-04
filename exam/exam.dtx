@@ -410,6 +410,9 @@
   }%
   \pgfkeys{/exam/answer,default,#1}%
 %    \end{macrocode}
+% \changes{0.2.0}{2016/09/04}{
+%    Use key-value syntax for formatting
+% }
 % Typeset the answer and save it for future use.
 %    \begin{macrocode}
   \savebox{\answerbox}{%
@@ -434,10 +437,15 @@
 %    \end{macrocode}
 % End horizontal mode and ship out the current box.
 %    \begin{macrocode}
-  \par%
   \nopagebreak%
   \noindent%
 %    \end{macrocode}
+% \changes{0.1.4}{2016/08/16}{
+%    Discourage page breaks between question and answer
+% }
+% \changes{0.2.0}{2016/09/04}{
+%    Do not insert \texttt{\textbackslash{}par} before answer
+% }
 % Insert the answer.
 %    \begin{macrocode}
   \parbox[t][\answerheight]{\exam@answer@width}{%
@@ -449,12 +457,6 @@
   }%
 }%
 %    \end{macrocode}
-% \changes{0.1.4}{2016/08/16}{
-%    Discourage page breaks between question and answer
-% }
-% \changes{0.2.0}{2016/09/04}{
-%    Use key-value syntax for formatting
-% }
 % \end{macro}
 %
 % \begin{macro}{exam@points}
