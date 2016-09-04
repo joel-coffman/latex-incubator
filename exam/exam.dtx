@@ -155,8 +155,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2016/08/16 %
-    v0.1.4 %
+    2016/09/04 %
+    v0.2.0 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -200,6 +200,14 @@
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 %    \end{macrocode}
+%
+% The \textsf{pgfkeys} package is required to support key-value arguments to macros.
+%    \begin{macrocode}
+\RequirePackage{pgfkeys}
+%    \end{macrocode}
+% \changes{0.2.0}{2016/09/04}{
+%    Require the \textsf{pgfkeys} package for key-value options
+% }
 %
 % The \textsf{xcolor} package allows changing the text color in the answer key.
 %    \begin{macrocode}
@@ -385,15 +393,27 @@
 %
 % \begin{macro}{exam@answer}
 % Define a helper macro to insert the answer and style it appropriately for the answer key.
-% The optional (first) argument is the amount of space to leave for the answer.
+% The optional (first) argument are the key-values that control the formatting of the answer.
 % The required (second) argument is the answer itself.
 %    \begin{macrocode}
 \newcommand{\exam@answer}[2][]{%
 %    \end{macrocode}
+%    \begin{macrocode}
+  \pgfkeys{%
+    /exam/answer/.is family, /exam/answer,%
+    default/.style = {%
+      height=0ex,
+      width=\linewidth,%
+    },%
+    height/.estore in = \exam@answer@height,%
+    width/.estore in = \exam@answer@width,%
+  }%
+  \pgfkeys{/exam/answer,default,#1}%
+%    \end{macrocode}
 % Typeset the answer and save it for future use.
 %    \begin{macrocode}
   \savebox{\answerbox}{%
-    \parbox[t]{\linewidth}{%
+    \parbox{\exam@answer@width}{%
       \vbox{%
         % prevent vertical space when changing color (see http://goo.gl/FCfjdB)
         \leavevmode\color{lightgray}%
@@ -408,8 +428,8 @@
 %    \end{macrocode}
 % If the typeset answer's height is less than the requested amount of space, then the optional (first) argument determines the amount of space to leave for the answer.
 %    \begin{macrocode}
-  \ifdim\answerheight<#1%
-    \answerheight=#1%
+  \ifdim\answerheight<\exam@answer@height%
+    \answerheight=\exam@answer@height%
   \fi%
 %    \end{macrocode}
 % End horizontal mode and ship out the current box.
@@ -420,7 +440,7 @@
 %    \end{macrocode}
 % Insert the answer.
 %    \begin{macrocode}
-  \parbox[t][\answerheight]{\linewidth}{%
+  \parbox[t][\answerheight]{\exam@answer@width}{%
     \ifexam@option@key%
       \usebox{\answerbox}%
     \else%
@@ -431,6 +451,9 @@
 %    \end{macrocode}
 % \changes{0.1.4}{2016/08/16}{
 %    Discourage page breaks between question and answer
+% }
+% \changes{0.2.0}{2016/09/04}{
+%    Use key-value syntax for formatting
 % }
 % \end{macro}
 %
