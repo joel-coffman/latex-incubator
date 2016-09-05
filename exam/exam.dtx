@@ -155,7 +155,7 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2016/09/04 %
+    2016/09/05 %
     v0.2.0 %
     Style file for exams%
 ]
@@ -426,13 +426,14 @@
   }%
 %    \end{macrocode}
 % Calculate the size of the answer.
+% The required size is the height and depth of the box (see \url{https://goo.gl/yzQNHY}).
 %    \begin{macrocode}
-  \settoheight{\answerheight}{\usebox{\answerbox}}%
+  \setlength{\answerheight}{\dimexpr\ht\answerbox+\dp\answerbox}%
 %    \end{macrocode}
 % If the typeset answer's height is less than the requested amount of space, then the optional (first) argument determines the amount of space to leave for the answer.
 %    \begin{macrocode}
-  \ifdim\answerheight<\exam@answer@height%
-    \answerheight=\exam@answer@height%
+  \ifdim\exam@answer@height<\answerheight%
+    \def\exam@answer@height{\the\answerheight}%
   \fi%
 %    \end{macrocode}
 % End horizontal mode and ship out the current box.
@@ -448,7 +449,7 @@
 % }
 % Insert the answer.
 %    \begin{macrocode}
-  \parbox[t][\answerheight]{\exam@answer@width}{%
+  \parbox[t][\exam@answer@height]{\exam@answer@width}{%
     \ifexam@option@key%
       \usebox{\answerbox}%
     \else%
