@@ -155,7 +155,7 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2016/09/05 %
+    2016/09/06 %
     v0.2.0 %
     Style file for exams%
 ]
@@ -335,7 +335,11 @@
 % \textsf{exam@answerfill} repeats \textsf{answerline}s to fill the space allocated for an answer.
 %
 %    \begin{macrocode}
-\newcommand{\exam@answerfill}[1][\answerheight]{%
+\newcommand{\exam@answerfill}[1][\exam@answer@height]{%
+%    \end{macrocode}
+% Save the height of the answer.
+%    \begin{macrocode}
+  \setlength{\answerheight}{#1}%
 %    \end{macrocode}
 % Ensure good height for the first line.
 %    \begin{macrocode}
