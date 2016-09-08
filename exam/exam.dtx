@@ -402,6 +402,11 @@
 %    \begin{macrocode}
 \newcommand{\exam@answer}[2][]{%
 %    \end{macrocode}
+% Define macros used by keys.
+%    \begin{macrocode}
+  \def\exam@answer@fill{}%
+%    \end{macrocode}
+% Define keys accepted as optional arguments.
 %    \begin{macrocode}
   \pgfkeys{%
     /exam/answer/.is family, /exam/answer,%
@@ -410,12 +415,17 @@
       width=\linewidth,%
     },%
     height/.estore in = \exam@answer@height,%
+    lines/.code = \def\exam@answer@fill{##1},%
+    lines/.default = \exam@answerfill,%
     width/.estore in = \exam@answer@width,%
   }%
   \pgfkeys{/exam/answer,default,#1}%
 %    \end{macrocode}
 % \changes{0.2.0}{2016/09/04}{
 %    Use key-value syntax for formatting
+% }
+% \changes{0.2.0}{2016/09/06}{
+%    Add the \texttt{lines} option
 % }
 % Typeset the answer and save it for future use.
 %    \begin{macrocode}
@@ -457,7 +467,7 @@
     \ifexam@option@key%
       \usebox{\answerbox}%
     \else%
-      \exam@answerfill%
+      \exam@answer@fill%
     \fi%
   }%
 }%
