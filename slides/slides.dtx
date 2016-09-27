@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/06/23 v0.2.7 Slides package for presentations]
+  [2016/09/27 v0.2.8 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %
@@ -199,12 +199,9 @@
 %
 % \section{Configuration}
 %
-% \subsection{Fonts}
-% Display quotes in the normal font rather than italics.
-%    \begin{macrocode}
-\setbeamerfont{quote}{series=\normalfont}
-\setbeamerfont{quotation}{series=\normalfont}
-%    \end{macrocode}
+% \changes{0.2.8}{2016/09/27}{
+%   Do not change style of quotes
+% }
 %
 % \subsection{Templates}
 % Remove navigation symbols at the bottom of slides.
