@@ -35,6 +35,7 @@ syntax: regexp
 
 # derivative files generated via .ins and .dtx
 ^beamer/themes/color/bluejay/beamercolorthemebluejay.sty
+^beamer/themes/color/wahoo/beamercolorthemewahoo.sty
 ^beamer/themes/outer/logo/beamerouterthemelogo.sty
 ^beamer/themes/theme/engineering.jhu.edu/beamerthemeengineering.jhu.edu.sty
 ^beamer/themes/theme/engineering.jhu.edu/whiting.logo.small.horizontal.white.eps
@@ -44,6 +45,8 @@ syntax: regexp
 ^beamer/themes/theme/jhu.edu/university.logo.small.horizontal.white.eps
 ^beamer/themes/theme/jhuapl.edu/beamerthemejhuapl.edu.sty
 ^beamer/themes/theme/jhuapl.edu/apl.logo.small.horizontal.white.eps
+^beamer/themes/theme/seas.virginia.edu/beamerthemeseas.virginia.edu.sty
+^beamer/themes/theme/seas.virginia.edu/seas.virginia.edu.eps
 ^course-outline/course-outline.sty
 ^engineering.jhu.edu/syllabus/syllabus.sty
 ^engineering.jhu.edu/syllabus/whiting.logo.small.horizontal.black.eps
