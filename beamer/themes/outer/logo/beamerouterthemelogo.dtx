@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2015/11/26 v0.1.1 Beamer outer theme for including organizational logos]
+%<package>  [2016/10/06 v0.1.2 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -157,17 +157,9 @@
 }
 %    \end{macrocode}
 %
-% Set background color for header and footer.
-%    \begin{macrocode}
-\setbeamercolor{author in head/foot}{
-  bg=PMS Gray 4,
-  fg=white,
-}
-\setbeamercolor{title in head/foot}{
-  bg=PMS Gray 4,
-  fg=white,
-}
-%    \end{macrocode}
+% \changes{0.1.2}{2016/10/06}{%
+%   Remove colors for author and title in head/foot
+% }
 %
 % Use the \textsf{split} outer theme as the basis for this theme.
 % (This command must appear after setting colors.)
