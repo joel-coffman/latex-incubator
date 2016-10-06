@@ -259,9 +259,10 @@
     \if@beamerouterthemelogo@right%
       \begin{beamercolorbox}[%
           ht=\@tempdimb,%
+          right,%
           wd=.4\paperwidth,%
-      ]{section in head/foot}%
-        \smash{\rlap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
+      ]{subsection in head/foot}%
+        \smash{\llap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
       \end{beamercolorbox}%
     \fi%
 %    \end{macrocode}
@@ -272,6 +273,12 @@
 %    \end{macrocode}
 % \changes{0.1.1}{2015/11/26}{
 %   Vertically center logo in \mintinline{latex}{vbox}
+% }
+% \changes{0.1.2}{2016/10/06}{
+%   Use subsection colors behind logo when on the right
+% }
+% \changes{0.1.2}{2016/10/06}{
+%   Right align logo when on the right
 % }
 %
 % Override \mintinline{latex}{footline} template.
