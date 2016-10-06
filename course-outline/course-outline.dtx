@@ -21,6 +21,7 @@
 \usepackage{course-outline}
 \usepackage{hyperref}
 \usepackage{microtype}
+\usepackage{minted}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -98,10 +99,36 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{course-outline}[%
-    2016/08/26 %
-    v0.0.4 %
+    2016/10/06 %
+    v0.0.5 %
     A course outline provides an overview of the course schedule.%
 ]
+%    \end{macrocode}
+%
+% \subsection{Options}
+% Declare a conditional to control printing dates.
+%    \begin{macrocode}
+\newif\ifschedule@option@nodates\relax
+%    \end{macrocode}
+% Declare the \textsf{nodates} option.
+%    \begin{macrocode}
+\DeclareOption{nodates}{
+%    \end{macrocode}
+% Set the \textsf{nodates} flag.
+%    \begin{macrocode}
+  \schedule@option@nodatestrue
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.0.5}{2016/10/06}{
+%   Add the `nodates' option
+% }
+%
+% Process options.
+% \mintinline{latex}{\relax} avoids unnecessary lookahead due to the starred form of \mintinline{latex}{\ProcessOptions}.
+%    \begin{macrocode}
+\ProcessOptions\relax
 %    \end{macrocode}
 %
 % \subsection{Packages}
@@ -293,32 +320,42 @@
 %    \begin{macrocode}
 \newcommand{\classdate}[1][\thedateyear-\thedatemonth-\thedateday]{%
 %    \end{macrocode}
+% Ignore if \texttt{nodate} option set.
+%    \begin{macrocode}
+  \ifschedule@option@nodates\else%
+%    \end{macrocode}
 % Parse the date.
 %    \begin{macrocode}
-  \@parsedate{#1}%
+    \@parsedate{#1}%
 %    \end{macrocode}
 % Display the date.
 %    \begin{macrocode}
-  \thedateday\ \shortmonthname[\thedatemonth]%
+    \thedateday\ \shortmonthname[\thedatemonth]%
 %    \end{macrocode}
 % Advance to the next class day.
 % ^^A FIXME: Use lazy iteration to avoid unnecessary computation
 %    \begin{macrocode}
-  \isclassdayfalse%
-  \foreach \i in {1,2,...,7}{%
-    \nextdate%
-    \edef\current{\datedayname}%
-    \checkclassday{\current}%
-    \ifisclassday%
-      \breakforeach%
-    \fi%
-  }%
+    \isclassdayfalse%
+    \foreach \i in {1,2,...,7}{%
+      \nextdate%
+      \edef\current{\datedayname}%
+      \checkclassday{\current}%
+      \ifisclassday%
+        \breakforeach%
+      \fi%
+    }%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \fi% END schedule@option@nodates
 %    \end{macrocode}
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
 % \changes{0.0.3}{2016/06/28}{
 %   Add the classdate macro
+% }
+% \changes{0.0.5}{2016/10/06}{
+%   Ignore date when `nodates' option set
 % }
 % \end{macro}
 %
