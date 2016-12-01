@@ -22,9 +22,10 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/09/27 v0.2.8 Slides package for presentations]
+  [2016/12/01 v0.2.9 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
+%<package>\RequirePackage{xpatch}
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -246,6 +247,51 @@
 % }
 %
 % \section{Commands}
+% \begin{macro}{slides@newblock}
+% Redefine \texttt{newblock} to avoid extraneous vertical space when using inline bibliographic entries (e.g., via the \textsf{bibentry} package).
+% See ``Wrong vertical spaces using bibentry within beamer''\footnote{\url{http://tex.stackexchange.com/questions/163827/wrong-vertical-spaces-using-bibentry-within-beamer}} for more information.
+%
+% The following code is copied from \texttt{beamerbaselocalstructure.sty} but omits a \texttt{1.5em} space that appears when the author block spans more than one line.
+%    \begin{macrocode}
+\def\slides@newblock{%
+  \usebeamercolor[fg]{bibliography entry author}%
+  \usebeamerfont{bibliography entry author}%
+  \usebeamertemplate{bibliography entry author}%
+  \def\newblock{%
+    \usebeamercolor[fg]{bibliography entry title}%
+    \usebeamerfont{bibliography entry title}%
+    \usebeamertemplate{bibliography entry title}%
+    \def\newblock{%
+      \usebeamercolor[fg]{bibliography entry location}%
+      \usebeamerfont{bibliography entry location}%
+      \usebeamertemplate{bibliography entry location}%
+      \def\newblock{%
+        \usebeamercolor[fg]{bibliography entry note}%
+        \usebeamerfont{bibliography entry note}%
+        \usebeamertemplate{bibliography entry note}}}}%
+  \leavevmode}
+%    \end{macrocode}
+%
+% Use \texttt{slides@newblock} for \texttt{newblock}.
+%    \begin{macrocode}
+\let\newblock=\slides@newblock\relax%
+%    \end{macrocode}
+%
+% Restore the original definition in the bibliography.
+%    \begin{macrocode}
+\xpretocmd{\bibliography}{%
+  \let\newblock=\beamer@newblock\relax%
+}{%
+  \PackageInfo{slides}{Restored beamer@newblock for bibliography}%
+}{%
+  \PackageWarning{slides}{Error restoring beamer@newblock for bibliography!}%
+}
+%    \end{macrocode}
+% \changes{0.2.9}{2016/12/01}{
+%   Redefine newblock to avoid extraneous vertical space
+% }
+% \end{macro}
+%
 % \begin{macro}{continued}
 % The |continued| command prints a notice that the material is a continuation from prior slides.
 %    \begin{macrocode}
