@@ -1,4 +1,6 @@
 .PHONY: default
-default: $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+default: $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
+         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
+         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 
 include ../../../../Makefile.mk

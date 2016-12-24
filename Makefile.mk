@@ -14,30 +14,38 @@ export TEXINPUTS := .:$(CWD)texmf//:${TEXINPUTS}
 # define TEX as pdflatex
 TEX=pdflatex -shell-escape #-interaction batchmode
 
+# Define a "Canned Recipe" for compiling PDFs from *.{dtx,tex} files.
+#
+# NOTE: OS X provides GNU Make 3.81, which does not support an assignment token
+#       after `define' (see https://goo.gl/tml4Zi). If omitted, make assumes
+#       it to be '='.
+define compile-doc
+$(TEX) -draftmode $<
+if grep -E '^\\@istfilename' $*.aux; then \
+		makeglossaries $*; \
+fi
+files=$$(sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux); \
+		if grep --quiet -E '\\(citation)' $*.aux $$files; then \
+			bibtex $*; \
+		fi
+$(TEX) -draftmode $<
+if [ -f $*.idx ]; then makeindex -s gind.ist -o $*.ind $*.idx; fi
+if [ -f $*.glo ]; then makeindex -s gglo.ist -o $*.gls $*.glo; fi
+$(TEX) -draftmode $<
+$(TEX) $<
+endef
+
 DEPENDENCIES = $(wildcard *.cls) $(wildcard *.sty) \
-               $(wildcard $(CWD)references.bib)
+               $(wildcard $(CWD)glossary.tex) $(wildcard $(CWD)references.bib)
+
+%.pdf: %.dtx $(DEPENDENCIES) .version.tex
+	$(compile-doc)
 
 %.pdf: %.tex $(DEPENDENCIES)
-	$(TEX) -draftmode $*
-	files=$$(sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux); \
-	        if grep --quiet -E '\\(citation)' $*.aux $$files; then \
-	            bibtex $*; \
-	        fi
-	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
-	if [ -f $*.idx ]; then makeindex $*; fi
-	$(TEX) -draftmode $*
-	$(TEX) $*
+	$(compile-doc)
 
-%.sty: %.dtx %.ins .version.tex
-	$(TEX) -draftmode $*.ins
-	if grep -E '^\\@istfilename' $*.aux; then makeglossaries $*; fi
-	if grep -E '\\citation' $*.aux; then bibtex $*; fi
-	$(TEX) -draftmode $*.dtx
-	makeindex -s gind.ist -o $*.ind $*.idx
-	makeindex -s gglo.ist -o $*.gls $*.glo
-	$(TEX) -draftmode $*.dtx
-	$(TEX) $*.dtx
-
+%.sty: %.ins %.dtx
+	$(TEX) -draftmode $<
 
 .PHONY: clean
 clean:
