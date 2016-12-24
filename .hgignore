@@ -58,3 +58,4 @@ syntax: regexp
 ^recipe/recipe.sty
 ^resume/resume.sty
 ^slides/slides.sty
+^theme-doc/theme-doc.sty
