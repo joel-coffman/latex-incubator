@@ -17,10 +17,15 @@
 % \iffalse
 %<*driver>
 \documentclass{ltxdoc}
-\input{.version}
-\usepackage{theme-doc}
+
 \usepackage{hyperref}
 \usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{theme-doc}
+
+\input{.version}
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -92,8 +97,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{theme-doc}[%
-    2016/12/24 %
-    v0.0.1 %
+    2016/12/31 %
+    v0.0.2 %
     Package to typeset documentation for Beamer themes%
 ]
 %    \end{macrocode}
@@ -122,6 +127,41 @@
 %
 % \subsection{Macros}
 % This section describes the macros in the \textsf{theme-doc} package.
+%
+% \begin{macro}{testcolor}
+% The \mintinline{latex}{testcolor} macro creates a small, inline framed box to display a specified color.
+%
+% Define the macro.
+%    \begin{macrocode}
+\providecommand{\testcolor}[1]{%
+%    \end{macrocode}
+% Eliminate the separation around the framed box.
+%    \begin{macrocode}
+  \fboxsep0pt%
+%    \end{macrocode}
+% Define the framed box.
+%    \begin{macrocode}
+  \fbox{%
+%    \end{macrocode}
+% Use the specified color as the box's background color.
+%    \begin{macrocode}
+    \colorbox{#1}%
+%    \end{macrocode}
+% Use the \mintinline{latex}{phantom} macro to create a box the size of two Xs.
+%    \begin{macrocode}
+    {\phantom{XX}}%
+%    \end{macrocode}
+% End \mintinline{latex}{fbox}.
+%    \begin{macrocode}
+  }%
+%    \end{macrocode}
+% End macro definition.
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% \changes{0.0.2}{2016/12/31}{Add testcolor macro}
+% \end{macro}
 %
 % \iffalse
 %</package>

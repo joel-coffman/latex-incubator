@@ -1,8 +1,6 @@
 .PHONY: default
-default: minted beamerthemejhu.edu.sty
-
-.PHONY: minted
-minted:
-	if ! [ -d $@ ]; then mkdir --parents $@; fi
+default: $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
+         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
+         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 
 include ../../../../Makefile.mk

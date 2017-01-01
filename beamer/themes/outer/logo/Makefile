@@ -1,5 +1,8 @@
 .PHONY: default
-default: minted beamerouterthemelogo.sty
+default: minted \
+         $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
+         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
+         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 
 .PHONY: minted
 minted:

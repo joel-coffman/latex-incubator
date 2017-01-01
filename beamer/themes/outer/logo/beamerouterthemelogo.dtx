@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2016/10/06 v0.1.2 Beamer outer theme for including organizational logos]
+%<package>  [2016/12/31 v0.1.2 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -27,6 +27,7 @@
 \input{.version}
 \usepackage{beamerouterthemelogo}
 
+\usepackage{graphicx}
 \usepackage{minted}
 \usepackage{ragged2e}
 
@@ -112,6 +113,20 @@
 %     gobble=1,
 % ]{latex}{minted/logo.out}
 % See Beamer's documentation~\cite{beamer:manual} for additional details regarding the \mintinline{latex}{logo} macro.
+%
+% The following images illustrate the theme's style.
+%
+% \begin{figure}[!h]
+%    \includegraphics[
+%        page=1,
+%        width=0.49\linewidth,
+%    ]{example}
+%    \hfill
+%    \includegraphics[
+%        page=2,
+%        width=0.49\linewidth,
+%    ]{example}
+% \end{figure}
 %
 % {\RaggedRight
 %   \bibliographystyle{abbrv}
