@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2017/01/08 v0.1.4 Beamer outer theme for including organizational logos]
+%<package>  [2017/01/08 v0.2.0 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -163,6 +163,16 @@
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\newif\if@beamerouterthemelogo@tree\relax
+\DeclareOption{tree}{
+  \@beamerouterthemelogo@treetrue
+}
+%    \end{macrocode}
+% \changes{0.2.0}{2017/01/08}{%
+%   Add \texttt{tree} option
+% }
+%
 % Process options.
 % \mintinline{latex}{\relax} prevents unnecessary lookahead.
 %    \begin{macrocode}
@@ -182,15 +192,28 @@
 %   Remove colors for author and title in head/foot
 % }
 %
-% Use the \textsf{split} outer theme as the basis for this theme.
+% Load the ``base'' theme.
 % (This command must appear after setting colors.)
+% The \mintinline{latex}{tree} outer theme must be loaded, likely due to conditionals defined in that theme (e.g., \mintinline{latex}{\ifbeamer@tree@showhooks}).
 %    \begin{macrocode}
-\useoutertheme{split}
+\useoutertheme{tree}%
+\if@beamerouterthemelogo@tree\else%
+  \useoutertheme{split}%
+\fi%
 %    \end{macrocode}
 %
 % Add ``pop'' to the small text appearing in header and footer.
 %    \begin{macrocode}
 \usefonttheme[onlysmall]{structurebold}
+%    \end{macrocode}
+%
+% Define a new \textsc{beamer}-color that controls the formatting of the logo.
+% The starred version resets the definition so prior settings are ignored.
+%    \begin{macrocode}
+\setbeamercolor*{logo in head/foot}{%
+  bg=structure.bg,  % transparent background
+  use=structure,
+}%
 %    \end{macrocode}
 %
 % Override \mintinline{latex}{sidebar right} template to remove logo from the lower right corner.
@@ -206,13 +229,117 @@
 }
 %    \end{macrocode}
 %
-% Override \mintinline{latex}{headline} template.
+% Override the \mintinline{latex}{headline} template.
+%    \begin{macrocode}
+\defbeamertemplate*{headline}{logo theme}{%
+%    \end{macrocode}
+%
+% Check which option(s) have been specified, which controls the ``base'' headline template.
+%    \begin{macrocode}
+\if@beamerouterthemelogo@tree%
+%    \end{macrocode}
+% Ignore the height and depth of the logo.
+%    \begin{macrocode}
+  \smash{% ignore height and depth
+    \rlap{% "right overlap" to align box at left
+%    \end{macrocode}
+% Insert the logo ``below'' the current position so it is perceived to require no space.
+%    \begin{macrocode}
+      \raisebox{-\headheight}[0ex][0ex]{%
+%    \end{macrocode}
+% Insert horizontal space when the logo should appear at the right.
+%    \begin{macrocode}
+        \if@beamerouterthemelogo@right%
+          \hspace{0.66\paperwidth}%
+        \fi%
+%    \end{macrocode}
+% Insert color box for logo.
+%    \begin{macrocode}
+        \begin{beamercolorbox}[
+            ht=\headheight,
+            \if@beamerouterthemelogo@right right\else left\fi,
+            wd=0.34\paperwidth,
+        ]{logo in head/foot}%
+%    \end{macrocode}
+% Insert logo vertically centered within header.
+%    \begin{macrocode}
+          \vbox to \headheight{\vfil\insertlogo\vfil}%
+        \end{beamercolorbox}%
+      }% END raisebox
+    }% END rlap
+  }% END smash
+%    \end{macrocode}
+%
+% The following code is copied from the \mintinline{latex}{tree} outer theme.\footnote{%
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/outer/beamerouterthemetree.sty}
+% }
+% The primary modification is reducing the width of boxes to make space for the logo.
+%
+% Insert horizontal space when the logo appears on the left.
+%    \begin{macrocode}
+  \if@beamerouterthemelogo@right\else%
+    \hspace{0.34\paperwidth}%
+  \fi%
+  \begin{beamercolorbox}[wd=0.66\paperwidth,colsep=1.5pt]{upper separation line head}
+  \end{beamercolorbox}
+
+  \if@beamerouterthemelogo@right\else%
+    \hspace{0.34\paperwidth}%
+  \fi%
+  \begin{beamercolorbox}[wd=0.66\paperwidth,ht=2.5ex,dp=1.125ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}
+
+  \if@beamerouterthemelogo@right\else%
+    \hspace{0.34\paperwidth}%
+  \fi%
+  \begin{beamercolorbox}[wd=0.66\paperwidth,ht=2.5ex,dp=1.125ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{section in head/foot}
+    \usebeamerfont{section in head/foot}%
+    \ifbeamer@tree@showhooks
+      \setbox\beamer@tempbox=\hbox{\insertsectionhead}%
+      \ifdim\wd\beamer@tempbox>1pt%
+        \hskip2pt\raise1.9pt\hbox{\vrule width0.4pt height1.875ex\vrule width 5pt height0.4pt}%
+        \hskip1pt%
+      \fi%
+    \else%
+      \hskip6pt%
+    \fi%
+    \insertsectionhead
+  \end{beamercolorbox}
+
+  \if@beamerouterthemelogo@right\else%
+    \hspace{0.34\paperwidth}%
+  \fi%
+  \begin{beamercolorbox}[wd=0.66\paperwidth,ht=2.5ex,dp=1.125ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{subsection in head/foot}
+    \usebeamerfont{subsection in head/foot}%
+    \ifbeamer@tree@showhooks
+      \setbox\beamer@tempbox=\hbox{\insertsubsectionhead}%
+      \ifdim\wd\beamer@tempbox>1pt%
+        \hskip9.4pt\raise1.9pt\hbox{\vrule width0.4pt height1.875ex\vrule width 5pt height0.4pt}%
+        \hskip1pt%
+      \fi%
+    \else%
+      \hskip12pt%
+    \fi%
+    \insertsubsectionhead
+  \end{beamercolorbox}
+
+  \if@beamerouterthemelogo@right\else%
+    \hspace{0.34\paperwidth}%
+  \fi%
+  \begin{beamercolorbox}[wd=0.66\paperwidth,colsep=1.5pt]{lower separation line head}
+  \end{beamercolorbox}
+%    \end{macrocode}
+%    \begin{macrocode}
+\else% END \if@beamerthemeoutertree@tree
+%    \end{macrocode}
 % This code is copied from the \mintinline{latex}{split} outer theme.\footnote{%
 %   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/outer/beamerouterthemesplit.sty}
 % }
 %    \begin{macrocode}
-\defbeamertemplate*{headline}{logo theme}
-{%
   \leavevmode%
 %    \end{macrocode}
 % \TeX{} register for height of header.
@@ -241,10 +368,14 @@
 % Insert logo with same background color as sections unless \mintinline{latex}{right} option specified.
 %    \begin{macrocode}
     \if@beamerouterthemelogo@right\else%
+      \setbeamercolor*{logo in head/foot}{%
+        bg=section in head/foot.bg,
+        use=section in head/foot,
+      }%
       \begin{beamercolorbox}[%
           ht=\@tempdimb,%
           wd=.34\paperwidth,%
-      ]{section in head/foot}%
+      ]{logo in head/foot}%
         \smash{\rlap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
       \end{beamercolorbox}%
     \fi%
@@ -278,11 +409,15 @@
 % If \mintinline{latex}{right} option specified, insert logo with same background color as subsections.
 %    \begin{macrocode}
     \if@beamerouterthemelogo@right%
+      \setbeamercolor*{logo in head/foot}{%
+        bg=subsection in head/foot.bg,
+        use=subsection in head/foot,
+      }%
       \begin{beamercolorbox}[%
           ht=\@tempdimb,%
           right,%
           wd=.34\paperwidth,%
-      ]{subsection in head/foot}%
+      ]{logo in head/foot}%
         \smash{\llap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
       \end{beamercolorbox}%
     \fi%
@@ -290,6 +425,11 @@
 %
 %    \begin{macrocode}
   \fi%
+%    \end{macrocode}
+%    \begin{macrocode}
+\fi%
+%    \end{macrocode}
+%    \begin{macrocode}
 }
 %    \end{macrocode}
 % \changes{0.1.1}{2015/11/26}{
