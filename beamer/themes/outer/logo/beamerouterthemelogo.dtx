@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2017/01/08 v0.2.0 Beamer outer theme for including organizational logos]
+%<package>  [2017/01/19 v0.2.0 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -462,7 +462,7 @@
         ht=2.5ex,%
         leftskip=1em,%
         rightskip=1em plus1fil,%
-        wd=0.66\paperwidth,%
+        wd=\if@beamerouterthemelogo@right0.66\else0.67\fi\paperwidth,%
     ]{title in head/foot}%
       {%
         \usebeamerfont{date in head/foot}
@@ -482,7 +482,7 @@
         ht=2.5ex,%
         leftskip=1em,%
         rightskip=1em,%
-        wd=0.34\paperwidth,%
+        wd=\if@beamerouterthemelogo@right0.34\else0.33\fi\paperwidth,%
     ]{author in head/foot}%
       {%
         \usebeamerfont{author in head/foot}%
