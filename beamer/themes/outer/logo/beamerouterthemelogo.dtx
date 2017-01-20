@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2017/01/19 v0.2.0 Beamer outer theme for including organizational logos]
+%<package>  [2017/01/20 v0.2.0 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -28,6 +28,7 @@
 \usepackage{beamerouterthemelogo}
 
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{minted}
 \usepackage{ragged2e}
 
@@ -153,32 +154,90 @@
 % \section{Implementation}
 % See Beamer's documentation~\cite{beamer:manual} and the implementation of various themes for more information about the various commands.
 %
-% \subsection{Options}
-% Declare options and corresponding \LaTeX{} conditionals.
+% \subsection{Packages}
+% Load the packages required for this one.
 %
+% The \textsf{etoolbox} package supports testing the values of the package options.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
+% The \textsf{pgfopts} package supports parsing the package options.
+%    \begin{macrocode}
+\RequirePackage{pgfopts}
+%    \end{macrocode}
+%
+% \subsection{Options}
+% Declare \TeX{} conditionals corresponding to options.
 %    \begin{macrocode}
 \newif\if@beamerouterthemelogo@right\relax
-\DeclareOption{right}{
-  \@beamerouterthemelogo@righttrue
+%    \end{macrocode}
+%    \begin{macrocode}
+\newif\if@beamerouterthemelogo@split\relax
+\newif\if@beamerouterthemelogo@tree\relax
+%    \end{macrocode}
+%
+% Define the keys that comprise the package options.
+% ^^A See also the \textsf{metropolis} theme for using pgfopts with a Beamer theme: https://github.com/matze/mtheme/blob/master/source/beamerthememetropolis.dtx
+%    \begin{macrocode}
+\pgfkeys{
+%    \end{macrocode}
+% All keys appear under \texttt{/beamer/themes/outer/logo}.
+%    \begin{macrocode}
+  /beamer/themes/outer/logo/.cd,
+%    \end{macrocode}
+% The \texttt{base} key defines the ``base'' (or ``parent'') outer theme to use.
+%    \begin{macrocode}
+  base/.is choice,
+  base/.value required,
+%    \end{macrocode}
+% The \texttt{.is choice} and \texttt{.store in} handlers conflict with each other.
+% Manually store the value in \mintinline{latex}{\@beamerouterthemelogo@base}.
+%    \begin{macrocode}
+  base/.append code={\def\@beamerouterthemelogo@base{#1}},
+%    \end{macrocode}
+% Define the supported base themes.
+%    \begin{macrocode}
+  base/split/.code={\@beamerouterthemelogo@splittrue},
+  base/tree/.code={\@beamerouterthemelogo@treetrue},
+%    \end{macrocode}
+% The \texttt{position} key identifies where the logo should appear in the headline.
+%    \begin{macrocode}
+  position/.is choice,
+  position/.value required,
+%    \end{macrocode}
+% Define the supported position options.
+%    \begin{macrocode}
+  position/left/.code=\@beamerouterthemelogo@rightfalse,
+  position/right/.code=\@beamerouterthemelogo@righttrue,
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% Set the default values for the options.
+%    \begin{macrocode}
+\pgfkeys{
+  /beamer/themes/outer/logo/.cd,
+  base=split,
+  position=right,
 }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\newif\if@beamerouterthemelogo@tree\relax
-\DeclareOption{tree}{
-  \@beamerouterthemelogo@treetrue
-}
 %    \end{macrocode}
+% \changes{0.2.0}{2017/01/20}{%
+%   Use key-value syntax for options
+% }
 % \changes{0.2.0}{2017/01/08}{%
-%   Add \texttt{tree} option
+%   Add `tree' as option for base outer theme
 % }
 %
 % Process options.
-% \mintinline{latex}{\relax} prevents unnecessary lookahead.
 %    \begin{macrocode}
-\ProcessOptions\relax
+\ProcessPgfOptions{/beamer/themes/outer/logo}
 %    \end{macrocode}
 %
+% \subsection{Configuration}
 % Set background color for logo and sections in header.
 %    \begin{macrocode}
 \setbeamercolor*{palette quaternary}{
@@ -192,14 +251,12 @@
 %   Remove colors for author and title in head/foot
 % }
 %
+% \subsection{Theme}
+% This section defines the Beamer templates for the theme.
+%
 % Load the ``base'' theme.
-% (This command must appear after setting colors.)
-% The \mintinline{latex}{tree} outer theme must be loaded, likely due to conditionals defined in that theme (e.g., \mintinline{latex}{\ifbeamer@tree@showhooks}).
 %    \begin{macrocode}
-\useoutertheme{tree}%
-\if@beamerouterthemelogo@tree\else%
-  \useoutertheme{split}%
-\fi%
+\useoutertheme{\@beamerouterthemelogo@base}
 %    \end{macrocode}
 %
 % Add ``pop'' to the small text appearing in header and footer.
@@ -236,7 +293,7 @@
 %
 % Check which option(s) have been specified, which controls the ``base'' headline template.
 %    \begin{macrocode}
-\if@beamerouterthemelogo@tree%
+\ifdefstring{\@beamerouterthemelogo@base}{tree}{%
 %    \end{macrocode}
 % Ignore the height and depth of the logo.
 %    \begin{macrocode}
@@ -334,7 +391,10 @@
   \end{beamercolorbox}
 %    \end{macrocode}
 %    \begin{macrocode}
-\else% END \if@beamerthemeoutertree@tree
+}{}%
+%    \end{macrocode}
+%    \begin{macrocode}
+\ifdefstring{\@beamerouterthemelogo@base}{split}{%
 %    \end{macrocode}
 % This code is copied from the \mintinline{latex}{split} outer theme.\footnote{%
 %   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/outer/beamerouterthemesplit.sty}
@@ -427,7 +487,7 @@
   \fi%
 %    \end{macrocode}
 %    \begin{macrocode}
-\fi%
+}{}%
 %    \end{macrocode}
 %    \begin{macrocode}
 }
