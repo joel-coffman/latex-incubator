@@ -97,8 +97,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{theme-doc}[%
-    2016/12/31 %
-    v0.0.2 %
+    2017/01/22 %
+    v0.0.3 %
     Package to typeset documentation for Beamer themes%
 ]
 %    \end{macrocode}
@@ -127,6 +127,18 @@
 %
 % \subsection{Macros}
 % This section describes the macros in the \textsf{theme-doc} package.
+%
+% \begin{macro}{beamer}
+% The \mintinline{latex}{beamer} macro provides a styled version of \beamer{}.
+%    \begin{macrocode}
+\newcommand{\beamer}{%
+  \textsc{beamer}%
+}
+%    \end{macrocode}
+% \changes{0.0.3}{2017/01/22}{
+%   Add beamer macro
+% }
+% \end{macro}
 %
 % \begin{macro}{testcolor}
 % The \mintinline{latex}{testcolor} macro creates a small, inline framed box to display a specified color.
