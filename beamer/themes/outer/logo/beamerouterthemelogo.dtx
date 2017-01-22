@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2017/01/20 v0.2.0 Beamer outer theme for including organizational logos]
+%<package>  [2017/01/22 v0.2.0 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -154,13 +154,14 @@
 % \section{Implementation}
 % See Beamer's documentation~\cite{beamer:manual} and the implementation of various themes for more information about the various commands.
 %
+% Themes are only used in \textsc{beamer}'s presentation mode.
+% Some commands (e.g., executing options defined with \textsf{pgfkeys}) may fail when typesetting the theme's documentation if not ``protected'' by presentation mode.
+%    \begin{macrocode}
+\mode<presentation>
+%    \end{macrocode}
+%
 % \subsection{Packages}
 % Load the packages required for this one.
-%
-% The \textsf{etoolbox} package supports testing the values of the package options.
-%    \begin{macrocode}
-\RequirePackage{etoolbox}
-%    \end{macrocode}
 %
 % The \textsf{pgfopts} package supports parsing the package options.
 %    \begin{macrocode}
@@ -171,10 +172,6 @@
 % Declare \TeX{} conditionals corresponding to options.
 %    \begin{macrocode}
 \newif\if@beamerouterthemelogo@right\relax
-%    \end{macrocode}
-%    \begin{macrocode}
-\newif\if@beamerouterthemelogo@split\relax
-\newif\if@beamerouterthemelogo@tree\relax
 %    \end{macrocode}
 %
 % Define the keys that comprise the package options.
@@ -191,86 +188,104 @@
   base/.is choice,
   base/.value required,
 %    \end{macrocode}
-% The \texttt{.is choice} and \texttt{.store in} handlers conflict with each other.
-% Manually store the value in \mintinline{latex}{\@beamerouterthemelogo@base}.
+% The \texttt{.is choice} and other handlers conflict with each other.
+% Use \texttt{.add code} to include additional processing.
 %    \begin{macrocode}
-  base/.append code={\def\@beamerouterthemelogo@base{#1}},
+  base/.add code={
 %    \end{macrocode}
-% Define the supported base themes.
+% Load the ``base'' theme.
+% There does not appear to be a good way to load only the required theme when the default is different than that requested.
+% The only way to avoid loading multiple themes is to defer the invocation of \mintinline{latex}{\useothertheme} until the end of the preamble, but doing so would likely confuse users because later invocations of \mintinline{latex}{\useoutertheme} in the document preamble would effectively be ignored.
 %    \begin{macrocode}
-  base/split/.code={\@beamerouterthemelogo@splittrue},
-  base/tree/.code={\@beamerouterthemelogo@treetrue},
+    \useoutertheme{#1}
+%    \end{macrocode}
+%    \begin{macrocode}
+  }{},
+%    \end{macrocode}
+% Add code to execute when the \textsf{split} theme is requested.
+%    \begin{macrocode}
+  base/split/.add code={}{
+%    \end{macrocode}
+% Use the same \textsc{beamer}-colors as the \textsf{split} theme.
+% These might have been modified if another theme is used as the default.
+%    \begin{macrocode}
+    \setbeamercolor{author in head/foot}{
+      parent=section in head/foot,
+    }
+    \setbeamercolor{section in head/foot}{
+      parent=palette quaternary,
+    }
+    \setbeamercolor{subsection in head/foot}{
+      parent=palette primary,
+    }
+    \setbeamercolor{title in head/foot}{
+      parent=subsection in head/foot,
+    }
+%    \end{macrocode}
+% Set the \textsc{beamer} templates to use the version defined by this theme.
+%    \begin{macrocode}
+    \setbeamertemplate{headline}[split logo theme]
+    \setbeamertemplate{footline}[split logo theme]
+%    \end{macrocode}
+%    \begin{macrocode}
+  },
+%    \end{macrocode}
+% Add code to execute when the \textsf{tree} theme is requested.
+%    \begin{macrocode}
+  base/tree/.add code={}{
+%    \end{macrocode}
+% Use the same \textsc{beamer}-colors as the \textsf{default} theme.
+% These might have been modified if another theme (e.g., \textsf{split}) is used as the default.
+% ^^A FIXME: Do not hard-code values for default color them
+% ^^A This code resets the colors to match the default color theme, but the
+% ^^A user might have modified them prior to loading this theme. There does not
+% ^^A appear to be a good way to selectively undo the modifications if the
+% ^^A split theme is loaded but not used.
+%    \begin{macrocode}
+    \setbeamercolor{author in head/foot}{
+      parent=palette primary,
+    }
+    \setbeamercolor{section in head/foot}{
+      parent=palette secondary,
+    }
+    \setbeamercolor{subsection in head/foot}{
+      parent=palette primary,
+    }
+    \setbeamercolor{title in head/foot}{
+      parent=palette quaternary,
+    }
+%    \end{macrocode}
+% Set the \textsc{beamer} templates to use the version defined by this theme.
+%    \begin{macrocode}
+    \setbeamertemplate{headline}[tree logo theme]
+    \setbeamertemplate{footline}[tree logo theme]
+  },
 %    \end{macrocode}
 % The \texttt{position} key identifies where the logo should appear in the headline.
+% ^^A TODO: Do not allow `left' to be used with `tree' as the base theme
 %    \begin{macrocode}
   position/.is choice,
   position/.value required,
 %    \end{macrocode}
 % Define the supported position options.
 %    \begin{macrocode}
-  position/left/.code=\@beamerouterthemelogo@rightfalse,
-  position/right/.code=\@beamerouterthemelogo@righttrue,
+  position/left/.code={
+    \@beamerouterthemelogo@rightfalse
+  },
+  position/right/.code={
+    \@beamerouterthemelogo@righttrue
+  },
 %    \end{macrocode}
 %    \begin{macrocode}
 }
 %    \end{macrocode}
-% Set the default values for the options.
-%    \begin{macrocode}
-\pgfkeys{
-  /beamer/themes/outer/logo/.cd,
-  base=split,
-  position=right,
-}
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%    \end{macrocode}
-% \changes{0.2.0}{2017/01/20}{%
-%   Use key-value syntax for options
-% }
-% \changes{0.2.0}{2017/01/08}{%
-%   Add `tree' as option for base outer theme
-% }
-%
-% Process options.
-%    \begin{macrocode}
-\ProcessPgfOptions{/beamer/themes/outer/logo}
-%    \end{macrocode}
-%
-% \subsection{Configuration}
-% Set background color for logo and sections in header.
-%    \begin{macrocode}
-\setbeamercolor*{palette quaternary}{
-  bg=structure.fg,
-  fg=white,
-  use=structure,
-}
-%    \end{macrocode}
-%
-% \changes{0.1.2}{2016/10/06}{%
-%   Remove colors for author and title in head/foot
-% }
 %
 % \subsection{Theme}
 % This section defines the Beamer templates for the theme.
 %
-% Load the ``base'' theme.
-%    \begin{macrocode}
-\useoutertheme{\@beamerouterthemelogo@base}
-%    \end{macrocode}
-%
 % Add ``pop'' to the small text appearing in header and footer.
 %    \begin{macrocode}
 \usefonttheme[onlysmall]{structurebold}
-%    \end{macrocode}
-%
-% Define a new \textsc{beamer}-color that controls the formatting of the logo.
-% The starred version resets the definition so prior settings are ignored.
-%    \begin{macrocode}
-\setbeamercolor*{logo in head/foot}{%
-  bg=structure.bg,  % transparent background
-  use=structure,
-}%
 %    \end{macrocode}
 %
 % Override \mintinline{latex}{sidebar right} template to remove logo from the lower right corner.
@@ -278,7 +293,7 @@
 %   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/outer/beamerouterthemedefault.sty}
 % }
 %    \begin{macrocode}
-\defbeamertemplate*{sidebar right}{logo theme}
+\setbeamertemplate{sidebar right}
 {
   \vfill%
   \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
@@ -286,14 +301,202 @@
 }
 %    \end{macrocode}
 %
+% \subsubsection{split}
 % Override the \mintinline{latex}{headline} template.
 %    \begin{macrocode}
-\defbeamertemplate*{headline}{logo theme}{%
+\defbeamertemplate{headline}{split logo theme}{%
+%    \end{macrocode}
+% This code is copied from the \mintinline{latex}{split} outer theme.\footnote{%
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/outer/beamerouterthemesplit.sty}
+% }
+%    \begin{macrocode}
+  \leavevmode%
+%    \end{macrocode}
+% \TeX{} register for height of header.
+%    \begin{macrocode}
+  \@tempdimb=2.4375ex%
+%    \end{macrocode}
+% Increase header height to accommodate number of sections and subsections, whichever is greater.
+%    \begin{macrocode}
+  \ifnum\beamer@subsectionmax<\beamer@sectionmax%
+    \multiply\@tempdimb by\beamer@sectionmax%
+  \else%
+    \multiply\@tempdimb by\beamer@subsectionmax%
+  \fi%
 %    \end{macrocode}
 %
-% Check which option(s) have been specified, which controls the ``base'' headline template.
 %    \begin{macrocode}
-\ifdefstring{\@beamerouterthemelogo@base}{tree}{%
+  \ifdim\@tempdimb>0pt%
+    \advance\@tempdimb by 1.125ex%
+%    \end{macrocode}
+% Ensure that height is at least 0.5-inch regardless of the number of (sub)sections.
+%    \begin{macrocode}
+    \ifdim\@tempdimb<.5in%
+      \@tempdimb=.5in%
+    \fi%
+%    \end{macrocode}
+% Insert logo with same background color as sections unless \mintinline{latex}{right} option specified.
+%    \begin{macrocode}
+    \if@beamerouterthemelogo@right\else%
+      \begin{beamercolorbox}[%
+          ht=\@tempdimb,%
+          wd=.34\paperwidth,%
+      ]{logo in head/foot}%
+        \smash{\rlap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
+      \end{beamercolorbox}%
+    \fi%
+%    \end{macrocode}
+% Insert section navigation.
+%    \begin{macrocode}
+    \begin{beamercolorbox}[%
+        ht=\@tempdimb,%
+        wd=.33\paperwidth,%
+    ]{section in head/foot}%
+      \vbox to\@tempdimb{%
+        \vfil%
+        \insertsectionnavigation{.33\paperwidth}%
+        \vfil%
+      }%
+    \end{beamercolorbox}%
+%    \end{macrocode}
+% Insert subsection navigation.
+%    \begin{macrocode}
+    \begin{beamercolorbox}[%
+        ht=\@tempdimb,
+        wd=.33\paperwidth,
+    ]{subsection in head/foot}%
+      \vbox to\@tempdimb{%
+        \vfil%
+        \insertsubsectionnavigation{.33\paperwidth}%
+        \vfil%
+      }%
+    \end{beamercolorbox}%
+%    \end{macrocode}
+% If \mintinline{latex}{right} option specified, insert logo with same background color as subsections.
+%    \begin{macrocode}
+    \if@beamerouterthemelogo@right%
+      \begin{beamercolorbox}[%
+          ht=\@tempdimb,%
+          right,%
+          wd=.34\paperwidth,%
+      ]{logo in head/foot}%
+        \smash{\llap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
+      \end{beamercolorbox}%
+    \fi%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \fi%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.1.1}{2015/11/26}{
+%   Vertically center logo in \mintinline{latex}{vbox}
+% }
+% \changes{0.1.2}{2016/10/06}{
+%   Use subsection colors behind logo when on the right
+% }
+% \changes{0.1.2}{2016/10/06}{
+%   Right align logo when on the right
+% }
+% \changes{0.1.3}{2017/01/02}{%
+%   Reduce logo width to 40\% of frame
+% }
+% \changes{0.1.3}{2017/01/02}{%
+%   Replace institute with date
+% }
+%
+% Define the footline template.
+%    \begin{macrocode}
+\defbeamertemplate{footline}{split logo theme}{%
+  \leavevmode%
+  \hbox{%
+    \if@beamerouterthemelogo@right
+      \begin{beamercolorbox}[
+          dp=1.125ex,%
+          ht=2.5ex,%
+          leftskip=1em,%
+          rightskip=1em,%
+          wd=0.33\paperwidth,%
+      ]{author in head/foot}%
+        {%
+          \usebeamerfont{date in head/foot}%
+          \insertshortdate%
+        }%
+        \hfill%
+        {%
+          \usebeamerfont{author in head/foot}%
+          \insertshortauthor%
+        }%
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[
+          dp=1.125ex,%
+          ht=2.5ex,%
+          leftskip=1em,%
+          rightskip=1em plus1fil,%
+          wd=0.67\paperwidth,%
+      ]{title in head/foot}%
+        {%
+          \usebeamerfont{title in head/foot}%
+          \insertshorttitle%
+        }%
+        \hfill%
+        {%
+          \usebeamerfont{page number in head/foot}%
+          \insertframenumber%
+        }%
+      \end{beamercolorbox}%
+    \else%
+      \begin{beamercolorbox}[
+          dp=1.125ex,%
+          ht=2.5ex,%
+          leftskip=1em,%
+          rightskip=1em plus1fil,%
+          wd=0.66\paperwidth,%
+      ]{title in head/foot}%
+        {%
+          \usebeamerfont{date in head/foot}
+          \insertshortdate%
+        }%
+        \hfill%
+        {%
+          \usebeamerfont{title in head/foot}%
+          \insertshorttitle%
+        }%
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[
+          dp=1.125ex,%
+          ht=2.5ex,%
+          leftskip=1em,%
+          rightskip=1em,%
+          wd=0.34\paperwidth,%
+      ]{author in head/foot}%
+        {%
+          \usebeamerfont{author in head/foot}%
+          \insertshortauthor%
+        }%
+        \hfill%
+        {%
+          \usebeamerfont{page number in head/foot}%
+          \insertframenumber%
+        }%
+      \end{beamercolorbox}%
+    \fi%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \vskip0pt%
+}
+%    \end{macrocode}
+% \changes{0.1.4}{2017/01/04}{%
+%   Omit total number of frames
+% }
+%
+% \subsubsection{tree}
+% Override the \mintinline{latex}{headline} template.
+%    \begin{macrocode}
+\defbeamertemplate{headline}{tree logo theme}{%
 %    \end{macrocode}
 % Ignore the height and depth of the logo.
 %    \begin{macrocode}
@@ -391,105 +594,6 @@
   \end{beamercolorbox}
 %    \end{macrocode}
 %    \begin{macrocode}
-}{}%
-%    \end{macrocode}
-%    \begin{macrocode}
-\ifdefstring{\@beamerouterthemelogo@base}{split}{%
-%    \end{macrocode}
-% This code is copied from the \mintinline{latex}{split} outer theme.\footnote{%
-%   \url{http://mirrors.ctan.org/macros/latex/contrib/beamer/base/themes/outer/beamerouterthemesplit.sty}
-% }
-%    \begin{macrocode}
-  \leavevmode%
-%    \end{macrocode}
-% \TeX{} register for height of header.
-%    \begin{macrocode}
-  \@tempdimb=2.4375ex%
-%    \end{macrocode}
-% Increase header height to accommodate number of sections and subsections, whichever is greater.
-%    \begin{macrocode}
-  \ifnum\beamer@subsectionmax<\beamer@sectionmax%
-    \multiply\@tempdimb by\beamer@sectionmax%
-  \else%
-    \multiply\@tempdimb by\beamer@subsectionmax%
-  \fi%
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-  \ifdim\@tempdimb>0pt%
-    \advance\@tempdimb by 1.125ex%
-%    \end{macrocode}
-% Ensure that height is at least 0.5-inch regardless of the number of (sub)sections.
-%    \begin{macrocode}
-    \ifdim\@tempdimb<.5in%
-      \@tempdimb=.5in%
-    \fi%
-%    \end{macrocode}
-% Insert logo with same background color as sections unless \mintinline{latex}{right} option specified.
-%    \begin{macrocode}
-    \if@beamerouterthemelogo@right\else%
-      \setbeamercolor*{logo in head/foot}{%
-        bg=section in head/foot.bg,
-        use=section in head/foot,
-      }%
-      \begin{beamercolorbox}[%
-          ht=\@tempdimb,%
-          wd=.34\paperwidth,%
-      ]{logo in head/foot}%
-        \smash{\rlap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
-      \end{beamercolorbox}%
-    \fi%
-%    \end{macrocode}
-% Insert section navigation.
-%    \begin{macrocode}
-    \begin{beamercolorbox}[%
-        ht=\@tempdimb,%
-        wd=.33\paperwidth,%
-    ]{section in head/foot}%
-      \vbox to\@tempdimb{%
-        \vfil%
-        \insertsectionnavigation{.33\paperwidth}%
-        \vfil%
-      }%
-    \end{beamercolorbox}%
-%    \end{macrocode}
-% Insert subsection navigation.
-%    \begin{macrocode}
-    \begin{beamercolorbox}[%
-        ht=\@tempdimb,
-        wd=.33\paperwidth,
-    ]{subsection in head/foot}%
-      \vbox to\@tempdimb{%
-        \vfil%
-        \insertsubsectionnavigation{.33\paperwidth}%
-        \vfil%
-      }%
-    \end{beamercolorbox}%
-%    \end{macrocode}
-% If \mintinline{latex}{right} option specified, insert logo with same background color as subsections.
-%    \begin{macrocode}
-    \if@beamerouterthemelogo@right%
-      \setbeamercolor*{logo in head/foot}{%
-        bg=subsection in head/foot.bg,
-        use=subsection in head/foot,
-      }%
-      \begin{beamercolorbox}[%
-          ht=\@tempdimb,%
-          right,%
-          wd=.34\paperwidth,%
-      ]{logo in head/foot}%
-        \smash{\llap{\vbox to\@tempdimb{\vfil\insertlogo\vfil}}}
-      \end{beamercolorbox}%
-    \fi%
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-  \fi%
-%    \end{macrocode}
-%    \begin{macrocode}
-}{}%
-%    \end{macrocode}
-%    \begin{macrocode}
 }
 %    \end{macrocode}
 % \changes{0.1.1}{2015/11/26}{
@@ -508,61 +612,72 @@
 %   Replace institute with date
 % }
 %
-% Override \mintinline{latex}{footline} template.
 %    \begin{macrocode}
-\defbeamertemplate*{footline}{logo theme}
-{%
+\defbeamertemplate{footline}{tree logo theme}{%
   \leavevmode%
-  \hbox{%
 %    \end{macrocode}
-% Insert institute and author.
+% Insert institute, author, and frame number.
 %    \begin{macrocode}
+  \hbox{%
     \begin{beamercolorbox}[
         dp=1.125ex,%
         ht=2.5ex,%
         leftskip=1em,%
         rightskip=1em plus1fil,%
-        wd=\if@beamerouterthemelogo@right0.66\else0.67\fi\paperwidth,%
-    ]{title in head/foot}%
-      {%
-        \usebeamerfont{date in head/foot}
+        wd=\paperwidth,%
+    ]{palette quaternary}%
+      \rlap{%
+        \usebeamerfont{date in head/foot}%
         \insertshortdate%
       }%
       \hfill%
-      {%
-        \usebeamerfont{title in head/foot}%
-        \insertshorttitle%
-      }
-    \end{beamercolorbox}%
-%    \end{macrocode}
-% Insert title and frame number.
-%    \begin{macrocode}
-    \begin{beamercolorbox}[
-        dp=1.125ex,%
-        ht=2.5ex,%
-        leftskip=1em,%
-        rightskip=1em,%
-        wd=\if@beamerouterthemelogo@right0.34\else0.33\fi\paperwidth,%
-    ]{author in head/foot}%
       {%
         \usebeamerfont{author in head/foot}%
         \insertshortauthor%
       }%
       \hfill%
-      {%
+      \llap{%
         \usebeamerfont{page number in head/foot}%
         \insertframenumber%
       }%
+%    \end{macrocode}
+%    \begin{macrocode}
     \end{beamercolorbox}%
+%    \end{macrocode}
+%    \begin{macrocode}
   }%
 %    \end{macrocode}
 %    \begin{macrocode}
   \vskip0pt%
 }
 %    \end{macrocode}
-% \changes{0.1.4}{2017/01/04}{%
-%   Omit total number of frames
+%
+% \subsection{Process Options}
+% Set the default values for the options.
+%    \begin{macrocode}
+\pgfkeys{
+  /beamer/themes/outer/logo/.cd,
+  base=split,
+  position=right,
+}
+%    \end{macrocode}
+%
+% Process options.
+%    \begin{macrocode}
+\ProcessPgfOptions{/beamer/themes/outer/logo}
+%    \end{macrocode}
+% \changes{0.2.0}{2017/01/20}{%
+%   Use key-value syntax for options
 % }
+% \changes{0.2.0}{2017/01/08}{%
+%   Add `tree' as option for base outer theme
+% }
+%
+% End presentation mode.
+%    \begin{macrocode}
+\mode
+<all>
+%    \end{macrocode}
 %
 % \iffalse
 %</package>
