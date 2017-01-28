@@ -1,5 +1,5 @@
 .PHONY: default
-default: minted course-outline.sty
+default: minted course-outline.sty course-outline.pdf
 
 .PHONY: minted
 minted:

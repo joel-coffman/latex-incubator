@@ -1,5 +1,5 @@
 .PHONY: default
-default: minted syllabus.sty
+default: minted syllabus.sty syllabus.pdf
 
 .PHONY: minted
 minted:

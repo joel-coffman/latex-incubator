@@ -1,5 +1,5 @@
 .PHONY: default
-default: slides.sty
+default: slides.sty slides.pdf
 
 include ../Makefile.mk
 

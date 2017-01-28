@@ -1,5 +1,5 @@
 .PHONY: default
-default: minted exam.sty
+default: minted exam.sty exam.pdf
 
 .PHONY: minted
 minted:

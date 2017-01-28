@@ -1,5 +1,5 @@
 .PHONY: default
-default: minted resume.sty
+default: minted resume.sty resume.pdf
 
 .PHONY: minted
 minted:

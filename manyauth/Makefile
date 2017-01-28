@@ -1,5 +1,5 @@
 .PHONY: default
-default: minted manyauth.sty
+default: minted manyauth.sty manyauth.pdf
 
 .PHONY: minted
 minted:
