@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2016/12/01 v0.2.9 Slides package for presentations]
+  [2017/02/04 v0.3.0 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -289,6 +289,40 @@
 %    \end{macrocode}
 % \changes{0.2.9}{2016/12/01}{
 %   Redefine newblock to avoid extraneous vertical space
+% }
+% \end{macro}
+%
+% \begin{macro}{appendix}
+% The \textsf{appendixnumberbeamer} package resets the numbering of sides in the appendix so they are not included in the total number of slides (i.e., they are numbered separately).
+% Unfortunately, the implementation does not handle the slide(s) inserted by \mintinline{latex}{\AtBeginPart} correctly:
+% for example, the outline slide that displays "Appendix" receives the last frame number of the presentation rather than the first frame number of the appendix.
+%
+% If the \textsf{appendixnumberbeamer} package is loaded, then patch the existing command by moving \mintinline{latex}{\appendixorig} from its current location in the command to the end of the command.
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \@ifpackageloaded{appendixnumberbeamer}{%
+    \patchcmd{\appendix}{\appendixorig}{}{%
+      \apptocmd{\appendix}{\appendixorig}{%
+        \PackageInfo{slides}{%
+          Successfully patched the appendix command!
+        }%
+      }{%
+        \PackageWarning{slides}{%
+          Failed to patch the appendix command. The original appendix code may
+          not be invoked.
+        }%
+      }%
+    }{%
+      \PackageWarning{slides}{%
+        Failed to patch the appendix command. Frame numbers in the appendix may
+        be incorrect.
+      }%
+    }%
+  }{}%
+}
+%    \end{macrocode}
+% \changes{0.3.0}{2017/02/04}{
+%   Patch appendix to correct frame numbers
 % }
 % \end{macro}
 %
