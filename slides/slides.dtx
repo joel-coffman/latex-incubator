@@ -377,5 +377,44 @@
 % }
 % \end{macro}
 %
+% \subsection*{Beamer Internals}
+%
+% \begin{macro}{beamer@outsideframenote}
+% Patch the \mintinline{latex}{note} macro to correct the text width for different aspect ratios.
+%    \begin{macrocode}
+\xpatchcmd{\beamer@outsideframenote}
+    {\textwidth=10.8cm}
+    {\textwidth=\dimexpr\paperwidth - (\Gm@lmargin + \Gm@rmargin)}
+    {%
+      \PackageInfo{slides}{%
+        Successfully patched textwidth in beamer@outsideframenote%
+      }%
+    }%
+    {%
+      \PackageWarning{slides}{%
+        Error patching beamer@outsideframenote; textwidth may be incorrect%
+      }%
+    }%
+%    \end{macrocode}
+%    \begin{macrocode}
+\xpatchcmd{\beamer@outsideframenote}
+    {\beamer@noteenvstart#2\beamer@noteenvend}
+    {\beamer@noteenvstart#2\par\beamer@noteenvend}
+    {%
+      \PackageInfo{slides}{%
+        Successfully patched beamer@outsideframenote to correct baselineskip%
+      }%
+    }%
+    {%
+      \PackageWarning{slides}{%
+        Error patching beamer@outsideframenote; baselineskip may be incorrect%
+      }%
+    }%
+%    \end{macrocode}
+% \changes{0.3.0}{2017/03/09}{
+%   Patch \texttt{beamer@outsideframenote} command
+% }
+% \end{macro}
+%
 % \Finale
 \endinput
