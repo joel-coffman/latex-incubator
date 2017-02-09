@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2017/02/04 v0.3.0 Slides package for presentations]
+  [2017/02/08 v0.3.0 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -280,7 +280,7 @@
 % Restore the original definition in the bibliography.
 %    \begin{macrocode}
 \xpretocmd{\bibliography}{%
-  \let\newblock=\beamer@newblock\relax%
+  \mode<presentation>{\let\newblock=\beamer@newblock\relax}%
 }{%
   \PackageInfo{slides}{Restored beamer@newblock for bibliography}%
 }{%
@@ -289,6 +289,9 @@
 %    \end{macrocode}
 % \changes{0.2.9}{2016/12/01}{
 %   Redefine newblock to avoid extraneous vertical space
+% }
+% \changes{0.3.0}{2017/02/08}{
+%   Redefine newblock only in presentation mode
 % }
 % \end{macro}
 %
