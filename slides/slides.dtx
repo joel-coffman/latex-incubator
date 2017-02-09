@@ -101,12 +101,16 @@
     \RequirePackage{pgfpages}
     \pgfpagesuselayout{2 on 1}[
         border shrink=2em,
+        letterpaper,
     ]
   }
 %    \end{macrocode}
 %    \begin{macrocode}
 }
 %    \end{macrocode}
+% \changes{0.3.0}{2017/02/09}{
+%   Pass `letterpaper' to pgfpagesuselayout
+% }
 %
 % The |outline| option includes outline slides at the beginning of parts, sections, and subsections.
 %    \begin{macrocode}
