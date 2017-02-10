@@ -400,10 +400,12 @@
       }%
     }%
 %    \end{macrocode}
+% Patch the \mintinline{latex}{note} macro to add indentation for paragraphs after the first and to append a \mintinline{latex}{\par} for consistent spacing across paragraphs.
+% (Note: The unilateral increase of \mintinline{latex}{\parindent} may not be appropriate in all situations.)
 %    \begin{macrocode}
 \xpatchcmd{\beamer@outsideframenote}
     {\beamer@noteenvstart#2\beamer@noteenvend}
-    {\beamer@noteenvstart#2\par\beamer@noteenvend}
+    {\beamer@noteenvstart\parindent=1em\@afterheading\@afterindentfalse#2\par\beamer@noteenvend}
     {%
       \PackageInfo{slides}{%
         Successfully patched beamer@outsideframenote to correct baselineskip%
