@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2017/02/08 v0.3.0 Slides package for presentations]
+  [2017/02/11 v0.3.1 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -92,20 +92,9 @@
 % \section{Options}
 % The |handout| option prints two slides per page.
 %    \begin{macrocode}
+\newif\ifslides@handout\relax
 \DeclareOption{handout}{%
-%    \end{macrocode}
-% Specifying this option loads the \textsf{pgfpages} package to include two slides on each page.
-% |border shrink| reduces the size of the logical page on the physical page.
-%    \begin{macrocode}
-  \AtEndOfPackage{%
-    \RequirePackage{pgfpages}
-    \pgfpagesuselayout{2 on 1}[
-        border shrink=2em,
-        letterpaper,
-    ]
-  }
-%    \end{macrocode}
-%    \begin{macrocode}
+  \slides@handouttrue%
 }
 %    \end{macrocode}
 % \changes{0.3.0}{2017/02/09}{
@@ -178,6 +167,17 @@
 %   Add \texttt{outline} option to enable outline slides
 % }
 %
+% The |transcript| option displays the presentation notes.
+%    \begin{macrocode}
+\newif\ifslides@transcript\relax
+\DeclareOption{transcript}{
+  \slides@handouttrue
+  \slides@transcripttrue
+}
+%    \end{macrocode}
+% \changes{0.3.1}{2017/02/11}{
+%   Add \texttt{transcript} option
+% }
 %
 % Process the specified options.
 % |\relax| avoids unnecessary lookahead due to starred version of |\ProcessOptions|.
@@ -207,6 +207,25 @@
 % \changes{0.2.8}{2016/09/27}{
 %   Do not change style of quotes
 % }
+%
+% For handouts, load the \textsf{pgfpages} package to include two slides on each page.
+% |border shrink| reduces the size of the logical page on the physical page.
+%    \begin{macrocode}
+\ifslides@handout
+  \RequirePackage{pgfpages}
+  \pgfpagesuselayout{2 on 1}[
+      border shrink=2em,
+      letterpaper,
+  ]
+\fi
+%    \end{macrocode}
+%
+% With transcripts, show the notes (i.e., transcript) on the bottom of each handout page.
+%    \begin{macrocode}
+\ifslides@transcript
+  \setbeameroption{show notes on second screen=bottom}
+\fi
+%    \end{macrocode}
 %
 % \subsection{Templates}
 % Remove navigation symbols at the bottom of slides.
