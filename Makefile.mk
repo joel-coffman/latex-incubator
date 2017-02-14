@@ -47,9 +47,12 @@ DEPENDENCIES = $(wildcard *.cls) $(wildcard *.sty) \
 %.sty: %.ins %.dtx
 	$(TEX) -draftmode $<
 
+
+derivatives += *.acn *.acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.idx *.ind *.ilg *.ist *.log *.lof *.lot *.nav *.out *.snm *.toc *.vrb
+
 .PHONY: clean
 clean:
-	$(RM) *.acn *.acr *.alg *.aux *.bbl *.blg *.dvi *.glb *.glx *.glg *.glo *.gls *.idx *.ind *.ilg *.ist *.log *.lof *.lot *.nav *.out *.snm *.toc *.vrb
+	$(RM) $(derivatives)
 
 .PHONY: veryclean
 veryclean: clean
