@@ -41,7 +41,7 @@ DEPENDENCIES = $(wildcard *.cls) $(wildcard *.sty) \
 %.pdf: %.dtx $(DEPENDENCIES) .version.tex
 	$(compile-doc)
 
-%.pdf: %.tex $(DEPENDENCIES)
+%.pdf: %.tex $(DEPENDENCIES) $(shell find . -name "*.tex")
 	$(compile-doc)
 
 %.sty: %.ins %.dtx
