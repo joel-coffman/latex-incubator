@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2017/01/22 v0.2.0 Beamer outer theme for including organizational logos]
+%<package>  [2017/03/04 v0.2.0 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -450,13 +450,13 @@
           \insertframenumber%
         }%
       \end{beamercolorbox}%
-    \else%
+    \else% not beamerouterthemelogo@right
       \begin{beamercolorbox}[
           dp=1.125ex,%
           ht=2.5ex,%
           leftskip=1em,%
           rightskip=1em plus1fil,%
-          wd=0.66\paperwidth,%
+          wd=0.67\paperwidth,%
       ]{title in head/foot}%
         {%
           \usebeamerfont{date in head/foot}
@@ -473,7 +473,7 @@
           ht=2.5ex,%
           leftskip=1em,%
           rightskip=1em,%
-          wd=0.34\paperwidth,%
+          wd=0.33\paperwidth,%
       ]{author in head/foot}%
         {%
           \usebeamerfont{author in head/foot}%
