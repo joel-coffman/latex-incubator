@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{beamerouterthemelogo}
-%<package>  [2017/03/04 v0.2.0 Beamer outer theme for including organizational logos]
+%<package>  [2017/03/07 v0.2.0 Beamer outer theme for including organizational logos]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -163,6 +163,16 @@
 % \subsection{Packages}
 % Load the packages required for this one.
 %
+% The \textsf{etoolbox} package supports ``indexed'' macro names---i.e., macros with names not ordinarily allowed by \TeX.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
+% The \textsf{pgffor} package provides a for-each loop for iteration.
+%    \begin{macrocode}
+\RequirePackage{pgffor}
+%    \end{macrocode}
+%
 % The \textsf{pgfopts} package supports parsing the package options.
 %    \begin{macrocode}
 \RequirePackage{pgfopts}
@@ -264,6 +274,29 @@
     \setbeamertemplate{footline}[tree logo theme]
   },
 %    \end{macrocode}
+% Set the entries in the footline as the ``short'' versions of the date and author and frame number.
+%    \begin{macrocode}
+  base/tree/.add style={}{
+    footline={shortdate,shortauthor,framenumber},
+  },
+%    \end{macrocode}
+% Save the footline entries in macros indexed by a counter.
+% For example, the first footline entry is saved as the macro \mintinline{latex}{footline1}.
+%    \begin{macrocode}
+  footline/.code={%
+    \foreach \item [count=\index] in {#1}{
+      \ifdefempty{\item}{%
+        \csxdef{footline\index}{\relax}%
+      }{%
+        \ifcsname insert\item\endcsname%
+          \csxdef{footline\index}{\noexpand\csname insert\item\endcsname}%
+        \else%
+          \csxdef{footline\index}{\item}%
+        \fi%
+      }%
+    }%
+  },
+%    \end{macrocode}
 % The \texttt{position} key identifies where the logo should appear in the headline.
 % ^^A TODO: Do not allow `left' to be used with `tree' as the base theme
 %    \begin{macrocode}
@@ -275,8 +308,20 @@
   position/left/.code={
     \@beamerouterthemelogo@rightfalse
   },
+%    \end{macrocode}
+% Set the entries in the footline as the ``short'' versions of the date, title, and author and the frame number.
+%    \begin{macrocode}
+  position/left/.add style={}{
+    footline={shortdate,shorttitle,shortauthor,framenumber},
+  },
   position/right/.code={
     \@beamerouterthemelogo@righttrue
+  },
+%    \end{macrocode}
+% Set the entries in the footline as the ``short'' versions of the date, author, and title and the frame number.
+%    \begin{macrocode}
+  position/right/.add style={}{
+    footline={shortdate,shortauthor,shorttitle,framenumber},
   },
 %    \end{macrocode}
 %    \begin{macrocode}
@@ -425,12 +470,12 @@
       ]{author in head/foot}%
         {%
           \usebeamerfont{date in head/foot}%
-          \insertshortdate%
+          \csuse{footline1}%
         }%
         \hfill%
         {%
           \usebeamerfont{author in head/foot}%
-          \insertshortauthor%
+          \csuse{footline2}%
         }%
       \end{beamercolorbox}%
       \begin{beamercolorbox}[
@@ -442,12 +487,12 @@
       ]{title in head/foot}%
         {%
           \usebeamerfont{title in head/foot}%
-          \insertshorttitle%
+          \csuse{footline3}%
         }%
         \hfill%
         {%
           \usebeamerfont{page number in head/foot}%
-          \insertframenumber%
+          \csuse{footline4}%
         }%
       \end{beamercolorbox}%
     \else% not beamerouterthemelogo@right
@@ -460,12 +505,12 @@
       ]{title in head/foot}%
         {%
           \usebeamerfont{date in head/foot}
-          \insertshortdate%
+          \csuse{footline1}%
         }%
         \hfill%
         {%
           \usebeamerfont{title in head/foot}%
-          \insertshorttitle%
+          \csuse{footline2}%
         }%
       \end{beamercolorbox}%
       \begin{beamercolorbox}[
@@ -477,12 +522,12 @@
       ]{author in head/foot}%
         {%
           \usebeamerfont{author in head/foot}%
-          \insertshortauthor%
+          \csuse{footline3}%
         }%
         \hfill%
         {%
           \usebeamerfont{page number in head/foot}%
-          \insertframenumber%
+          \csuse{footline4}%
         }%
       \end{beamercolorbox}%
     \fi%
@@ -631,17 +676,17 @@
     ]{palette quaternary}%
       \rlap{%
         \usebeamerfont{date in head/foot}%
-        \insertshortdate%
+        \csuse{footline1}%
       }%
       \hfill%
       {%
         \usebeamerfont{author in head/foot}%
-        \insertshortauthor%
+        \csuse{footline2}%
       }%
       \hfill%
       \llap{%
         \usebeamerfont{page number in head/foot}%
-        \insertframenumber%
+        \csuse{footline3}%
       }%
 %    \end{macrocode}
 %    \begin{macrocode}
@@ -674,6 +719,9 @@
 % }
 % \changes{0.2.0}{2017/01/08}{%
 %   Add `tree' as option for base outer theme
+% }
+% \changes{0.1.0}{2017/03/06}{%
+%   Add `footline' option
 % }
 %
 % End presentation mode.
