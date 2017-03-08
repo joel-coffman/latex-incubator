@@ -27,10 +27,17 @@
 \input{.version}
 \usepackage{beamerouterthemelogo}
 
+\usepackage{glossaries}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{minted}
 \usepackage{ragged2e}
+
+\usepackage{theme-doc}
+
+% glossaries
+\loadglsentries{../../../../glossary}
+\makeglossaries
 
 % minted
 \setminted{
@@ -282,12 +289,27 @@
 %    \end{macrocode}
 % Save the footline entries in macros indexed by a counter.
 % For example, the first footline entry is saved as the macro \mintinline{latex}{footline1}.
+%
+% Note: The existing \gls{API} should not be considered stable and may change in future releases.
 %    \begin{macrocode}
   footline/.code={%
+%    \end{macrocode}
+% Iterate over each entry.
+% \mintinline{latex}{\item} contains the entry, and \mintinline{latex}{\index} is the loop counter (starting at 1).
+%    \begin{macrocode}
     \foreach \item [count=\index] in {#1}{
+%    \end{macrocode}
+% If the entry is empty (i.e., ``,,''), then ignore it.
+%    \begin{macrocode}
       \ifdefempty{\item}{%
         \csxdef{footline\index}{\relax}%
       }{%
+%    \end{macrocode}
+% The entry isn't empty.
+% If prepending \textbackslash{}insert to the entry is the name of an existing macro, then use that macro to add the appropriate information.
+% For example, if the entry is ``shortauthor,'' then use \beamer's \mintinline{latex}{\insertshortauthor} macro to insert the author information in the space.
+% Otherwise, assume that the entry should be inserted verbatim.
+%    \begin{macrocode}
         \ifcsname insert\item\endcsname%
           \csxdef{footline\index}{\noexpand\csname insert\item\endcsname}%
         \else%
