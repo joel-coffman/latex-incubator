@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2017/02/11 v0.3.1 Slides package for presentations]
+  [2017/03/24 v0.3.2 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -349,6 +349,31 @@
 %    \end{macrocode}
 % \changes{0.3.0}{2017/02/04}{
 %   Patch appendix to correct frame numbers
+% }
+% \end{macro}
+%
+% \begin{macro}{bibstyle}
+% Use semicolon to separate multiple citations when using \textsf{apalike} bibliography style.
+%
+% Patch \mintinline{latex}{\bibstyle} to keep track of bibliography style.
+% The definition must be global because the auxiliary file (which contains the \mintinline{latex}{bibstyle} invocation) is read in a group.
+%    \begin{macrocode}
+\xpretocmd{\bibstyle}{%
+  \xdef\slides@bibstyle{#1}%
+}{}{}%
+%    \end{macrocode}
+% Patch \mintinline{latex}{\@citex} if the \textsf{breakcites} package is loaded (which defines that macro) and the bibliography style is \textsf{apalike}.
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \@ifpackageloaded{breakcites}{%
+    \ifdefstring{\slides@bibstyle}{apalike}{%
+      \xpatchcmd{\@citex}{,}{;}{}{}%
+    }{}%
+  }{}%
+}%
+%    \end{macrocode}
+% \changes{0.3.2}{2017/03/24}{
+%   Use semicolon as separator for `apalike' citations
 % }
 % \end{macro}
 %
