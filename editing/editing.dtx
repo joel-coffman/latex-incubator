@@ -1,0 +1,179 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2016 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{microtype}
+
+\usepackage{minted-doc}
+
+\usepackage{editing}
+
+\input{.version}
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+
+\begin{document}
+  \DocInput{editing.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.0.1}{2017/05/20}{Initial version}
+%
+% \GetFileInfo{editing.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{editing} package\thanks{This
+% document corresponds to \textsf{editing~\fileversion-\version, dated \filedate.}}}
+% \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% A collection of macros for editing and reviewing documents.
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% |\comment|\oarg{attribution}\marg{text} macro inserts a comment in a margin paragraph.
+% For example,
+% \begin{VerbatimOut}[gobble=2]{minted/comment.out}
+% \comment{An example comment\dots}
+% \end{VerbatimOut}
+% \inputminted{latex}{minted/comment.out}
+% \noindent
+% can add a remark about the current sentence.\input{minted/comment.out}
+% The \marg{text} is set in paragraph in the margin.
+% The \oarg{attribution} identifies the author.
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{editing}[%
+    2017/05/26 %
+    v0.0.1 %
+    A collection of macros for editing and reviewing documents%
+]
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%
+%    \begin{macrocode}
+\RequirePackage{alphalph}
+%\RequirePackage{marginfix}
+\RequirePackage{mparhack}
+\RequirePackage{ragged2e}
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{editing} package.
+%
+% \begin{macro}{comment}
+% Define a counter for comments to associate the text with the margin paragraph.
+% The comment marker restarts on each page.
+%    \begin{macrocode}
+\newcounter{comment}[page]
+%    \end{macrocode}
+%
+% Define the |comment| macro.
+%    \begin{macrocode}
+\newcommand*{\comment}[2][]{%
+%    \end{macrocode}
+% Increment the comment counter so it is greater than zero.
+%    \begin{macrocode}
+  \stepcounter{comment}%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \textsuperscript{\thecomment}%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \marginpar{%
+    \RaggedRight%
+    \small%
+    \textsuperscript{\thecomment}\,\ignorespaces#2%
+    \if\relax\detokenize{#1}\relax% is optional argument empty
+    \else%
+      \enspace---~#1%
+    \fi%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\newalphalph{\fnsymbolwrap}[wrap]{\@fnsymbol}{}
+%    \end{macrocode}
+%    \begin{macrocode}
+\renewcommand*{\thecomment}{%
+  \fnsymbolwrap{\value{comment}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
