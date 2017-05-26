@@ -54,6 +54,7 @@ syntax: regexp
 ^ep.jhu.edu/syllabus/syllabus.sty
 ^exam/exam.sty
 ^manyauth/manyauth.sty
+^minted-doc/minted-doc.sty
 ^recipe/recipe.ist
 ^recipe/recipe.sty
 ^resume/resume.sty

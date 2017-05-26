@@ -22,7 +22,7 @@
 \usepackage{microtype}
 \usepackage{minted}
 
-\usepackage{theme-doc}
+\usepackage{minted-doc}
 
 \input{.version}
 
@@ -30,7 +30,7 @@
 \CodelineIndex
 \RecordChanges
 \begin{document}
-  \DocInput{theme-doc.dtx}
+  \DocInput{minted-doc.dtx}
 \end{document}
 %</driver>
 % \fi
@@ -54,9 +54,9 @@
 % Right brace   \}     Tilde         \~}
 %
 %
-% \changes{0.0.1}{2016/12/24}{Initial version}
+% \changes{0.1.0}{2017/05/26}{Initial version}
 %
-% \GetFileInfo{theme-doc.sty}
+% \GetFileInfo{minted-doc.sty}
 %
 % \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
 % \DoNotIndex{\@ne}
@@ -64,17 +64,24 @@
 % \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
 % \DoNotIndex{\global,\let,\relax}
 %
-% \title{The \textsf{theme-doc} package\thanks{This
-% document corresponds to \textsf{theme-doc~\fileversion-\version, dated \filedate.}}}
+% \title{The \textsf{minted-doc} package\thanks{This
+% document corresponds to \textsf{minted-doc~\fileversion-\version, dated \filedate.}}}
 % \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
 %
 % \maketitle
 %
 % \begin{abstract}
-% This package aids typesetting documentation for Beamer themes.
+% This package contains patches to \textsf{minted} when using it in combination with |docstrip|.
 % \end{abstract}
 %
 % \section{Usage}\label{section:usage}
+% Load this package in the document preamble---i.e.,
+% \begin{VerbatimOut}[gobble=2]{minted/usage.out}
+% \usepackage{minted-doc}
+% \end{VerbatimOut}
+% \inputminted{latex}{minted/usage.out}
+% \noindent
+% If the \textsf{minted} package is also loaded in the preamble, then this package will patch it to fix various issues when also using the |docstrip| utility.
 %
 % \StopEventually{
 %   \PrintChanges
@@ -96,75 +103,37 @@
 %    \end{macrocode}
 % Identify package and version.
 %    \begin{macrocode}
-\ProvidesPackage{theme-doc}[%
+\ProvidesPackage{minted-doc}[%
     2017/05/26 %
-    v0.0.4 %
-    Package to typeset documentation for Beamer themes%
+    v0.1.0 %
+    Patches when using minted with docstrip%
 ]
 %    \end{macrocode}
 %
 % \subsection{Packages}
 % Load packages required by this one.
 %
-% \textsf{minted-doc} patches \textsf{minted}'s macros to work properly with |docstrip|.
+% \textsf{xpatch} allows patching commands from other packages.
 %    \begin{macrocode}
-\RequirePackage{minted-doc}
+\RequirePackage{xpatch}
 %    \end{macrocode}
-% \changes{0.0.4}{2017/05/26}{
-%   Extract minted patches to separate package
-% }
 %
 % \subsection{Configuration}
+% Patch \textsf{minted} commands to load styles in preamble when the auxiliary file is read so \textsf{docstrip} won't strip comments from styles and actually inject the comment into the package documentation.
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \@ifpackageloaded{minted}{%
+    \xpretocmd{\inputminted}{%
+      \write\@auxout{\noexpand\minted@checkstyle{#2}}%
+    }{}{}%
+    \minted@checkstyle{default}%
+  }{%
+  }%
+}
+%    \end{macrocode}
 %
 % \subsection{Macros}
-% This section describes the macros in the \textsf{theme-doc} package.
-%
-% \begin{macro}{beamer}
-% The \mintinline{latex}{beamer} macro provides a styled version of \beamer{}.
-%    \begin{macrocode}
-\newcommand{\beamer}{%
-  \textsc{beamer}%
-}
-%    \end{macrocode}
-% \changes{0.0.3}{2017/01/22}{
-%   Add beamer macro
-% }
-% \end{macro}
-%
-% \begin{macro}{testcolor}
-% The \mintinline{latex}{testcolor} macro creates a small, inline framed box to display a specified color.
-%
-% Define the macro.
-%    \begin{macrocode}
-\providecommand{\testcolor}[1]{%
-%    \end{macrocode}
-% Eliminate the separation around the framed box.
-%    \begin{macrocode}
-  \fboxsep0pt%
-%    \end{macrocode}
-% Define the framed box.
-%    \begin{macrocode}
-  \fbox{%
-%    \end{macrocode}
-% Use the specified color as the box's background color.
-%    \begin{macrocode}
-    \colorbox{#1}%
-%    \end{macrocode}
-% Use the \mintinline{latex}{phantom} macro to create a box the size of two Xs.
-%    \begin{macrocode}
-    {\phantom{XX}}%
-%    \end{macrocode}
-% End \mintinline{latex}{fbox}.
-%    \begin{macrocode}
-  }%
-%    \end{macrocode}
-% End macro definition.
-%    \begin{macrocode}
-}
-%    \end{macrocode}
-%
-% \changes{0.0.2}{2016/12/31}{Add testcolor macro}
-% \end{macro}
+% This section describes the macros in the \textsf{minted-doc} package.
 %
 % \iffalse
 %</package>
