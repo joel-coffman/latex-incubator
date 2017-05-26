@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2017/05/08 v0.4.0 Slides package for presentations]
+  [2017/05/09 v0.4.1 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -473,24 +473,31 @@
 %    \end{macrocode}
 % Use \beamer's |note| macro as a way to display the transcription.
 %    \begin{macrocode}
-    \expandafter\note\overlay{#1}%
-%    \end{macrocode}
-%    \begin{macrocode}
-  \fi%
+    \expandafter\note\overlay{%
 %    \end{macrocode}
 % In some cases, the transcript may span multiple note pages (e.g., when talking for an extended period about a single slide).
 % Redefine the |continued| macro in the context of the |transcript| macro to indicate that the transcription continues on additional pages.
 %    \begin{macrocode}
-  \renewcommand*{\continued}{%
-    \par%
-    \hspace{0em}\hfill (continued on next page)%
-  }%
+      \renewcommand*{\continued}{%
+        \par%
+        \hspace{0em}\hfill (continued on next page)%
+      }%
+%    \end{macrocode}
+%    \begin{macrocode}
+      #1%
+    }%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \fi%
 %    \end{macrocode}
 %    \begin{macrocode}
 }
 %    \end{macrocode}
 % \changes{0.4.0}{2017/05/08}{
 %   Add \texttt{transcript} macro
+% }
+% \changes{0.4.1}{2017/05/09}{
+%   Restrict scope when redefining \texttt{continued} macro
 % }
 % \end{macro}
 %
