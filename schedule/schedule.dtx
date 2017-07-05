@@ -18,7 +18,7 @@
 %<*driver>
 \documentclass{ltxdoc}
 \input{.version}
-\usepackage{course-outline}
+\usepackage{schedule}
 \usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{minted}
@@ -26,7 +26,7 @@
 \CodelineIndex
 \RecordChanges
 \begin{document}
-  \DocInput{course-outline.dtx}
+  \DocInput{schedule.dtx}
 \end{document}
 %</driver>
 % \fi
@@ -52,7 +52,7 @@
 %
 % \changes{0.0.1}{2016/06/28}{Initial version}
 %
-% \GetFileInfo{course-outline.sty}
+% \GetFileInfo{schedule.sty}
 %
 % \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
 % \DoNotIndex{\@ne}
@@ -60,8 +60,8 @@
 % \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
 % \DoNotIndex{\global,\let,\relax}
 %
-% \title{The \textsf{course-outline} package\thanks{This
-% document corresponds to \textsf{course-outline~\fileversion-\version, dated \filedate.}}}
+% \title{The \textsf{schedule} package\thanks{This
+% document corresponds to \textsf{schedule~\fileversion-\version, dated \filedate.}}}
 % \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
 %
 % \maketitle
@@ -98,7 +98,7 @@
 %    \end{macrocode}
 % Identify package and version.
 %    \begin{macrocode}
-\ProvidesPackage{course-outline}[%
+\ProvidesPackage{schedule}[%
     2016/10/06 %
     v0.0.5 %
     A course outline provides an overview of the course schedule.%
@@ -181,7 +181,7 @@
 % \end{macro}
 %
 % \subsection{Macros}
-% This section describes the macros in the \textsf{course-outline} package.
+% This section describes the macros in the \textsf{schedule} package.
 %
 % \begin{macro}{class}
 % Declare class meeting counter.
