@@ -48,6 +48,7 @@ syntax: regexp
 ^beamer/themes/theme/seas.virginia.edu/beamerthemeseas.virginia.edu.sty
 ^beamer/themes/theme/seas.virginia.edu/seas.virginia.edu.eps
 ^editing/editing.sty
+^email/email.sty
 ^engineering.jhu.edu/syllabus/syllabus.sty
 ^engineering.jhu.edu/syllabus/whiting.logo.small.horizontal.black.eps
 ^ep.jhu.edu/beamerthemejhu/beamerthemejhu.sty
