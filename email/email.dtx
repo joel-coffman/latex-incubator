@@ -113,7 +113,7 @@
 %    \begin{macrocode}
 \ProvidesPackage{email}[%
     2017/07/13 %
-    v0.1.0 %
+    v0.1.1 %
     Macros pertaining to email addresses%
 ]
 %    \end{macrocode}
@@ -131,7 +131,7 @@
 % \begin{macro}{email}
 % Define the |email| macro to typeset email addresses.
 %    \begin{macrocode}
-\providecommand*{\email}[2][\DefaultOption]{
+\providecommand*{\email}[2][\DefaultOption]{%
 %    \end{macrocode}
 % Optional argument defaults to the mandatory argument (see \url{https://goo.gl/R311sq}) prefixed by ``mailto:,'' which should open the user's email client.
 %    \begin{macrocode}
@@ -144,6 +144,9 @@
 %    \begin{macrocode}
 }
 %    \end{macrocode}
+% \changes{0.1.1}{2017/07/13}{
+%   Remove superfluous whitespace prior to text
+% }
 % \end{macro}
 %
 % \iffalse
