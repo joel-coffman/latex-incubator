@@ -80,7 +80,6 @@
 % \usepackage{minted-doc}
 % \end{VerbatimOut}
 % \inputminted{latex}{minted/usage.out}
-% \noindent
 % If the \textsf{minted} package is also loaded in the preamble, then this package will patch it to fix various issues when also using the |docstrip| utility.
 %
 % \StopEventually{
@@ -104,8 +103,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{minted-doc}[%
-    2017/05/26 %
-    v0.1.0 %
+    2017/07/13 %
+    v0.1.1 %
     Patches when using minted with docstrip%
 ]
 %    \end{macrocode}
@@ -119,18 +118,41 @@
 %    \end{macrocode}
 %
 % \subsection{Configuration}
-% Patch \textsf{minted} commands to load styles in preamble when the auxiliary file is read so \textsf{docstrip} won't strip comments from styles and actually inject the comment into the package documentation.
 %    \begin{macrocode}
 \AtBeginDocument{%
+%    \end{macrocode}
+% Check if the \textsf{minted} package is loaded.
+%    \begin{macrocode}
   \@ifpackageloaded{minted}{%
+%    \end{macrocode}
+% Patch \textsf{minted} commands to load styles in preamble when the auxiliary file is read so \textsf{docstrip} won't strip comments from styles and actually inject the comment into the package documentation.
+%    \begin{macrocode}
     \xpretocmd{\inputminted}{%
       \write\@auxout{\noexpand\minted@checkstyle{#2}}%
     }{}{}%
+%    \end{macrocode}
+% Load the default style.
+%    \begin{macrocode}
     \minted@checkstyle{default}%
+%    \end{macrocode}
+% |\inputminted| implicitly indents the subsequent line even if there is no paragraph break (i.e., an intervening blank line).
+% Do not indent \emph{unless} there is a paragraph break.
+%    \begin{macrocode}
+    \xapptocmd{\inputminted}{%
+      \noindent%
+      \ignorespaces%
+    }{}{}%
+%    \end{macrocode}
+%    \begin{macrocode}
   }{%
   }%
+%    \end{macrocode}
+%    \begin{macrocode}
 }
 %    \end{macrocode}
+% \changes{0.1.1}{2017/07/13}{%
+%   Do not indent after |\inputminted|
+% }
 %
 % \subsection{Macros}
 % This section describes the macros in the \textsf{minted-doc} package.
