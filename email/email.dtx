@@ -85,12 +85,11 @@
 % This optional argument is exposed to the user in case customization is required.
 %
 % For example,
-% \begin{VerbatimOut}[gobble=1]{minted/email.out}
+% \begin{VerbatimOut}[gobble=2]{minted/email.out}
 % \email{joel.coffman@jhu.edu}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{minted/email.out}
-% produces\\
-% \input{minted/email.out}
+% \inputminted{latex}{minted/email.out}
+% produces \input{minted/email.out}\unskip.  ^^A remove whitespace (i.e., new line character) that terminates file
 %
 % \StopEventually{
 %   \PrintChanges
