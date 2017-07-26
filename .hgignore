@@ -61,4 +61,5 @@ syntax: regexp
 ^resume/resume.sty
 ^schedule/schedule.sty
 ^slides/slides.sty
+^subtitle/subtitle.sty
 ^theme-doc/theme-doc.sty

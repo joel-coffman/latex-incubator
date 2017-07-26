@@ -1,0 +1,171 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2016 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{email}
+\usepackage{minted-doc}
+\usepackage{subtitle}
+
+% minted
+\setminted{
+  autogobble,
+  breaklines,
+}
+
+\input{.version}
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{subtitle.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.0.1}{2017/07/26}{Initial version}
+%
+% \GetFileInfo{subtitle.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{subtitle} package\thanks{This
+% document corresponds to \textsf{subtitle~\fileversion-\version, dated \filedate.}}}
+% \subtitle{Consistent Formatting for Subtitles}
+% \author{Joel Coffman\\\email{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% This package provides support for subtitles of documents.
+% Subtitles are treated similarly to the document title although, by default, the subtitle uses a smaller font size.
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% Load this package in the document preamble -- i.e.,
+% \begin{VerbatimOut}[gobble=2]{minted/usepackage.out}
+% \usepackage{subtitle}
+% \end{VerbatimOut}
+% \inputminted{latex}{minted/usepackage.out}
+%
+% Use the subtitle macro to specify the document's subtitle \emph{after} the title.
+% For example,
+% \begin{VerbatimOut}[gobble=2]{minted/example.out}
+% \title{A Brief Title}
+% \subtitle{A Slightly Longer Subtitle}
+% \end{VerbatimOut}
+% \inputminted{latex}{minted/example.out}
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{subtitle}[%
+    2017/07/26 %
+    v0.0.1 %
+    Support for subtitles%
+]
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%    \begin{macrocode}
+\RequirePackage{relsize}
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{subtitle} package.
+%
+% \begin{macro}{\subtitle}
+% Provide the subtitle macro.
+% |\providecommand| will not overwrite an existing macro so this package is compatible with classes that already support subtitles (e.g., the \textsf{KOMA-Script} bundle).
+%    \begin{macrocode}
+\providecommand*{\subtitle}[1]{%
+%    \end{macrocode}
+% Store the subtitle in |\@subtitle|.
+%    \begin{macrocode}
+  \global\def\@subtitle{#1}%
+%    \end{macrocode}
+% Add the subtitle after the title and use a smaller font size.
+%    \begin{macrocode}
+  \g@addto@macro\@title{%
+    \\{\smaller\@subtitle}%
+  }%
+%    \end{macrocode}
+% When |\maketitle| is invoked, unset the |\@subtitle| and |\subtitle| macros.
+%    \begin{macrocode}
+  \g@addto@macro\maketitle{%
+    \global\let\@subtitle=\@empty\relax%
+    \global\let\subtitle=\relax\relax%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
