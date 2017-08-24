@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2015/05/11 v0.4.0 Style file for resume]
+%<package>  [2017/08/24 v0.4.0 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -268,7 +268,6 @@
     \textsc{\@title}%
     \@thanks%
   \end{center}%
-  \vspace{-1ex}%
 }
 %    \end{macrocode}
 % \changes{0.1.2}{2015/01/25}{
@@ -276,6 +275,9 @@
 % }
 % \changes{0.1.2}{2015/01/25}{
 %   Use \texttt{\textbackslash @title} rather than \texttt{\textbackslash @author} for title
+% }
+% \changes{0.4.0}{2017/08/24}{
+%   Remove negative vertical space after title
 % }
 % \end{macro}
 %
