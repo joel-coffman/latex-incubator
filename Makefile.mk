@@ -30,7 +30,7 @@ files=$$(sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux); \
 		fi
 $(TEX) -draftmode $<
 if [ -f $*.idx ]; then makeindex -s gind.ist -o $*.ind $*.idx; fi
-if [ -f $*.glo ]; then makeindex -s gglo.ist -o $*.gls $*.glo; fi
+if [ -f $*.glo ]; then makeindex -s $$(if [[ $< == *.dtx ]]; then echo gglo; else echo $*; fi).ist -o $*.gls $*.glo; fi
 $(TEX) -draftmode $<
 $(TEX) $<
 endef
