@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2017/08/24 v0.4.0 Style file for resume]
+%<package>  [2017/09/28 v0.4.1 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -178,6 +178,21 @@
 % \appendix
 %
 % \section{Implementation}
+%
+% \subsection{Packages}
+% Require \textsf{bibentry} package for publications.
+%    \begin{macrocode}
+\RequirePackage{bibentry}
+%    \end{macrocode}
+%
+% Require \textsf{hyperfix} package to resolve conflicts between \textsf{bibentry} and \textsf{hyperref}.
+%    \begin{macrocode}
+\RequirePackage{hyperfix}
+%    \end{macrocode}
+%
+% \changes{0.4.1}{2017/09/28}{
+%   Require \textsf{bibentry} and \textsf{hyperfix} packages
+% }
 %
 % \subsection{Configuration}
 %
@@ -508,8 +523,27 @@
 \newcounter{c@reference}
 \newcounter{c@publication}
 \newenvironment{publications}[1]{%
+%    \end{macrocode}
+% Define publication command to include publication information from a \BibTeX{} database.
+%    \begin{macrocode}
+  \newcommand{\publication}[2][]{%
+    \bibitem{##2} \bibentry{##2}
+    \if\relax\detokenize{##1}\relax%
+    \else%
+      ({\small ##1\% acceptance rate})%
+    \fi%
+  }%
+%    \end{macrocode}
+% \changes{0.4.1}{2017/09/28}{
+%   Add publication macro
+% }
+%
+% Start subsection for publications.
+%    \begin{macrocode}
   \subsection{#1}%
-  %
+%    \end{macrocode}
+% List for publications.
+%    \begin{macrocode}
   \raggedright%
   \begin{list}{%
       \@biblabel{\arabic{c@publication}}%
