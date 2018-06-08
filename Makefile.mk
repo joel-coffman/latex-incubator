@@ -64,8 +64,8 @@ veryclean: clean
 force: veryclean default
 
 
-ifneq ($(shell hg root 2> /dev/null),)
-VERSION:=$(shell hg id --id | sed 's/.*/\\\\providecommand{\\\\version}{&}/')
+ifneq ($(shell git rev-parse --show-toplevel 2> /dev/null),)
+VERSION:=$(shell git describe --abbrev=12 --always --dirty=+ | sed 's/.*/\\\\providecommand{\\\\version}{&}/')
 endif
 
 .PHONY: .version
