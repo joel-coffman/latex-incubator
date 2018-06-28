@@ -5,6 +5,6 @@ minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 schedule.sty:
-schedule.pdf: | email.sty
+schedule.pdf: | email.sty minted
 
 include ../Makefile.mk

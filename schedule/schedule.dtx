@@ -18,11 +18,15 @@
 %<*driver>
 \documentclass{ltxdoc}
 \input{.version}
-\usepackage{schedule}
+
 \usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{minted}
+
 \usepackage{email}
+\usepackage{minted-doc}
+\usepackage{schedule}
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -73,11 +77,39 @@
 %
 % \section{Usage}\label{section:usage}
 %
+% \DescribeMacro{class}
 % The |class| macro displays the current class meeting number.
 % It can be used to create a numbered list of meetings (or modules), e.g., as part of a table.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/class.out}
+% \class, \class, \class
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/class.out}
+% produces \input{minted/class.out}.
 %
-% Specify the meeting days for the class.
-% Most classes meet periodically (e.g., Monday, Wednesday, and Friday or Tuesday and Thursday).
+% \DescribeMacro{classdate}
+% The |classdate| macro displays the date of the current class meeting.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/classdate.out}
+% \classdate
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/classdate.out}
+% produces \input{minted/classdate.out}.
+% An optional argument (following the ISO 8601 \texttt{YYYY-MM-DD} format) specifies the date of that class---e.g.,
+% \begin{VerbatimOut}[gobble=1]{minted/classdate.out}
+% \classdate[2018-06-27]
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/classdate.out}
+% produces \input{minted/classdate.out}.
+%
+% \DescribeMacro{setclassdays}
+% Most classes meet periodically (e.g., Monday, Wednesday, and Friday), and |setclassdays| allows specifying the meeting days:
+% \begin{VerbatimOut}[gobble=1]{minted/setclassdays.out}
+% \setclassdays{Monday,Wednesday,Friday}
+% The first day is \classdate[2018-06-27], and the second is \classdate.
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/setclassdays.out}
+% As demonstrated by this example, the intervening days are automatically skipped: \input{minted/setclassdays.out}
 %
 % \StopEventually{
 %   \PrintChanges
@@ -219,6 +251,10 @@
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
+% Assume classes meet daily (Monday--Friday) by default.
+%    \begin{macrocode}
+\setclassdays{Monday,Tuesday,Wednesday,Thursday,Friday}
+%    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{module@par}
@@ -265,7 +301,7 @@
 % \end{macro}
 %
 % \begin{macro}{@parsedate}
-% Define a macro to parse dates in the form YYYY-MM-DD.
+% Define a macro to parse dates in the ISO 8601 \texttt{YYYY-MM-DD} format.
 %    \begin{macrocode}
 \def\@parsedate#1{\@@parsedate#1\relax}
 %    \end{macrocode}
