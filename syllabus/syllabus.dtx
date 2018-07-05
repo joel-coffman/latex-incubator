@@ -1,0 +1,296 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2016 by The Johns Hopkins University Applied Physics Laboratory
+% -----------------------------------------------------------------------------
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{email}
+\usepackage{minted-doc}
+\usepackage{syllabus}
+
+
+% geometry
+\geometry{pass}  % disable all geometry options for package documentation
+
+% minted
+\setminted{
+  autogobble,
+  breaklines,
+}
+
+
+% package version information
+\input{.version}
+
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+
+\begin{document}
+  \DocInput{syllabus.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2016/04/22}{Initial version}
+%
+% \GetFileInfo{syllabus.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{syllabus} package\thanks{This document
+% corresponds to \textsf{syllabus}~\fileversion-\version,
+% dated \filedate.}}
+% \author{Joel Coffman\\\email{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% The \textsf{syllabus} package facilitates typesetting syllabi.
+% This package is derived from the general syllabus template provided for faculty and staff in Johns Hopkins's Whiting School of Engineering.\footnote{%
+%   \url{http://engineering.jhu.edu/about/faculty-staff-resources/}%
+% }
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% Loading this package in the document's preamble will override the style defined by the document class---i.e.,
+% \begin{VerbatimOut}[gobble=2]{minted/usage.out}
+% \usepackage{syllabus}
+% \end{VerbatimOut}
+% \inputminted{latex}{minted/usage.out}
+% is sufficient.
+%
+% Use the |logo| macro to include the university logo in title.
+% The logo must be defined prior to invoking \mintinline{latex}{\maketitle}.
+%
+% {
+%   \bibliographystyle{apalike}
+%   \bibliography{../references}
+% }
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{syllabus}[%
+    2018/07/05 %
+    v0.1.0 %
+    Style file for syllabi%
+]
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Declare package options.
+%
+% \paragraph{unnumbered}
+% The \mintinline{latex}|unnumbered| option omits section numbers.
+% It's effect is similar to using \mintinline{latex}|\section*| instead of \mintinline{latex}|\section|.
+%
+% Declare conditional.
+%    \begin{macrocode}
+\newif\ifsyllabus@unnumbered\relax
+%    \end{macrocode}
+% Set conditional.
+%    \begin{macrocode}
+\DeclareOption{unnumbered}{%
+  \syllabus@unnumberedtrue%
+}%
+%    \end{macrocode}
+%
+% Process options.
+% \mintinline{latex}|\relax| avoids unnecessary lookahead due to the starred form of \mintinline{latex}|\ProcessOptions|.
+%    \begin{macrocode}
+\ProcessOptions\relax%
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%
+% \textsf{geometry} modifies the default margin size.
+% Use a 1-inch margin on all pages.
+%    \begin{macrocode}
+\RequirePackage[
+    margin=1in,
+]{geometry}
+%    \end{macrocode}
+%
+% \textsf{titlesec} simplifies customizing the format of section titles.
+%    \begin{macrocode}
+\RequirePackage{titlesec}
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{syllabus} package.
+% Most macros are redefinitions of existing macros to customize their style.
+%
+% \begin{macro}{logo}
+%   Define the |logo| command to allow the inclusion of the university logo above the title.
+%    \begin{macrocode}
+\newcommand*{\logo}[1]{%
+  \global\def\@logo{#1}%
+}
+%    \end{macrocode}
+%   Declare an ``empty'' logo in case it isn't provided.
+%    \begin{macrocode}
+\logo{}  % empty logo
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{maketitle}
+%   Redefine \mintinline{latex}|\maketitle| to include the university logo followed by the title (and optional thanks).
+%    \begin{macrocode}
+\renewcommand{\maketitle}{%
+%    \end{macrocode}
+%   Center the logo, title, author, and date.
+%    \begin{macrocode}
+  \begin{center}%
+    \let\footnote=\thanks\relax%
+    \@logo\par%
+    \vspace{2.5ex}%
+    \textbf{\@title}\par%
+    \@author\par%
+    \@date\par%
+  \end{center}%
+  \@thanks%
+%    \end{macrocode}
+%   Undefine macros related to \mintinline{latex}{\maketitle}.
+%    \begin{macrocode}
+  \let\logo=\relax\relax%
+  \let\title=\relax\relax%
+  \let\author=\relax\relax%
+  \let\date=\relax\relax%
+  \let\thanks=\relax\relax%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{section}
+%   Modify \mintinline{latex}|\section| to use a bold font.
+%    \begin{macrocode}
+\titleformat%
+    {\section}% command
+    [hang]% shape
+    {\bfseries}% format
+    {\ifsyllabus@unnumbered\else\thesection\fi}% label
+    {\ifsyllabus@unnumbered0em\else1em\fi}% sep
+    {}% before-code
+%    \end{macrocode}
+%  Use the equivalent of \mintinline{latex}|\bigbreak| prior to the section title.
+%    \begin{macrocode}
+\titlespacing*%
+    {\section}% command
+    {\z@}% left
+    {\bigskipamount}% before-sep
+    {\z@}% aftersep
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{subsection}
+%   Modify \mintinline{latex}|\subsection| to use a bold font.
+%    \begin{macrocode}
+\titleformat%
+  {\subsection}% command
+  [hang]% shape
+  {\bfseries}% format
+  {\ifsyllabus@unnumbered\else\thesubsection\fi}% label
+  {\ifsyllabus@unnumbered0em\else1em\fi}% sep
+  {}% before-code
+%    \end{macrocode}
+%  Use the equivalent of \mintinline{latex}|\medbreak| prior to the section title.
+%    \begin{macrocode}
+\titlespacing*%
+    {\subsection}% command
+    {\z@}% left
+    {\medskipamount}% before-sep
+    {\z@}% aftersep
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{subsubsection}
+%   Modify \mintinline{latex}|\subsubsection| to use a bold font.
+%    \begin{macrocode}
+\titleformat%
+  {\subsubsection}% command
+  [hang]% shape
+  {\bfseries}% format
+  {\ifsyllabus@unnumbered\else\thesubsubsection\fi}% label
+  {\ifsyllabus@unnumbered0em\else1em\fi}% sep
+  {}% before-code
+%    \end{macrocode}
+%  Use the equivalent of \mintinline{latex}|\smallbreak| prior to the section title.
+%    \begin{macrocode}
+\titlespacing*%
+    {\subsubsection}% command
+    {\z@}% left
+    {\smallskipamount}% before-sep
+    {\z@}% aftersep
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
