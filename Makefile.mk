@@ -1,3 +1,6 @@
+# use Bash as the shell when interpreting the Makefile
+SHELL := /bin/bash
+
 # function to determine the current (included) Makefile
 where-am-i = $(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
 # location of this Makefile (presumably the root directory of a project)
@@ -75,6 +78,6 @@ endif
 .PHONY: .version
 .version:
 	[ -f $@.tex ] || touch $@.tex
-	$(shell which echo) -e '$(VERSION)' | cmp -s $@.tex - || echo '$(VERSION)' > $@.tex
+	echo "$(VERSION)" | cmp -s $@.tex - || echo "$(VERSION)" > $@.tex
 
 .version.tex: .version
