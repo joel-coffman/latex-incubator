@@ -111,6 +111,18 @@
 % \inputminted[gobble=1]{latex}{minted/setclassdays.out}
 % As demonstrated by this example, the intervening days are automatically skipped: \input{minted/setclassdays.out}
 %
+% \DescribeMacro{setclassfrequency}
+% In many cases, |setclassdays| is sufficient to specify the class meetings, but occasionally classes have more complex schedules.
+% For example, classes that meet every other weekday---alternating between Monday, Wednesday, and Friday one week and Tuesday and Thursday the next week---can be specified by setting the frequency of class meetings to every two days.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/setclassfrequency.out}
+% \setclassdays{Monday,Tuesday,Wednesday,Thursday,Friday}
+% \setclassfrequency{2}
+% The first day is \classdate[2018-06-28], and the second is \classdate.
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/setclassfrequency.out}
+% Here, the Thursday meeting is followed by the next class day, which is a Monday: \input{minted/setclassfrequency.out}
+%
 % \StopEventually{
 %   \PrintChanges
 %   \PrintIndex
@@ -132,8 +144,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{schedule}[%
-    2016/10/06 %
-    v0.0.5 %
+    2018/07/05 %
+    v0.0.6 %
     A course outline provides an overview of the course schedule.%
 ]
 %    \end{macrocode}
@@ -246,7 +258,7 @@
 % Save the class's meeting days.
 % Global assignment is required so the information is accessible outside of enclosing groups.
 %    \begin{macrocode}
-  \global\def\classdays{#1}%
+  \global\def\schedule@class@days{#1}%
 %    \end{macrocode}
 %    \begin{macrocode}
 }%
@@ -255,6 +267,30 @@
 %    \begin{macrocode}
 \setclassdays{Monday,Tuesday,Wednesday,Thursday,Friday}
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{setclassfrequency}
+% Define the |setclassfrequency| macro.
+%    \begin{macrocode}
+\newcounter{schedule@class@frequency}%
+\newcommand*{\setclassfrequency}[1]{%
+%    \end{macrocode}
+% Save the class's meeting days.
+% Global assignment is required so the information is accessible outside of enclosing groups.
+%    \begin{macrocode}
+  \setcounter{schedule@class@frequency}{#1}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% Assume classes meet daily by default.
+% Note that the meeting days are specified using the |setclassdays| macro, and a class meeting will only appear on the appropriate day of the week.
+%    \begin{macrocode}
+\setclassfrequency{1}
+%    \end{macrocode}
+% \changes{0.0.6}{2018/07/05}{
+%   Add the `setclassfrequency' macro
+% }
 % \end{macro}
 %
 % \begin{macro}{module@par}
@@ -331,7 +367,7 @@
 %    \end{macrocode}
 % Iterate over the classdays.
 %    \begin{macrocode}
-  \foreach \day in \classdays {%
+  \foreach \day in \schedule@class@days {%
 %    \end{macrocode}
 % Check to see if the current day is a class meeting day.
 %    \begin{macrocode}
@@ -374,7 +410,8 @@
 %    \begin{macrocode}
     \isclassdayfalse%
     \foreach \i in {1,2,...,7}{%
-      \nextdate%
+      \addtocounter{datenumber}{\theschedule@class@frequency}%
+      \setdatebynumber{\thedatenumber}%
       \edef\current{\datedayname}%
       \checkclassday{\current}%
       \ifisclassday%
