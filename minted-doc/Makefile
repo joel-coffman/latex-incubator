@@ -1,8 +1,10 @@
 .PHONY: default
-default: minted minted-doc.sty minted-doc.pdf
+default: minted-doc.sty minted-doc.pdf
 
-.PHONY: minted
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
+
+minted-doc.sty:
+minted-doc.pdf: | email.sty minted-doc.sty minted
 
 include ../Makefile.mk

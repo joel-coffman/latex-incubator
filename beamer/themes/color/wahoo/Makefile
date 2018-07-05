@@ -1,6 +1,9 @@
 .PHONY: default
-default: $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
-         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
-         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+default: beamercolorthemewahoo.sty beamercolorthemewahoo.pdf
+
+beamercolorthemewahoo.sty:
+beamercolorthemewahoo.pdf: beamercolorthemewahoo.sty example.pdf | email.sty theme-doc.sty
+
+example.pdf: beamercolorthemewahoo.sty
 
 include ../../../../Makefile.mk

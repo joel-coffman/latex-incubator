@@ -1,10 +1,17 @@
 .PHONY: default
-default: $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
-         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
-         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+default: beamerthemejhuapl.edu.sty example.pdf beamerthemejhuapl.edu.pdf
 
-.PHONY: minted
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
+beamerthemejhuapl.edu.sty: | beamerthemejhu.edu.sty
+beamerthemejhuapl.edu.pdf: beamerthemejhuapl.edu.sty example.pdf | email.sty theme-doc.sty minted
+
+example.pdf: beamerthemejhuapl.edu.sty
+
 include ../../../../Makefile.mk
+
+# fall-back for Beamer themes
+beamerthemejhu.edu.sty:
+	$(MAKE) --directory=../jhu.edu $@
+

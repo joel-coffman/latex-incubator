@@ -1,11 +1,12 @@
 .PHONY: default
-default: minted \
-         $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
-         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
-         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+default: beamerouterthemelogo.sty beamerouterthemelogo.pdf
 
-.PHONY: minted
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
+
+beamerouterthemelogo.sty:
+beamerouterthemelogo.pdf: beamerouterthemelogo.sty example.pdf | email.sty theme-doc.sty minted
+
+example.pdf: beamerouterthemelogo.sty
 
 include ../../../../Makefile.mk

@@ -1,11 +1,10 @@
 .PHONY: default
-default: minted \
-         $(patsubst %.ins,%.sty,$(wildcard *.ins)) \
-         $(patsubst %.tex,%.pdf,$(wildcard *.tex)) \
-         $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+default: schedule.sty schedule.pdf
 
-.PHONY: minted
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
+
+schedule.sty:
+schedule.pdf: | email.sty
 
 include ../Makefile.mk

@@ -1,8 +1,10 @@
 .PHONY: default
-default: minted syllabus.sty syllabus.pdf
+default: syllabus.sty syllabus.pdf
 
-.PHONY: minted
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
+
+syllabus.sty:
+syllabus.pdf: syllabus.sty | email.sty minted
 
 include ../../Makefile.mk
