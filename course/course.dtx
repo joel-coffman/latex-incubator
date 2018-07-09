@@ -1,0 +1,178 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2016 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{course}
+\usepackage{minted-doc}
+
+
+\input{.version}
+
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+
+\begin{document}
+  \DocInput{course.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.0.1}{2018/07/09}{Initial version}
+%
+% \GetFileInfo{course.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{course} package\thanks{This
+% document corresponds to \textsf{course~\fileversion-\version, dated \filedate.}}}
+% \author{Joel Coffman\\\texttt{joel.coffman@jhu.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% Organization of course-specific metadata
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% Use \mintinline{latex}{\setcourse} to define the course metadata.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/setcourse.out}
+% \setcourse{
+%   description=\lipsum[1],
+%   number=Latin 101,
+%   title=Introductory Latin,
+%   term=AD 72,
+% }
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/setcourse.out}
+% \input{minted/setcourse.out}
+% might describe an introductory course in Latin.
+%
+% Use \mintinline{latex}{\course} to display the metadata.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/course.out}
+% \textbf{\course{number}: \course{title}} (\course{term})\\
+% \course{description}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/course.out}
+% produces\\
+% \input{minted/course.out}
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{course}[%
+    2018/07/09 %
+    v0.0.1 %
+    Organization of course-specific metadata%
+]
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%    \begin{macrocode}
+\RequirePackage{pgffor}
+\RequirePackage{pgfkeys}
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{course} package.
+%
+% \begin{macro}{course}
+%    \begin{macrocode}
+\newcommand*{\setcourse}[1]{%
+  \pgfkeys{%
+    /course/.cd,%
+    description/.store in=\course@description,%
+    description/.value required,%
+    number/.store in=\course@number,%
+    number/.value required,%
+    term/.store in=\course@term,%
+    term/.value required,%
+    title/.store in=\course@title,%
+    title/.value required,%
+    #1,%
+  }%
+  \ignorespaces%
+}
+\newcommand*{\course}[1]{%
+  \ifcsdef{course@#1}{%
+    \csname course@#1\endcsname%
+  }{%
+    \PackageError{course}{%
+      No course metadata for key `#1'%
+    }{}
+  }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
