@@ -5,7 +5,7 @@ minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 syllabus.sty:
-syllabus.pdf: syllabus.sty | email.sty minted
+syllabus.pdf: syllabus.sty | email.sty minted-doc.sty minted
 
 derivatives += syllabus.sty whiting.logo.small.horizontal.black.eps
 
