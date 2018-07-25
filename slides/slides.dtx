@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2017/10/06 v0.4.1 Slides package for presentations]
+  [2018/07/25 v0.4.2 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -431,6 +431,58 @@
 % }
 % \changes{0.2.7}{2015/06/23}{
 %   Add \texttt{uncover} to control which slides contain credits
+% }
+% \end{macro}
+%
+% \begin{macro}{frameimage}
+% The |frameimage| environment provides a simple way to create a frame with an image in the background (i.e., no header, footer, or other styling provided by the theme).
+%
+% Define an overlay-aware environment.
+%    \begin{macrocode}
+\newenvironment<>{imageframe}[2][]{%
+%    \end{macrocode}
+% Set the background template for the current slide.
+% (Must be in a group, which is implicit inside an environment, to avoid changing the template globally.)
+%    \begin{macrocode}
+  \usebackgroundtemplate{%
+%    \end{macrocode}
+% Center the image vertically and horizontally.
+%    \begin{macrocode}
+    \vbox to \paperheight{%
+      \vfil%
+      \hbox to \paperwidth{%
+        \hfil%
+%    \end{macrocode}
+% Scale the image so it is full-frame.
+% Because global options (e.g., |height| and |width|) may have been set for \textsf{graphicx}, use |adjustbox| to force the image to be at least the size of the frame.
+%    \begin{macrocode}
+        \adjustbox{%
+            min size={\paperwidth}{\paperheight},%
+            max size={\paperwidth}{\paperheight},%
+        }{%
+          \includegraphics[#1]{#2}%
+        }%
+        \hfil%
+      }%
+      \vfil%
+    }%
+  }%
+%    \end{macrocode}
+% Create a new frame, passing along the overlay specification (if present) and removing any content provided by the theme.
+%    \begin{macrocode}
+  \begin{frame}#3[plain]%
+%    \end{macrocode}
+%    \begin{macrocode}
+}{%
+%    \end{macrocode}
+%    \begin{macrocode}
+  \end{frame}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.4.2}{2018/07/24}{
+%   Add \texttt{imageframe} environment
 % }
 % \end{macro}
 %
