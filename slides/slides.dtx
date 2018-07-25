@@ -441,10 +441,16 @@
 %    \begin{macrocode}
 \newenvironment<>{imageframe}[2][]{%
 %    \end{macrocode}
+% Set the background color to black.
+%    \begin{macrocode}
+   \setbeamercolor{background canvas}{
+     bg=black,
+   }
+%    \end{macrocode}
 % Set the background template for the current slide.
 % (Must be in a group, which is implicit inside an environment, to avoid changing the template globally.)
 %    \begin{macrocode}
-  \usebackgroundtemplate{%
+  \setbeamertemplate{background}{%
 %    \end{macrocode}
 % Center the image vertically and horizontally.
 %    \begin{macrocode}
