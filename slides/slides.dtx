@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2018/07/25 v0.4.2 Slides package for presentations]
+  [2018/09/15 v0.4.3 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -164,6 +164,30 @@
     \end{manualtranscript}
   }
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{AtBeginSubsubsection}
+% Insert a frame that identifies the current section, subsection, and subsubsection in the presentation.
+% Any subsubsections in the current subsection are shown;
+% those in other subsections are hidden.
+%    \begin{macrocode}
+  \AtBeginSubsubsection[]
+  {
+    \begin{manualtranscript}
+      \begin{frame}{Outline}
+        \tableofcontents[
+            currentsection,
+            currentsubsection,
+            subsectionstyle=show/shaded/hide,
+            subsubsectionstyle=show/shaded/hide,
+        ]
+      \end{frame}
+    \end{manualtranscript}
+  }
+%    \end{macrocode}
+% \changes{0.4.3}{2018/09/15}{
+%   Add outline slides at the beginning of subsubsections
+% }
 % \end{macro}
 %    \begin{macrocode}
 }
