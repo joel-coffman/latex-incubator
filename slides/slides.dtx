@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2018/09/15 v0.4.3 Slides package for presentations]
+  [2018/09/19 v0.4.3 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -226,6 +226,14 @@
 %
 % \changes{0.2.2}{2015/03/23}{
 %   Remove \textsf{textpos} package dependency
+% }
+%
+% Require the \textsf{adjustbox} package for the |imageframe| macro.
+%    \begin{macrocode}
+\RequirePackage{adjustbox}
+%    \end{macrocode}
+% \changes{0.4.3}{2018/09/19}{
+%   Add dependency on \textsf{adjustbox} package
 % }
 %
 % Number frames in appendix separately -- i.e., frames in appendix do not count toward total number of frames in "main" presentation.
