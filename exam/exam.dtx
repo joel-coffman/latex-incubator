@@ -140,6 +140,14 @@
 % produces\\
 % \input{minted/fill-in-the-blank.out}
 %
+% The total number of points in the exam is available:
+% \begin{VerbatimOut}[gobble=1]{minted/totalpoints.out}
+%   This exam contains \total{points} \pointsname{\thepoints}.
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/totalpoints.out}
+% produces\\
+% \input{minted/totalpoints.out}
+%
 % \StopEventually{
 %  \PrintChanges
 %  \PrintIndex
@@ -158,8 +166,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2017/09/12 %
-    v0.2.1 %
+    2018/07/26 %
+    v0.2.2 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -211,6 +219,11 @@
 % \changes{0.2.0}{2016/09/04}{
 %    Require the \textsf{pgfkeys} package for key-value options
 % }
+%
+% The \textsf{totcount} package computes and displays the last value assigned to counters.
+%    \begin{macrocode}
+\RequirePackage{totcount}
+%    \end{macrocode}
 %
 % The \textsf{xcolor} package allows changing the text color in the answer key.
 %    \begin{macrocode}
@@ -477,6 +490,20 @@
 %    \end{macrocode}
 % \end{macro}
 %
+%    \begin{macrocode}
+\newtotcounter{points}
+\AtEndDocument{%
+  \typeout{                                                                  }%
+  \typeout{Exam Summary                                                      }%
+  \typeout{--------------------                                              }%
+  \typeout{Total points: \arabic{points}                                     }%
+  \typeout{                                                                  }%
+}
+%    \end{macrocode}
+% \changes{0.2.2}{2018/07/26}{
+%   Add support for displaying the total number of points.
+% }
+%
 % \begin{macro}{exam@points}
 % The \textsf{exam@points} macro is an internal macro that checks to see if the number of points has been specified, invoking \textsf{points} if so.
 %    \begin{macrocode}
@@ -491,6 +518,10 @@
 % Without this command, the points may appear in an unexpected location, particularly when inside a list environment.
 %    \begin{macrocode}
     \hspace{0em}%
+%    \end{macrocode}
+% Add the points to the total for the entire exam.
+%    \begin{macrocode}
+    \addtocounter{points}{#1}%
 %    \end{macrocode}
 % Use the \textsf{points} macro to show the number of points for the question.
 %    \begin{macrocode}
