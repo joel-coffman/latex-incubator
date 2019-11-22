@@ -166,7 +166,7 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2019/11/21 %
+    2019/11/22 %
     v0.2.3 %
     Style file for exams%
 ]
@@ -295,6 +295,11 @@
 % \begin{macro}{question}
 % Define the \textsf{question} environment.
 % The optional parameter is the number of points for the question.
+%
+% Length for the left margin---used to calculate paragraph shape (e.g., hangindent indent).
+%    \begin{macrocode}
+\newlength\question@leftmargin%
+%    \end{macrocode}
 %    \begin{macrocode}
 \newenvironment{question}[1][]{%
 %    \end{macrocode}
@@ -666,7 +671,10 @@
   \begin{question}[#1]%
     \leavevmode%
     \setbox0=\hbox{True or False\hspace{1em}}%
-    \hangindent=\wd0%
+    \question@leftmargin=\ifnum\@listdepth>0\leftmargin\else0pt\fi%
+    \parshape 2
+        \question@leftmargin \linewidth
+        \dimexpr\question@leftmargin+\wd0\relax \dimexpr\linewidth-\wd0\relax%
     \box0%
 }{%
     \par%
@@ -675,6 +683,9 @@
 %    \end{macrocode}
 % \changes{0.2.1}{2017/09/12}{
 %    Add the \texttt{true/false} environment
+% }
+% \changes{0.2.3}{2019/11/22}{
+%    Handle hanging indents when questions are numbered
 % }
 % \end{macro}
 %
