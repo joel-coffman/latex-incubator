@@ -166,8 +166,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2018/07/26 %
-    v0.2.2 %
+    2019/11/21 %
+    v0.2.3 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -188,6 +188,39 @@
 %    \begin{macrocode}
 }
 %    \end{macrocode}
+%
+% Declare a conditional for numbering the exam questions.
+%    \begin{macrocode}
+\newif\ifexam@option@numbering\relax
+%    \end{macrocode}
+% Declare the \textsf{numbering} option.
+%    \begin{macrocode}
+\DeclareOption{numbering}{
+%    \end{macrocode}
+% Declare a counter for the number of the question and a shadow copy to see if the counter has been modified.
+% If the counter is modified, its value should be one less than the \emph{next} question---i.e., to restart numbering at 1, the counter should be set to 0.
+%    \begin{macrocode}
+  \newcounter{question}%
+  \newcounter{@question}%
+%    \end{macrocode}
+% Set the \textsf{key} flag.
+%    \begin{macrocode}
+  \exam@option@numberingtrue
+%    \end{macrocode}
+% Restart numbering at the appendix.
+%    \begin{macrocode}
+  \AtBeginDocument{%
+    \xapptocmd{\appendix}{%
+      \setcounter{question}{0}%
+    }{}{}%
+  }%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.2.3}{2019/11/21}{
+%   Add the numbering option
+% }
 %
 % Process options.
 % \mintinline{latex}{\relax} avoids unnecessary lookahead due to the starred form of \mintinline{latex}{\ProcessOptions}.
@@ -233,6 +266,14 @@
 %    Require the \textsf{xcolor} package
 % }
 %
+% The \textsf{xpatch} package allows patching commands.
+%    \begin{macrocode}
+\RequirePackage{xpatch}
+%    \end{macrocode}
+% \changes{0.2.3}{2019/11/21}{
+%    Require the \textsf{xcolor} package
+% }
+%
 % \subsection{Configuration}
 %
 %    \begin{macrocode}
@@ -257,6 +298,21 @@
 %    \begin{macrocode}
 \newenvironment{question}[1][]{%
 %    \end{macrocode}
+% Number questions if requested.
+%    \begin{macrocode}
+  \ifexam@option@numbering%
+    \begin{enumerate}[
+        resume=question,%
+    ]
+      \ifnum\value{question}=\value{@question}%
+      \else%
+        \setcounter{\@listctr}{\value{question}}%
+      \fi%
+      \item%
+      \setcounter{question}{\value{\@listctr}}%
+      \setcounter{@question}{\value{question}}%
+  \fi%
+%    \end{macrocode}
 % Display the number of points, if specified.
 %    \begin{macrocode}
   \exam@points{#1}%
@@ -265,9 +321,11 @@
 %    \begin{macrocode}
   \ignorespaces%
 %    \end{macrocode}
-%
 %    \begin{macrocode}
 }{%
+  \ifexam@option@numbering%
+    \end{enumerate}%
+  \fi%
 }%
 %    \end{macrocode}
 %
