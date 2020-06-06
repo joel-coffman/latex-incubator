@@ -144,8 +144,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{schedule}[%
-    2018/07/05 %
-    v0.0.6 %
+    2020/06/06 %
+    v0.0.7 %
     A course outline provides an overview of the course schedule.%
 ]
 %    \end{macrocode}
@@ -436,7 +436,13 @@
 % \begin{macro}{module}
 % Define the |module| macro.
 %    \begin{macrocode}
-\newcommand{\module}[3][\thedateyear-\thedatemonth-\thedateday]{%
+\newcommand{\module}{%
+  \@ifstar\schedule@@module\schedule@module%
+}
+%    \end{macrocode}
+% Define the ``normal'' version (i.e., not starred).
+%    \begin{macrocode}
+\newcommand{\schedule@module}[3][\thedateyear-\thedatemonth-\thedateday]{%
 %    \end{macrocode}
 % Display the class number, date, lecture topics, and assignments.
 %    \begin{macrocode}
@@ -446,6 +452,21 @@
 %    \begin{macrocode}
 }%
 %    \end{macrocode}
+%
+% Define the starred version that omits the class number and date.
+%    \begin{macrocode}
+\newcommand{\schedule@@module}[2]{%
+%    \end{macrocode}
+% Display the lecture topics and assignments.
+%    \begin{macrocode}
+  & & \module@par{#1} & \module@par{#2}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}%
+%    \end{macrocode}
+% \changes{0.0.7}{2020/06/06}{
+%   Add starred version to omit number and date
+% }
 % \end{macro}
 %
 % \iffalse
