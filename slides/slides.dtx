@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2018/09/19 v0.4.3 Slides package for presentations]
+  [2020/08/10 v0.4.4 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -266,6 +266,16 @@
 %    \begin{macrocode}
 \ifslides@transcript
 %    \end{macrocode}
+% Patch Beamer's "show only notes" option to avoid invoking |\nofiles|, which prevents \LaTeX{} from writing any auxiliary files and, as a side effect, prevents glossaries, references, etc. from being displayed in the notes.
+%    \begin{macrocode}
+  \expandafter%
+  \xpatchcmd\csname KV@beamer@option@show only notes\endcsname{\nofiles}{}
+      {\PackageInfo{slides}
+           {Successfully patched Beamer's `show only notes' option}}
+      {\PackageInfo{slides}
+           {Error patching Beamer's `show only notes' option!
+            Auxiliary files will not be updated.}}
+%    \end{macrocode}
 % Show the notes (i.e., transcript) on the bottom of each handout page.
 %    \begin{macrocode}
   \setbeameroption{show only notes}
@@ -281,6 +291,9 @@
 %    \begin{macrocode}
 \fi
 %    \end{macrocode}
+% \changes{0.4.4}{2020/08/10}{
+%   Disable |\nofiles| invocation for notes
+% }
 %
 % \subsection{Templates}
 % Remove navigation symbols at the bottom of slides.
