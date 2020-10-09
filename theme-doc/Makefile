@@ -7,4 +7,4 @@ minted:
 theme-doc.sty: | minted-doc.sty
 theme-doc.pdf: | email.sty theme-doc.sty minted
 
-include ../Makefile.mk
+include $(shell git rev-parse --show-toplevel)/Makefile.mk

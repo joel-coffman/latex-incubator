@@ -7,4 +7,4 @@ minted:
 subtitle.sty:
 subtitle.pdf: | email.sty minted-doc.sty subtitle.sty minted
 
-include ../Makefile.mk
+include $(shell git rev-parse --show-toplevel)/Makefile.mk

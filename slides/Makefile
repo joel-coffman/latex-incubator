@@ -4,4 +4,4 @@ default: slides.sty slides.pdf
 slides.sty:
 slides.pdf: | email.sty theme-doc.sty
 
-include ../Makefile.mk
+include $(shell git rev-parse --show-toplevel)/Makefile.mk

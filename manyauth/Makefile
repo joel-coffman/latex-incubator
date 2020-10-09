@@ -7,4 +7,4 @@ minted:
 manyauth.sty:
 manyauth.pdf: | email.sty manyauth.sty minted
 
-include ../Makefile.mk
+include $(shell git rev-parse --show-toplevel)/Makefile.mk

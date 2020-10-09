@@ -9,7 +9,7 @@ beamerthemejhu.edu.pdf: beamerthemejhu.edu.sty example.pdf | email.sty theme-doc
 
 example.pdf: beamerthemejhu.edu.sty
 
-include ../../../../Makefile.mk
+include $(shell git rev-parse --show-toplevel)/Makefile.mk
 
 # fall-back for Beamer themes
 beamercolorthemebluejay.sty:
