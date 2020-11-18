@@ -2,8 +2,12 @@
 SHELL := /bin/bash
 
 
-packages := $(shell find * -mindepth 1 -name Makefile \
-                           -not -path "cookiecutter/*" -exec dirname {} \;)
+packages := $(shell comm -12 <(find . -name "*.dtx" -exec dirname {} \; | sort) <(find . -name "*.ins" -exec dirname {} \; | sort) | uniq)
+
+# remove the cookiecutter package
+cookiecutter := $(shell find ./cookiecutter/ -name Makefile -exec dirname {} \;)
+packages := $(filter-out $(cookiecutter),$(packages))
+
 
 .PHONY: default
 default: $(packages)
