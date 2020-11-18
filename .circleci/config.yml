@@ -15,8 +15,4 @@ jobs:
 
       - run:
           name: build packages
-          command: |
-            for package in $(find . -name Makefile \
-                                     -not -path "./cookiecutter/*"); do
-              make --directory="$(dirname "$package")";
-            done
+          command: make
