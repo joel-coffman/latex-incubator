@@ -1,10 +1,19 @@
 .PHONY: default
-default: hyperfix.sty hyperfix.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-hyperfix.sty:
-hyperfix.pdf: | email.sty hyperfix.sty minted-doc.sty minted
+$(packages):
+$(documentation): | email.sty hyperfix.sty minted-doc.sty minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

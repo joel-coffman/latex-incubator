@@ -1,10 +1,19 @@
 .PHONY: default
-default: theme-doc.sty theme-doc.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-theme-doc.sty: | minted-doc.sty
-theme-doc.pdf: | email.sty theme-doc.sty minted
+$(packages): | minted-doc.sty
+$(documentation): | email.sty theme-doc.sty minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

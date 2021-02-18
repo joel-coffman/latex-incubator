@@ -1,11 +1,20 @@
 .PHONY: default
-default: beamerouterthemelogo.sty beamerouterthemelogo.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-beamerouterthemelogo.sty:
-beamerouterthemelogo.pdf: beamerouterthemelogo.sty example.pdf | email.sty theme-doc.sty minted
+$(packages):
+$(documentation): beamerouterthemelogo.sty example.pdf | email.sty theme-doc.sty minted
 
 example.pdf: beamerouterthemelogo.sty
 

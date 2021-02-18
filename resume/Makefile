@@ -1,10 +1,19 @@
 .PHONY: default
-default: resume.sty resume.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-resume.sty:
-resume.pdf: | email.sty minted
+$(packages):
+$(documentation): | email.sty minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

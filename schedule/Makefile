@@ -1,10 +1,19 @@
 .PHONY: default
-default: schedule.sty schedule.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-schedule.sty:
-schedule.pdf: | email.sty minted
+$(packages):
+$(documentation): | email.sty minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

@@ -1,10 +1,19 @@
 .PHONY: default
-default: editing.sty editing.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-editing.sty:
-editing.pdf: editing.sty | email.sty minted-doc.sty minted
+$(packages):
+$(documentation): editing.sty | email.sty minted-doc.sty minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

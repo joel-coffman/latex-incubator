@@ -1,7 +1,16 @@
 .PHONY: default
-default: slides.sty slides.pdf
+default: packages documentation
 
-slides.sty:
-slides.pdf: | email.sty theme-doc.sty
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
+
+$(packages):
+$(documentation): | email.sty theme-doc.sty
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

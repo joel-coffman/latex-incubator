@@ -1,11 +1,20 @@
 .PHONY: default
-default: syllabus.sty syllabus.pdf
+default: packages documentation
+
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documentation
+documentation: $(documentation)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-syllabus.sty:
-syllabus.pdf: syllabus.sty | email.sty minted-doc.sty minted
+$(packages):
+$(documentation): syllabus.sty | email.sty minted-doc.sty minted
 
 derivatives += syllabus.sty whiting.logo.small.horizontal.black.eps
 
