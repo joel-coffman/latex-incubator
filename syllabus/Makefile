@@ -8,13 +8,13 @@ documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 packages: $(packages)
 
 .PHONY: documentation
-documentation: $(documentation)
+documentation: $(documentation) $(packages)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 $(packages):
-$(documentation): syllabus.sty | email.sty minted-doc.sty minted
+$(documentation): | email.sty minted-doc.sty minted
 
 derivatives += syllabus.sty whiting.logo.small.horizontal.black.eps
 

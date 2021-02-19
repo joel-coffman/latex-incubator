@@ -8,13 +8,13 @@ documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 packages: $(packages)
 
 .PHONY: documentation
-documentation: $(documentation)
+documentation: $(documentation) $(packages)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 $(packages):
-$(documentation): beamerouterthemelogo.sty example.pdf | email.sty theme-doc.sty minted
+$(documentation): example.pdf | email.sty hyperfix.sty minted-doc.sty theme-doc.sty minted
 
 example.pdf: beamerouterthemelogo.sty
 

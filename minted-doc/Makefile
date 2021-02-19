@@ -8,12 +8,12 @@ documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 packages: $(packages)
 
 .PHONY: documentation
-documentation: $(documentation)
+documentation: $(documentation) $(packages)
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 $(packages):
-$(documentation): | email.sty minted-doc.sty minted
+$(documentation): | email.sty minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk
