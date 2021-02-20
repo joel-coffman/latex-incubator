@@ -5,14 +5,15 @@ SHELL := /bin/bash
 where-am-i = $(word $(words $(MAKEFILE_LIST)), $(MAKEFILE_LIST))
 # location of this Makefile (presumably the root directory of a project)
 CWD := $(dir $(call where-am-i))
+CWD != realpath $(CWD) --relative-to=$(CURDIR)
 
 # empty recipes to avoid rebuilding Makefiles via implicit rules
 Makefile: ;
-$(CWD)Makefile.mk: ;
+$(CWD)/Makefile.mk: ;
 
 # add texmf directory to TEXINPUTS environment variable to find included files
 # (e.g., packages)
-TEXINPUTS := .:$(CWD)texmf//:${TEXINPUTS}
+TEXINPUTS := .:$(CWD)/texmf//:${TEXINPUTS}
 
 # define TEX as pdflatex
 TEX=TEXINPUTS=$(TEXINPUTS) pdflatex -shell-escape #-interaction batchmode
@@ -41,7 +42,8 @@ done
 endef
 
 DEPENDENCIES = $(wildcard *.bib) $(wildcard *.cls) $(wildcard *.sty) \
-               $(wildcard $(CWD)glossary.tex) $(wildcard $(CWD)references.bib)
+               $(wildcard $(CWD)/glossary.tex) \
+               $(wildcard $(CWD)/references.bib)
 
 %.pdf: %.dtx $(DEPENDENCIES) .version.tex
 	$(compile-doc)
@@ -53,7 +55,7 @@ DEPENDENCIES = $(wildcard *.bib) $(wildcard *.cls) $(wildcard *.sty) \
 	$(TEX) -draftmode $<
 
 # fall-back for other packages (must appear at end to avoid infinite recursion)
-%.sty: $(CWD)%
+%.sty: $(CWD)/%
 	$(MAKE) --directory=$< $@
 
 
