@@ -3,3 +3,5 @@ git
 python-pygments
 texlive-font-utils
 texlive-generic-extra
+unzip
+zip
