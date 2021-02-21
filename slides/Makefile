@@ -11,6 +11,6 @@ packages: $(packages)
 documentation: $(documentation)
 
 $(packages):
-$(documentation): | email.sty theme-doc.sty
+$(documentation): email.sty theme-doc.sty
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk

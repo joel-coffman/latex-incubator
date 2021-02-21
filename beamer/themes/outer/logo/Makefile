@@ -14,7 +14,8 @@ minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 $(packages):
-$(documentation): example.pdf | email.sty hyperfix.sty minted-doc.sty theme-doc.sty minted
+$(documentation): example.pdf
+$(documentation): email.sty hyperfix.sty minted-doc.sty theme-doc.sty | minted
 
 example.pdf: beamerouterthemelogo.sty
 

@@ -14,7 +14,7 @@ minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 $(packages):
-$(documentation): | email.sty minted-doc.sty minted
+$(documentation): email.sty minted-doc.sty | minted
 
 derivatives += syllabus.sty whiting.logo.small.horizontal.black.eps
 

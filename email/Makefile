@@ -14,6 +14,6 @@ minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
 $(packages):
-$(documentation): | hyperfix.sty minted-doc.sty minted
+$(documentation): hyperfix.sty minted-doc.sty | minted
 
 include $(shell git rev-parse --show-toplevel)/Makefile.mk
