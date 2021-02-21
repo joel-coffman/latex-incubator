@@ -45,7 +45,7 @@ DEPENDENCIES = $(wildcard *.bib) $(wildcard *.cls) $(wildcard *.sty) \
                $(wildcard $(CWD)/glossary.tex) \
                $(wildcard $(CWD)/references.bib)
 
-%.pdf: %.dtx $(DEPENDENCIES) .version.tex
+%.pdf: %.dtx %.sty $(DEPENDENCIES) .version.tex
 	$(compile-doc)
 
 %.pdf: %.tex $(DEPENDENCIES) $(shell find . -mindepth 2 -name "*.tex")

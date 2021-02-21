@@ -8,7 +8,7 @@ documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 packages: $(packages)
 
 .PHONY: documentation
-documentation: $(documentation) $(packages)
+documentation: $(documentation)
 
 $(packages):
 $(documentation): | email.sty theme-doc.sty
