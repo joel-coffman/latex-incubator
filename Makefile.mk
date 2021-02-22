@@ -41,14 +41,17 @@ while ( grep -q '^LaTeX Warning: Label(s) may have changed' $*.log ) do \
 done
 endef
 
-DEPENDENCIES = $(wildcard *.bib) $(wildcard *.cls) $(wildcard *.sty) \
+DEPENDENCIES = $(wildcard *.bib) \
                $(wildcard $(CWD)/glossary.tex) \
                $(wildcard $(CWD)/references.bib)
+
+PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 
 %.pdf: %.dtx %.sty $(DEPENDENCIES) .version.tex
 	$(compile-doc)
 
-%.pdf: %.tex $(DEPENDENCIES) $(shell find . -mindepth 2 -name "*.tex")
+%.pdf: %.tex $(DEPENDENCIES) $(PACKAGES) \
+       $(shell find . -mindepth 2 -name "*.tex")
 	$(compile-doc)
 
 %.sty: directory = $(dir $<)
