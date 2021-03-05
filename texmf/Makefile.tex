@@ -1,4 +1,16 @@
 # vim: syntax=make
+packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documents = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx)) \
+            $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+
+.PHONY: all
+all: packages documents
+
+.PHONY: packages
+packages: $(packages)
+
+.PHONY: documents
+documents: $(documents) $(packages)
 
 # use Bash as the shell when interpreting the Makefile
 SHELL := /bin/bash
