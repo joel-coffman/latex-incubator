@@ -9,8 +9,8 @@ cookiecutter := $(shell find ./cookiecutter/ -name Makefile -exec dirname {} \;)
 packages := $(filter-out $(cookiecutter),$(packages))
 
 
-.PHONY: default
-default: $(packages)
+.PHONY: all
+all: $(packages)
 
 .PHONY: $(packages)
 $(packages):
