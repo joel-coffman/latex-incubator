@@ -23,6 +23,7 @@
 \usepackage{exam}
 
 \usepackage{booktabs}
+\usepackage[inline]{enumitem}
 \usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{minted}
@@ -128,6 +129,32 @@
 %
 % The \textsf{prequestion} macro provides a hook to insert commands prior to the beginning of the \textsf{question} environment.
 % Users may use it to customize the \textsf{question} environment
+%
+% The \textsf{alert} macro may be used draw attention to specific text, such as negation.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{minted/alert.out}
+% \begin{question}
+%   Which of the following is \alert{not} a prime number?
+%
+%   \noindent
+%   \begin{enumerate*}[
+%     before={\vspace{-\parskip}},
+%     itemjoin={\hfill},
+%     noitemsep,
+%   ]
+%     \item 2
+%     \item 3
+%     \item 5
+%     \item 7
+%     \item 9
+%   \end{enumerate*}
+% \end{question}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{minted/alert.out}
+% produces\\
+% \input{minted/alert.out}
+% \noindent
+% Although the same effect can be achieved using \LaTeX's formatting macros directly, the \textsf{alert} ensures consistent formatting.
 %
 % The \textsf{blank} macro may be used to insert a ``blank''---useful for fill-in-the-blank questions.
 % For example,
@@ -286,6 +313,18 @@
 %    \begin{macrocode}
 \newsavebox{\answerbox}
 %    \end{macrocode}
+%
+% \begin{macro}{alert}
+% Define the \textsf{alert} macro.
+%    \begin{macrocode}
+\newcommand{\alert}[1]{%
+  \textbf{\emph{#1}}%
+}
+%    \end{macrocode}
+% \changes{0.3.0}{2021/03/10}{
+%   Add \textsf{alert} macro
+% }
+% \end{macro}
 %
 % \begin{macro}{question}
 % Define the \textsf{question} environment.
