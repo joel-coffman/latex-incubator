@@ -166,8 +166,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2019/11/22 %
-    v0.2.3 %
+    2021/03/10 %
+    v0.3.0 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -231,9 +231,9 @@
 % \subsection{Packages}
 % Load required packages.
 %
-%    \begin{macrocode}
-\RequirePackage{enumitem}
-%    \end{macrocode}
+% \changes{0.3.0}{2021/03/10}{
+%   Remove dependency on \textsf{enumitem} package
+% }
 %
 % The \textsf{environ} package simplifies collecting the body of an environment for passing it to a macro.
 %    \begin{macrocode}
@@ -275,11 +275,6 @@
 % }
 %
 % \subsection{Configuration}
-%
-%    \begin{macrocode}
-\setlist{%
-}%
-%    \end{macrocode}
 %
 % \subsection{Macros / Environments}
 % Define the lengths and boxes used by the \textsf{answer} environment.
