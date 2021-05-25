@@ -1,7 +1,11 @@
+curl
 ghostscript
 git
-python-pygments
+make
+python-pip
+texlive
 texlive-font-utils
 texlive-generic-extra
+texlive-latex-extra
 unzip
 zip
