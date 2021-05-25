@@ -11,8 +11,8 @@ jobs:
           name: install dependencies
           command: |
             apt update && apt install --no-install-recommends --yes \
-                    $(cat .ci/build/make/dependencies/apt.list)
-            pip install --requirement .ci/build/make/dependencies/python.list
+                    $(cat .ci/build/make/dependencies/buster/apt.list)
+            pip3 install --requirement .ci/build/make/dependencies/python.list
 
       - run:
           name: build packages
