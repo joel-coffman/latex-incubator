@@ -4,10 +4,6 @@ SHELL := /bin/bash
 
 packages := $(shell comm -12 <(find . -name "*.dtx" -exec dirname {} \; | sort) <(find . -name "*.ins" -exec dirname {} \; | sort) | uniq)
 
-# remove the cookiecutter package
-cookiecutter := $(shell find ./cookiecutter/ -name Makefile -exec dirname {} \;)
-packages := $(filter-out $(cookiecutter),$(packages))
-
 
 .PHONY: all
 all: $(packages)
