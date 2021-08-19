@@ -1,0 +1,227 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2021 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{email}
+\usepackage{minted-doc}
+
+\usepackage{anonymous}
+
+
+% minted
+\setminted{
+  autogobble,
+  breaklines,
+}
+
+
+\input{.version}
+
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{anonymous.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2021/08/18}{Initial version}
+%
+% \GetFileInfo{anonymous.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{anonymous} package\thanks{This
+% document corresponds to \textsf{anonymous~\fileversion-\version, dated \filedate.}}}
+% \author{Joel Coffman\\\email{joel.coffman@usafa.edu}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% This package facilitates anonymizing documents (e.g., conference papers or journal articles) to facilitate double-blind review.
+% In particular, it allows the anonymized and non-anonymized versions of the text to be written in parallel, and changing a package option is all that is required to use the anonymized (or non-anonymized) version.
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% Load this package in the document preamble---e.g.,
+% \begin{VerbatimOut}[gobble=2]{examples/usepackage.tex}
+% \usepackage[anonymize]{anonymous}
+% \end{VerbatimOut}
+% \inputminted{latex}{examples/usepackage.tex}
+% The |anonymize| option must be specified to anonymize text in the document.
+%
+% \DescribeMacro{\anonymize}
+% The |anonymize| macro facilitate the anonymization of short portions of text.
+% |\anonymize|\oarg{anonymized text}\marg{normal text} displays its optional argument when the document should be anonymized (using the |anonymize| package option) and its mandatory argument otherwise.
+% For example,  ^^A Marshall College was one of the schools where Indiana Jones was a professor (https://tinyurl.com/7mscwuk4)
+% \begin{VerbatimOut}[gobble=2]{examples/anonymize.tex}
+% With support from \anonymize[a coeducational college]{Marshall College}\dots
+% \end{VerbatimOut}
+% \inputminted{latex}{examples/anonymize.tex}
+% appears as
+% \begin{quote}
+%   \makeatletter\anonymous@anonymizetrue\makeatother
+%   \input{examples/anonymize.tex}
+% \end{quote}
+% when the |anonymize| package option has been specified and
+% appears as
+% \begin{quote}
+%   \input{examples/anonymize.tex}
+% \end{quote}
+% otherwise.
+% The optional argument may be omitted, in which case placeholder text is substituted.
+% For example,
+% \begin{VerbatimOut}[gobble=2]{examples/anonymize.tex}
+% With support from \anonymize{Marshall College}\dots
+% \end{VerbatimOut}
+% \inputminted{latex}{examples/anonymize.tex}
+% appears as
+% \begin{quote}
+%   \makeatletter\anonymous@anonymizetrue\makeatother
+%   \input{examples/anonymize.tex}
+% \end{quote}
+% (when the |anonymize| package option has been specified).
+% While the placeholder text is not ideal for readability, it clearly identifies that the text has been changed and the reason why.
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{anonymous}[%
+    2021/08/18 %
+    v0.1.0 %
+    Anonymize documents for double-blind review%
+]
+%    \end{macrocode}
+%
+% \subsection{Options}
+% Declare the \texttt{anonymize} option.
+%    \begin{macrocode}
+\newif\ifanonymous@anonymize
+\DeclareOption{anonymize}{
+  \anonymous@anonymizetrue
+}
+%    \end{macrocode}
+%
+% Process the options.
+%    \begin{macrocode}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%
+% Use the \textsf{textcomp} package for angle brackets (in the |\meta| command).
+%    \begin{macrocode}
+\RequirePackage{textcomp}
+%    \end{macrocode}
+%
+% \subsection{Configuration}
+% Allow ``anonymized'' to be hyphenated (automatically).
+%    \begin{macrocode}
+\hyphenation{anon-y-mized}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ifanonymous@anonymize%
+  \def\author#1{\global\def\@author{}}%
+\fi
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{anonymous} package.
+%
+% \begin{macro}{\anonymize}
+% Define the |\anonymize| macro.
+%    \begin{macrocode}
+\newcommand*{\anonymize}[2][\anonymize@meta{anonymized for peer review}]{%
+  \ignorespaces%
+  \ifanonymous@anonymize#1\else#2\fi%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\anonymize@meta}
+% Define the |\anonymize@meta| macro.
+%    \begin{macrocode}
+\providecommand*{\anonymize@meta}[1]{\textlangle#1\textrangle}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\meta}
+% If |\meta| hasn't already been defined, define it so it can be used for replacement text.
+%    \begin{macrocode}
+\ifdefined\meta%
+\else%
+  \let\meta=\anonymize@meta\relax%
+\fi%
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
