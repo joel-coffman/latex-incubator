@@ -2,16 +2,22 @@ version: 2
 jobs:
   build:
     docker:
-      - image: sunslayer/latex-docker
+      - image: debian:latest
 
     steps:
+      - run:
+          name: install Git
+          command: |
+            apt update && apt install --no-install-recommends --yes \
+                git
+
       - checkout
 
       - run:
           name: install dependencies
           command: |
             apt update && apt install --no-install-recommends --yes \
-                    $(cat .ci/build/make/dependencies/buster/apt.list)
+                    $(cat .ci/build/make/dependencies/bullseye/apt.list)
             pip3 install --requirement .ci/build/make/dependencies/python.list
 
       - run:
