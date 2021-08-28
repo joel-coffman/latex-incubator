@@ -1,0 +1,571 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2021 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{minted-doc}
+
+\usepackage{visualization}
+
+
+% enumitem
+\setlist{
+  noitemsep,
+}
+
+% minted
+\setminted{
+  autogobble,
+  breaklines,
+}
+
+% macros / environments
+\newcommand{\palette}[2]{%
+  \begin{tikzpicture}
+    \begin{axis}[
+        height=1in,
+        hide axis,
+        stack plots=x,
+        #1,
+    ]
+      \foreach \i in {1,2,...,#2} {
+        \addplot+[line width=1ex] coordinates {(0,1) (1,1)};
+      }
+    \end{axis}
+  \end{tikzpicture}%
+}
+
+
+
+\input{.version}
+
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{visualization.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2021/07/10}{Initial version}
+%
+% \GetFileInfo{visualization.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{visualization} package\thanks{This
+% document corresponds to \textsf{visualization~\fileversion-\version, dated \filedate.}}}
+% \author{Joel Coffman\\\texttt{jmc7tp@gmail.com}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% This package comprises data visualization libraries for use with \textsc{pgfplots}.
+% Each library defines styles to ensure that graphics are attractive, informative, and---most importantly---consistent.
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% This package defines libraries for specific types of visualizations; each library in turn defines various styles (using \mintinline{tex}{\pgfplotsset}).
+% All the libraries defined by this package are loaded automatically with this package.
+% Thus, a simple
+% \begin{VerbatimOut}[gobble=1]{examples/usepackage.tex}
+% \usepackage{visualization}
+% \end{VerbatimOut}
+% \inputminted{latex}{examples/usepackage.tex}
+% is sufficient to use all the styles.
+% Of course, each library may also be loaded individually using \mintinline{tex}{\usepgfplotslibrary}---e.g.,
+% \begin{VerbatimOut}[gobble=1]{examples/usepgfplotslibrary.tex}
+% \usepgfplotslibrary{categorical}
+% \end{VerbatimOut}
+% \inputminted{latex}{examples/usepgfplotslibrary.tex}
+% loads the library for categorical plots (e.g., bar graphs).
+%
+% \section{Libraries}\label{section:libraries}
+% This section describes the various libraries for data visualization with a variety of examples.
+%
+% \subsection{Colors}\label{section:colors}
+% The \textsf{colors} library defines styles for sequential, diverging, and qualitative data.
+% By default, the palette is both color blind and print friendly.
+%
+% \begin{description}
+%   \item[sequential]
+%   Use the sequential color palette for numeric or ordered data.
+%   By default, the sequential color palette supports five distinct values:
+%   \palette{visualization/colors/sequential}{5}
+%
+%   \item[diverging]
+%   Use the diverging color palette for numeric or ordered data with a meaningful central value (e.g., 0).
+%   The diverging color palette requires specifying the number of distinct values (e.g., five):
+%   \palette{visualization/colors/diverging=5}{5}
+%
+%   \item[qualitative]
+%   Use the qualitative palette for categorical data.
+%   By default, the qualitative color palette supports four distinct values:
+%   \palette{visualization/colors/qualitative}{4}
+% \end{description}
+%
+% \subsection{Categorical}\label{section:categorical}
+% The \textsf{categorical} library defines styles for categorical data.
+%
+% \subsubsection{Bar Graphs}
+%
+% \begin{VerbatimOut}[gobble=1]{examples/bar-graph-x.tex}
+% \begin{tikzpicture}
+%   \begin{axis}[
+%       xbar,
+%       bar graph/direction=horizontal,
+%       enlarge y limits=0.5,
+%       height=2in,
+%       width=0.5\linewidth,
+%       symbolic y coords={Green,Yellow},
+%       xlabel=Height (inches),
+%       xmin=0.0,
+%       xmax=26.0,
+%       y dir=reverse,
+%       ylabel=Seed Color,
+%       ytick=data,
+%       yticklabel style={
+%         rotate=90,
+%       },
+%       visualization/colors/qualitative=2,
+%   ]
+%     \addplot+ coordinates {
+%       (12.429,Green) +- (0.385,0)
+%       (13.034,Yellow) +- (0.669,0)
+%     };
+%     \addplot+ coordinates {
+%       (16.903,Green) +- (0.521,0)
+%       (19.277,Yellow) +- (0.859,0)
+%     };
+%
+%     \legend{Treatment\textsubscript{1},Treatment\textsubscript{2}}
+%   \end{axis}
+% \end{tikzpicture}
+% \end{VerbatimOut}
+% \begin{VerbatimOut}[gobble=1]{examples/bar-graph-y.tex}
+% \begin{tikzpicture}
+%   \begin{axis}[
+%       ybar,
+%       bar graph/direction=vertical,
+%       enlarge x limits=0.5,
+%       height=2in,
+%       width=0.5\linewidth,
+%       symbolic x coords={Green,Yellow},
+%       xlabel=Seed Color,
+%       xtick=data,
+%       ylabel=Height (inches),
+%       ymin=0.0,
+%       ymax=26.0,
+%       visualization/colors/qualitative=2,
+%   ]
+%     \addplot+ coordinates {
+%       (Green,12.429) +- (0,0.385)
+%       (Yellow,13.034) +- (0,0.669)
+%     };
+%     \addplot+ coordinates {
+%       (Green,16.903) +- (0,0.521)
+%       (Yellow,19.277) +- (0,0.859)
+%     };
+%
+%     \legend{Treatment\textsubscript{1},Treatment\textsubscript{2}}
+%   \end{axis}
+% \end{tikzpicture}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{examples/bar-graph-y.tex}
+% produces\\
+% \input{examples/bar-graph-x.tex}%
+% \input{examples/bar-graph-y.tex}\\
+%
+% \subsubsection{Likert}
+% Responses to Likert items may be visualized using a diverging stacked bar chart.  ^^A TODO: Add citation
+% For example,
+% \begin{VerbatimOut}[gobble=1]{examples/single-likert-item.tex}
+% \begin{tikzpicture}
+%   \begin{axis}[
+%       likert=5,
+%       enlarge y limits=false,  ^^A suppress axis enlargement
+%       hide x axis,
+%       width=\linewidth - 35pt,
+%       y=\baselineskip,
+%       ytick=data,
+%       yticklabels={,,},
+%   ]
+%     \addplot[offset] coordinates {(0.500,0)};
+%
+%     \addplot+ coordinates {(0.040,0)  [1]};  % Strongly disagree
+%     \addplot+ coordinates {(0.240,0)  [6]};  % Disagree
+%     \addplot+ coordinates {(0.440,0) [11]};  % Neutral
+%     \addplot+ coordinates {(0.240,0)  [6]};  % Agree
+%     \addplot+ coordinates {(0.040,0)  [1]};  % Strongly agree
+%   \end{axis}
+% \end{tikzpicture}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{examples/single-likert-item.tex}
+% produces\\
+% \input{examples/single-likert-item.tex}\\
+% Of course, a ``bare'' graph is unlikely to be of much use without the additional context provided by a legend and scale.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{examples/single-likert-item-with-legend-and-scale.tex}
+% \begin{tikzpicture}
+%   \begin{axis}[
+%       likert=5,
+%       enlarge y limits=false,  ^^A suppress axis enlargement
+%       width=\linewidth - 35pt,
+%       y=\baselineskip,
+%       ytick=data,
+%       yticklabels={,,},
+%   ]
+%     \addplot[offset] coordinates {(0.500,0)};
+%
+%     \addplot+ coordinates {(0.040,0)  [1]};  % Strongly disagree
+%     \addplot+ coordinates {(0.240,0)  [6]};  % Disagree
+%     \addplot+ coordinates {(0.440,0) [11]};  % Neutral
+%     \addplot+ coordinates {(0.240,0)  [6]};  % Agree
+%     \addplot+ coordinates {(0.040,0)  [1]};  % Strongly agree
+%
+%     \legend{Strongly disagree,Disagree,Neutral,Agree,Strongly agree};
+%   \end{axis}
+% \end{tikzpicture}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{examples/single-likert-item-with-legend-and-scale.tex}
+% produces\\
+% \input{examples/single-likert-item-with-legend-and-scale.tex}\\
+% Responses may be compared (e.g., pre- and post-treatment) by stacking them vertically.
+% For example,
+% \begin{VerbatimOut}[gobble=1]{examples/single-likert-item-comparison.tex}
+% \begin{tikzpicture}
+%   \begin{axis}[
+%       likert=5,
+%       symbolic y coords={Post,Pre},
+%       width=\linewidth - 35pt,
+%       ytick=data,
+%   ]
+%     \addplot[offset] coordinates {
+%       (0.250,Pre)
+%       (0.750,Post)
+%     };
+%
+%     \addplot+ coordinates {
+%       (0.125,Pre) [1]
+%       (0.000,Post) [0]
+%     };  % Strongly disagree
+%     \addplot+ coordinates {
+%       (0.375,Pre) [3]
+%       (0.125,Post) [1]
+%     };  % Disagree
+%     \addplot+ coordinates {
+%       (0.500,Pre) [4]
+%       (0.250,Post) [2]
+%     };  % Neutral
+%     \addplot+ coordinates {
+%       (0.000,Pre) [0]
+%       (0.500,Post) [4]
+%     };  % Agree
+%     \addplot+ coordinates {
+%       (0.000,Pre) [0]
+%       (0.125,Post) [1]
+%     };  % Strongly agree
+%   \end{axis}
+% \end{tikzpicture}
+% \end{VerbatimOut}
+% \inputminted[gobble=1]{latex}{examples/single-likert-item-comparison.tex}
+% produces\\
+% \input{examples/single-likert-item-comparison.tex}
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{visualization}[%
+    2021/08/26 %
+    v0.1.0 %
+    Data visualization library%
+]
+%    \end{macrocode}
+%
+% \subsection{Packages}
+% Load packages required by this one.
+%    \begin{macrocode}
+\RequirePackage{pgfplots}
+%    \end{macrocode}
+%
+% \subsubsection{Libraries}
+% Load the libraries defined by this package.
+%    \begin{macrocode}
+\usepgfplotslibrary{categorical}
+\usepgfplotslibrary{colors}
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{visualization} package.
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \subsection{Libraries}
+%
+% \iffalse
+%<*tikzlibrarypgfplots.categorical.code.tex>
+% \fi
+%
+% \subsubsection{Categorical}
+% This section documents the implementation of the \textsf{categorical} library.
+%
+%    \begin{macrocode}
+\RequirePackage{relsize}
+
+\usepgfplotslibrary{colors}
+
+\pgfplotsset{
+  compat=1.16,
+  % styles
+  bar graph/.style={
+    axis x line=bottom,
+    axis y line*=left,
+    error bars/error bar style={
+      black,
+      opacity=0.5,
+    },
+    every axis plot/.append style={
+      draw,
+      fill,
+      fill opacity=0.9,
+    },
+    legend cell align=left,
+    legend style={
+      anchor=south,
+      at={(0.5,1.0)},
+      draw=none,  % no bounding box
+      fill=none,  % transparent background
+      font=\smaller,
+      legend columns=-1,
+      /tikz/every even column/.append style={
+        column sep=0.25em,
+      },
+    },
+    nodes near coords={
+      \pgfmathprintnumber[
+          fixed zerofill,
+          precision=3,
+      ]\pgfplotspointmeta%
+    },
+    nodes near coords style={
+      color=black,
+      font=\smaller[2],
+      text opacity=0.85,
+    },
+    tick label style={
+      font=\smaller,
+    },
+    typeset ticklabels with strut,
+    x axis line style=-,
+    xlabel near ticks,
+    ylabel near ticks,
+    visualization/colors/qualitative,
+  },
+  bar graph/direction/.is choice,
+  bar graph/direction/horizontal/.style={
+    bar graph,
+    error bars/x dir=both,
+    error bars/x explicit,
+    nodes near coords style={
+      yshift=0.75ex,
+    },
+  },
+  bar graph/direction/vertical/.style={
+    bar graph,
+    error bars/y dir=both,
+    error bars/y explicit,
+    nodes near coords align=horizontal,
+    nodes near coords style={
+      rotate=90,
+      yshift=0.75ex,  % must appear *after* rotate
+    },
+  },
+  diverging stacked/.style={
+    stack negative=separate,
+    bar graph,
+    enlarge y limits=0.75,
+    every axis plot/.append style={
+      draw,
+      fill,
+      fill opacity=0.9,
+      typeset ticklabels with strut,
+    },
+    nodes near coords,
+    nodes near coords style={
+    },
+    offset/.style={
+      draw=none,
+      fill=none,
+      forget plot,
+    },
+    visualization/colors/diverging=#1,
+  },
+  likert/.style={
+    xbar stacked,
+    diverging stacked=#1,
+    axis line style={
+      opacity=0.50,
+    },
+    bar width=\baselineskip,
+    enlarge y limits={abs=\baselineskip},
+    label style={
+      font=\smaller,
+    },
+    legend style={
+      font=\smaller,
+      legend columns=-1,
+    },
+    point meta=explicit symbolic,
+    scale only axis,
+    tick label style={
+      font=\smaller,
+    },
+    xmin=0.00,
+    xmax=2.00,
+    xtick={0.00,0.50,1.00,1.50,2.00},
+    xticklabels={$-100\%$,$-50\%$,$0\%$,$+50\%$,$+100\%$},
+    x tick label style={
+      text opacity=0.5,
+    },
+    y=1.3\baselineskip,
+    y axis line style={
+      draw=none,
+    },
+    y tick label style={
+      anchor=west,
+      xshift=-1.75em,
+    },
+    y tick style={
+      draw=none,
+    },
+  },
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</tikzlibrarypgfplots.categorical.code.tex>
+% \fi
+%
+% \iffalse
+%<*tikzlibrarypgfplots.colors.code.tex>
+% \fi
+%
+% \subsubsection{Colors}
+% This section documents the implementation of the \textsf{bargraph} library.
+%
+% Use colorblind and print friendly palettes from ColorBrewer\footnote{\url{https://colorbrewer2.org/}} when possible.
+%    \begin{macrocode}
+\usepgfplotslibrary{colorbrewer}
+
+\pgfplotsset{
+  visualization/colors/.is family,
+  visualization/colors,
+  diverging/.value required,
+  diverging/.style={
+    cycle list/RdYlBu-#1,
+  },
+  qualitative/.default=4,
+  qualitative/.style={
+    cycle list/Paired-#1,
+  },
+  sequential/.default=5,
+  sequential/.style={
+    cycle list/YlGnBu-#1,
+  },
+}
+%    \end{macrocode}
+%
+% Define custom cycle lists for the qualitative palette.
+% \textsc{pgfplots} does not define a ``Paired'' palette with only two colors.
+% These palettes rearrange the colors to use light blue, light green, and light red, which appear to be colorblind safe.\footnote{\url{https://davidmathlogic.com/colorblind/}}
+%
+%    \begin{macrocode}
+\pgfplotscreateplotcyclelist{Paired-2}{
+  {Paired-A},
+  {Paired-C}
+}
+\pgfplotscreateplotcyclelist{Paired-3}{
+  {Paired-A},
+  {Paired-C},
+  {Paired-E}
+}
+\pgfplotsset{
+  cycle list/Paired-2/.style={
+    cycle list name=Paired-2,
+  },
+  cycle list/Paired-3/.style={
+    cycle list name=Paired-3,
+  },
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</tikzlibrarypgfplots.colors.code.tex>
+% \fi
+%
+% \Finale
+\endinput

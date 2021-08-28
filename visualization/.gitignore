@@ -1,0 +1,5 @@
+# TeX code used in documentation
+examples/
+
+# PGFPlots libraries
+tikzlibrarypgfplots.*.code.tex
