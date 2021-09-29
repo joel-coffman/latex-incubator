@@ -19,4 +19,4 @@ $(documentation): email.sty hyperfix.sty minted-doc.sty theme-doc.sty | minted
 
 example.pdf: beamerouterthemelogo.sty
 
-include $(shell git rev-parse --show-toplevel)/Makefile.mk
+include $(shell git rev-parse --show-toplevel)/texmf/Makefile.tex

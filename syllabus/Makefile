@@ -18,4 +18,4 @@ $(documentation): email.sty minted-doc.sty | minted
 
 derivatives += syllabus.sty whiting.logo.small.horizontal.black.eps
 
-include $(shell git rev-parse --show-toplevel)/Makefile.mk
+include $(shell git rev-parse --show-toplevel)/texmf/Makefile.tex
