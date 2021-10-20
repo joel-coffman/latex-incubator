@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2020/08/10 v0.4.4 Slides package for presentations]
+  [2021/10/20 v0.5.0 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -113,11 +113,9 @@
 %    \begin{macrocode}
   \AtBeginPart
   {
-    \begin{manualtranscript}
-      \begin{frame}
-        \partpage
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}
+      \partpage
+    \end{frame}
   }
 %    \end{macrocode}
 % \changes{0.2.3}{2015/08/15}{
@@ -132,15 +130,13 @@
 %    \begin{macrocode}
   \AtBeginSection[]
   {
-    \begin{manualtranscript}
-      \begin{frame}{Outline}
-        \tableofcontents[
-            currentsection,
-            currentsubsection,
-            subsubsectionstyle=show/shaded/hide,
-        ]
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -152,16 +148,14 @@
 %    \begin{macrocode}
   \AtBeginSubsection[]
   {
-    \begin{manualtranscript}
-      \begin{frame}{Outline}
-        \tableofcontents[
-            currentsection,
-            currentsubsection,
-            subsectionstyle=show/shaded/hide,
-            subsubsectionstyle=show/shaded/hide,
-        ]
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsectionstyle=show/shaded/hide,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -173,16 +167,14 @@
 %    \begin{macrocode}
   \AtBeginSubsubsection[]
   {
-    \begin{manualtranscript}
-      \begin{frame}{Outline}
-        \tableofcontents[
-            currentsection,
-            currentsubsection,
-            subsectionstyle=show/shaded/hide,
-            subsubsectionstyle=show/shaded/hide,
-        ]
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsectionstyle=show/shaded/hide,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
   }
 %    \end{macrocode}
 % \changes{0.4.3}{2018/09/15}{
@@ -279,14 +271,6 @@
 % Show the notes (i.e., transcript) on the bottom of each handout page.
 %    \begin{macrocode}
   \setbeameroption{show only notes}
-%    \end{macrocode}
-% Insert notes on every slide.
-% The |manualtranscript| environment disables the notes;
-% ending the environment is the same as enabling the notes.
-%    \begin{macrocode}
-  \AtBeginDocument{%
-    \endmanualtranscript%
-  }%
 %    \end{macrocode}
 %    \begin{macrocode}
 \fi
@@ -620,31 +604,9 @@
 % \end{macro}
 %
 % \begin{macro}{manualtranscript}
-% The |manualtranscript| environment disables the automatic creation of a blank transcript for each slide.
-%
-%    \begin{macrocode}
-\newenvironment{manualtranscript}{%
-  \xpatchcmd{\beamer@framenotesbegin}{\beamer@notes{{}}}{\beamer@notes{}}{%
-    \PackageInfo{slides}{%
-      Successfully patched beamer@notes in beamer@framenotesbegin%
-    }%
-  }{%
-    \PackageInfo{slides}{%
-      Error patching beamer@framenotesbegin: notes may not appear on all slides%
-    }%
-  }
-}{%
-  \xpatchcmd{\beamer@framenotesbegin}{\beamer@notes{}}{\beamer@notes{{}}}{%
-    \PackageInfo{slides}{%
-      Successfully patched beamer@notes in beamer@framenotesbegin%
-    }%
-  }{%
-    \PackageInfo{slides}{%
-      Error patching beamer@framenotesbegin: superfluous notes may appear on slides%
-    }%
-  }
-}
-%    \end{macrocode}
+% \changes{0.5.0}{2021/10/20}{
+%   Remove manualtranscript environment
+% }
 % \end{macro}
 %
 % \subsection*{Beamer Internals}
