@@ -126,7 +126,7 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{course}[%
-    2019/06/21 %
+    2020/10/23 %
     v0.0.2 %
     Organization of course-specific metadata%
 ]
@@ -141,7 +141,8 @@
 % \subsection{Macros}
 % This section describes the macros in the \textsf{course} package.
 %
-% \begin{macro}{course}
+% \begin{macro}{setcourse}
+% The |setcourse| macro stores the course metadata (e.g., title and description) so it can be used later.
 %    \begin{macrocode}
 \newcommand*{\setcourse}[1]{%
   \pgfkeys{%
@@ -158,6 +159,12 @@
   }%
   \ignorespaces%
 }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{course}
+% The |course| macro retrieves the course metadata.
+%    \begin{macrocode}
 \newcommand*{\course}[1]{%
   \ifcsdef{course@#1}{%
     \csname course@#1\endcsname%
