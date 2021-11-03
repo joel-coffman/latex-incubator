@@ -56,8 +56,7 @@ PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 %.pdf: %.dtx %.sty $(DEPENDENCIES) .version.tex
 	$(compile-doc)
 
-%.pdf: %.tex $(DEPENDENCIES) $(PACKAGES) \
-       $(shell find . -mindepth 2 -name "*.tex")
+%.pdf: %.tex $(DEPENDENCIES) $(PACKAGES)
 	$(compile-doc)
 
 %.sty: directory = $(dir $<)
