@@ -612,22 +612,6 @@
 % \subsection*{Beamer Internals}
 %
 % \begin{macro}{beamer@outsideframenote}
-% Patch the \mintinline{latex}{note} macro to correct the text width for different aspect ratios.
-%    \begin{macrocode}
-\xpatchcmd{\beamer@outsideframenote}
-    {\textwidth=10.8cm}
-    {\textwidth=\dimexpr\paperwidth - (\Gm@lmargin + \Gm@rmargin)}
-    {%
-      \PackageInfo{slides}{%
-        Successfully patched textwidth in beamer@outsideframenote%
-      }%
-    }%
-    {%
-      \PackageWarning{slides}{%
-        Error patching beamer@outsideframenote; textwidth may be incorrect%
-      }%
-    }%
-%    \end{macrocode}
 % Patch the \mintinline{latex}{note} macro to add indentation for paragraphs after the first and to append a \mintinline{latex}{\par} for consistent spacing across paragraphs.
 % (Note: The unilateral increase of \mintinline{latex}{\parindent} may not be appropriate in all situations.)
 %    \begin{macrocode}
