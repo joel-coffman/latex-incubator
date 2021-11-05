@@ -48,8 +48,8 @@ external := $(basename $(shell find . -name "*.url"))
 .SECONDARY: $(external)
 
 DEPENDENCIES = $(wildcard *.bib) $(external) \
-               $(wildcard $(CWD)/include/*.bib) \
-               $(wildcard $(CWD)/include/*.tex)
+               $(wildcard $(CWD)/texmf/include/*.bib) \
+               $(wildcard $(CWD)/texmf/include/*.tex)
 
 PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 
