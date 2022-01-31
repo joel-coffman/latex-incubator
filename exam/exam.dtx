@@ -193,8 +193,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2021/03/10 %
-    v0.3.0 %
+    2022/01/31 %
+    v0.3.1 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -302,6 +302,14 @@
 % }
 %
 % \subsection{Configuration}
+%
+% Define the color for answers in the key.
+%    \begin{macrocode}
+\colorlet{answer}{blue}
+%    \end{macrocode}
+% \changes{0.3.1}{2022/01/31}{
+%   Use blue for answers in the key
+% }
 %
 % \subsection{Macros / Environments}
 % Define the lengths and boxes used by the \textsf{answer} environment.
@@ -546,7 +554,7 @@
     \parbox{\exam@answer@width}{%
       \vbox{%
         % prevent vertical space when changing color (see http://goo.gl/FCfjdB)
-        \leavevmode\color{lightgray}%
+        \leavevmode\color{answer}%
         #2%
       }%
     }%
