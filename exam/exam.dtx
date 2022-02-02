@@ -34,6 +34,12 @@
 \usepackage[key]{exam}
 
 
+% enumitem
+\setlist{
+  noitemsep,
+}
+
+
 \input{.version}
 
 
@@ -176,6 +182,20 @@
 % \inputminted[gobble=1]{latex}{minted/totalpoints.out}
 % produces\\
 % \input{minted/totalpoints.out}
+% \section{Types of Questions}
+%
+% \subsection{Multiple Choice}
+%
+% \begin{multiple choice}
+%   Who was the first president of the United States?
+%   \begin{answers}
+%     \item Thomas Jefferson
+%     \item\correct George Washington
+%     \item Benjamin Franklin
+%     \item John Adams
+%     \item Roger Sherman
+%   \end{answers}
+% \end{multiple choice}
 %
 % \StopEventually{
 %  \PrintChanges
@@ -195,8 +215,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2022/01/31 %
-    v0.3.1 %
+    2022/02/02 %
+    v0.3.2 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -730,6 +750,62 @@
 % }
 % \changes{0.2.3}{2019/11/22}{
 %    Handle hanging indents when questions are numbered
+% }
+% \end{macro}
+%
+% \begin{macro}{multiple choice}
+% Define the \mintinline{latex}{multiple choice} environment.
+%    \begin{macrocode}
+\newenvironment{multiple choice}[1][]{%
+%    \end{macrocode}
+% Save the current color.
+%    \begin{macrocode}
+  \colorlet{exam/color/default}{.}
+%    \end{macrocode}
+% Define macros for correct and incorrect answers.
+% Correct answers use the color of the answer key; incorrect answers use the default color.
+%    \begin{macrocode}
+  \newcommand{\correct}{%
+    \ifexam@option@key%
+      \color{answer}%
+    \fi%
+  }
+  \newcommand{\incorrect}{%
+    \ifexam@option@key%
+      \color{exam/color/default}%
+    \fi%
+  }
+%    \end{macrocode}
+% Define the \mintinline{latex}{answers} environment.
+% Answers always use capital letters.
+%    \begin{macrocode}
+  \newenvironment{answers}{%
+    \begin{enumerate}[
+        before={
+          \xapptocmd{\item}{\incorrect}{}{}
+        },
+        label=\Alph*.,
+    ]
+  }{%
+    \end{enumerate}
+  }
+%    \end{macrocode}
+% Begin the \mintinline{latex}{question} environment.
+%    \begin{macrocode}
+  \begin{question}[#1]%
+%    \end{macrocode}
+%    \begin{macrocode}
+}{%
+%    \end{macrocode}
+% End the \mintinline{latex}{question} environment.
+%    \begin{macrocode}
+  \end{question}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.3.2}{2022/01/31}{
+%    Add the \texttt{multiple choice} environment
 % }
 % \end{macro}
 %
