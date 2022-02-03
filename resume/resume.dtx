@@ -33,14 +33,25 @@
 %
 %<*driver>
 \documentclass{ltxdoc}
-\let\oldmaketitle=\maketitle\relax
-\input{.version}
-\usepackage{resume}
-\let\maketitle=\oldmaketitle\relax
+
 \usepackage{minted}
 \usepackage{url}
+
 \usepackage{email}
+
+\let\oldmaketitle=\maketitle\relax
+\usepackage{resume}
+\let\maketitle=\oldmaketitle\relax
+
+
+% geometry
 \geometry{reset}  % use settings from before loading geometry package
+
+
+% package version information
+\input{.version}
+
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
