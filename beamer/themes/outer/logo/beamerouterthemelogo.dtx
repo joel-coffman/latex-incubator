@@ -24,9 +24,6 @@
 \documentclass{ltxdoc}
 \usepackage{beamerarticle}
 
-\input{.version}
-\usepackage{beamerouterthemelogo}
-
 \usepackage{glossaries}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -36,6 +33,8 @@
 \usepackage{email}
 \usepackage{theme-doc}
 
+\usepackage{beamerouterthemelogo}
+
 % glossaries
 \loadglsentries{acronyms}
 
@@ -43,6 +42,10 @@
 \setminted{
   breaklines,
 }
+
+
+% package version information
+\input{.version}
 
 
 \EnableCrossrefs
