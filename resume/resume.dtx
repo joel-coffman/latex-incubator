@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2021/12/23 v0.4.3 Style file for resume]
+%<package>  [2022/02/11 v0.4.4 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -335,6 +335,16 @@
   \let\thesection=\relax
 }
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{@seccntformat}
+% Suppress the quad that appears between the (non-existent) number and the section title.
+%    \begin{macrocode}
+\def\@seccntformat#1{}
+%    \end{macrocode}
+% \changes{0.4.4}{2022/02/11}{
+%   Suppress quad in section titles
+% }
 % \end{macro}
 %
 % \begin{macro}{section}
