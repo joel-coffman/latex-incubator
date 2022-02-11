@@ -321,32 +321,6 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{thesection}
-% Overwrite \texttt{\textbackslash thesection} to remove numbers in section headers.
-%    \begin{macrocode}
-\let\thesection=\relax
-%    \end{macrocode}
-% The appendix changes the arabic numbers to letters in section headers.
-% Hook the appendix to remove letters from the section headers.
-%    \begin{macrocode}
-\let\resume@old@appendix=\appendix\relax
-\renewcommand{\appendix}{
-  \resume@old@appendix
-  \let\thesection=\relax
-}
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{@seccntformat}
-% Suppress the quad that appears between the (non-existent) number and the section title.
-%    \begin{macrocode}
-\let\@seccntformat=\@gobble\relax
-%    \end{macrocode}
-% \changes{0.4.4}{2022/02/11}{
-%   Suppress quad in section titles
-% }
-% \end{macro}
-%
 % \begin{macro}{section}
 % Modify the section command to omit the number.
 %
@@ -363,10 +337,13 @@
   \nopagebreak\hrule\nopagebreak%
 }
 \renewcommand*{\section}{%
-  \@startsection{section}{1}{\z@}%
-      {2ex \@plus 0.35ex \@minus 0.1ex}%
-      {1ex \@plus 0.1ex}%
-      {\resume@section}%
+  \def\resume@startsection{%
+    \@startsection{section}{1}{\z@}%
+        {2ex \@plus 0.35ex \@minus 0.1ex}%
+        {1ex \@plus 0.1ex}%
+        {\resume@section}*%
+  }%
+  \@ifstar\resume@startsection\resume@startsection%
 }%
 %    \end{macrocode}
 % \changes{0.1.1}{2015/01/25}{
@@ -387,6 +364,9 @@
 % \changes{0.4.2}{2020/03/09}{
 %   Increase vertical space around section title
 % }
+% \changes{0.4.4}{2022/02/11}{
+%   Always use starred variant of section
+% }
 % \end{macro}
 %
 % \begin{macro}{subsection}
@@ -396,10 +376,13 @@
   \bfseries\MakeUppercase{#1}%
 }
 \renewcommand{\subsection}{%
-  \@startsection{subsection}{2}{\z@}%
-      {1ex \@plus 0.2ex \@minus 0.075ex}%
-      {0.5ex \@plus 0.1ex}%
-      {\resume@subsection}*
+  \def\resume@startsection{%
+    \@startsection{subsection}{2}{\z@}%
+        {1ex \@plus 0.2ex \@minus 0.075ex}%
+        {0.5ex \@plus 0.1ex}%
+        {\resume@subsection}*%
+  }%
+  \@ifstar\resume@startsection\resume@startsection%
 }
 %    \end{macrocode}
 % \changes{0.1.2}{2015/01/25}{
@@ -417,6 +400,9 @@
 % \changes{0.4.2}{2020/03/09}{
 %   Increase vertical space around subsection title
 % }
+% \changes{0.4.4}{2022/02/11}{
+%   Always use starred variant of subsection
+% }
 % \end{macro}
 %
 % \begin{macro}{subsubsection}
@@ -426,10 +412,13 @@
   \bfseries #1%
 }
 \renewcommand{\subsubsection}{%
-  \@startsection{subsubsection}{3}{\z@}%
-      {0.5ex \@plus 0.1ex \@minus 0.1ex}%
-      {0.25ex \@plus 0.05ex}%
-      {\resume@subsubsection}*
+  \def\resume@startsection{%
+    \@startsection{subsubsection}{3}{\z@}%
+        {0.5ex \@plus 0.1ex \@minus 0.1ex}%
+        {0.25ex \@plus 0.05ex}%
+        {\resume@subsubsection}*%
+  }
+  \@ifstar\resume@startsection\resume@startsection%
 }
 %    \end{macrocode}
 % \changes{0.1.2}{2015/01/25}{
@@ -446,6 +435,9 @@
 % }
 % \changes{0.4.2}{2020/03/09}{
 %   Increase vertical space around subsubsection title
+% }
+% \changes{0.4.4}{2022/02/11}{
+%   Always use starred variant of subsubsection
 % }
 % \end{macro}
 %
