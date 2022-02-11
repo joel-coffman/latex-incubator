@@ -340,7 +340,7 @@
 % \begin{macro}{@seccntformat}
 % Suppress the quad that appears between the (non-existent) number and the section title.
 %    \begin{macrocode}
-\def\@seccntformat#1{}
+\let\@seccntformat=\@gobble\relax
 %    \end{macrocode}
 % \changes{0.4.4}{2022/02/11}{
 %   Suppress quad in section titles
