@@ -809,7 +809,7 @@
 %    \end{macrocode}
 % Save the current color.
 %    \begin{macrocode}
-  \colorlet{exam/color/default}{.}
+  \colorlet{exam/color/default}{.}%
 %    \end{macrocode}
 % Define macros for correct and incorrect answers.
 % Correct answers use the color of the answer key; incorrect answers use the default color.
@@ -818,12 +818,12 @@
     \ifexam@option@key%
       \color{answer}%
     \fi%
-  }
+  }%
   \newcommand{\incorrect}{%
     \ifexam@option@key%
       \color{exam/color/default}%
     \fi%
-  }
+  }%
 %    \end{macrocode}
 % Define the \mintinline{latex}{answers} environment.
 % Answers always use capital letters.
@@ -837,7 +837,7 @@
     ]
   }{%
     \end{enumerate}
-  }
+  }%
 %    \end{macrocode}
 % Begin the \mintinline{latex}{question} environment.
 %    \begin{macrocode}
