@@ -165,23 +165,18 @@
 % |\alert| \marg{text} may be used draw attention to specific text, such as negation.
 % For example,
 % \begin{VerbatimOut}[gobble=1]{minted/alert.out}
-% \begin{question}
+% \begin{multiple choice}
 %   Which of the following is \alert{not} a prime number?
 %
 %   \noindent
-%   \begin{enumerate*}[
-%     before={\vspace{-\parskip}},
-%     itemjoin={\hfill},
-%     label=\Alph*.,
-%     noitemsep,
-%   ]
+%   \begin{answers*}
 %     \item 2
 %     \item 3
 %     \item 5
 %     \item 7
-%     \item 9
-%   \end{enumerate*}
-% \end{question}
+%     \item\correct 9
+%   \end{answers*}
+% \end{multiple choice}
 % \end{VerbatimOut}
 % \bigskip  ^^A FORMATTING
 %
@@ -329,8 +324,15 @@
 % \subsection{Packages}
 % Load required packages.
 %
+% The \textsf{enumitem} package supports customization of list environments.
+%    \begin{macrocode}
+\RequirePackage[inline]{enumitem}
+%    \end{macrocode}
 % \changes{0.3.0}{2021/03/10}{
 %   Remove dependency on \textsf{enumitem} package
+% }
+% \changes{0.3.2}{2022/02/21}{
+%   Add dependency on \textsf{enumitem} package
 % }
 %
 % The \textsf{environ} package simplifies collecting the body of an environment for passing it to a macro.
@@ -828,15 +830,33 @@
 % Define the \mintinline{latex}{answers} environment.
 % Answers always use capital letters.
 %    \begin{macrocode}
-  \newenvironment{answers}{%
+  \newenvironment{answers}[1][]{%
     \begin{enumerate}[
         before={
           \xpretocmd{\item}{\incorrect}{}{}
-        },
-        label=\Alph*.,
+        },%
+        label=\Alph*.,%
+        ##1
     ]
   }{%
     \end{enumerate}
+  }%
+%    \end{macrocode}
+% The \mintinline{latex}{answers*} environment sets the answers inline.
+%    \begin{macrocode}
+  \newenvironment{answers*}[1][]{%
+    \begin{enumerate*}[
+        before={
+          \vspace{-\parskip}
+          \xpretocmd{\item}{\incorrect}{}{}
+        },%
+        itemjoin={\hfill},%
+        label=\Alph*.,%
+        noitemsep,%
+        ##1
+    ]
+  }{%
+    \end{enumerate*}
   }%
 %    \end{macrocode}
 % Begin the \mintinline{latex}{question} environment.
