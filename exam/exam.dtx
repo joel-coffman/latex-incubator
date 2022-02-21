@@ -19,8 +19,6 @@
 %
 %<*driver>
 \documentclass{ltxdoc}
-\input{.version}
-\usepackage{exam}
 
 \usepackage{booktabs}
 \usepackage[inline]{enumitem}
@@ -32,6 +30,13 @@
 
 \usepackage{email}
 \usepackage{minted-doc}
+
+\usepackage[key]{exam}
+
+
+% package version information
+\input{.version}
+
 
 \EnableCrossrefs
 \CodelineIndex
@@ -82,49 +87,76 @@
 % \maketitle
 %
 % \begin{abstract}
-% The \textsf{exam} package provides macros and environments for graded assessments.
+% The \textsf{exam} package provides macros and environments for graded assessments (e.g., quizzes, tests, and exams in a course).
 % \end{abstract}
 %
 % \section{Usage}
 %
 % \DescribeEnv{question}
-% The \textsf{question} environment\dots
+% The \mintinline{latex}{question} environment is used for all types of questions.
+% Its use is readily illustrated with an example:
 %
 % \begin{VerbatimOut}[gobble=1]{minted/question.out}
-% \begin{question}
-%   What is $2 + 2$?
+% \begin{question}[5]
+%   What is $1 + 1$?
 % \end{question}
 % \end{VerbatimOut}
 % \inputminted[gobble=1]{latex}{minted/question.out}
-% produces\\
-% \input{minted/question.out}
+% produces
+% \bigskip  ^^A FORMATTING
 %
-% The number of points for each question may be indicated as an optional argument to the environment.
+% \noindent
+% \input{minted/question.out}
+% \bigskip  ^^A FORMATTING
+%
+% \noindent
+% where additional vertical space has been included to offset the question from the explanatory text.
+% The optional argument (i.e., \mintinline{latex}{5}) specifies the number of points for the question.
+% The points are shown in the margin, and a running tally is kept in the \mintinline{latex}{points} counter.
+% If the optional argument is omitted, no points will be recorded for the question.
+%
+% \DescribeEnv{answer}
+% Within a question, the \mintinline{latex}{answer} environment supports the creation of an answer key for grading.
 % For example,
-% \begin{VerbatimOut}[gobble=1]{minted/question-with-points.out}
-% \begin{question}[5]
-%   What is $2 + 2$?
+% \begin{VerbatimOut}[gobble=1]{minted/questions-with-answers.out}
+% \begin{question}
+%   What is $2 * 2$?
 %
 %   \begin{answer}
 %     The answer is 4.
 %   \end{answer}
 % \end{question}
+%
+% \begin{question}
+%   What is $3^3$?
+%
+%   \begin{answer}
+%     The answer is 27.
+%   \end{answer}
+% \end{question}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{minted/question-with-points.out}
-% produces\\
-% \makeatletter\exam@option@keytrue\makeatother
-% \input{minted/question-with-points.out}
+% \inputminted[gobble=1]{latex}{minted/questions-with-answers.out}
+% produces
+% \bigskip  ^^A FORMATTING
+%
+% \noindent
+% \begin{minipage}{0.475\linewidth}
 % \makeatletter\exam@option@keyfalse\makeatother
+% \input{minted/questions-with-answers.out}
+% \makeatletter\exam@option@keytrue\makeatother
+% \end{minipage}
+% \hfill\vline\hfill
+% \begin{minipage}{0.475\linewidth}
+% \input{minted/questions-with-answers.out}
+% \end{minipage}
+% \bigskip  ^^A FORMATTING
 %
-% Answers may be included to create an answer key for grading.
-% For example,
-% \begin{VerbatimOut}[gobble=1]{minted/answer.out}
-% \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{minted/answer.out}
-% produces\\
-% \input{minted/answer.out}
+% \noindent
+% where the exam shown on the left and the answer key shown on the right.
+% Care is taken to ensure that the spacing of the answer key (i.e., the space between questions) is consistent with the exam.
 %
-% The \textsf{alert} macro may be used draw attention to specific text, such as negation.
+% \DescribeMacro{alert}
+% |\alert| \marg{text} may be used draw attention to specific text, such as negation.
 % For example,
 % \begin{VerbatimOut}[gobble=1]{minted/alert.out}
 % \begin{question}
@@ -134,6 +166,7 @@
 %   \begin{enumerate*}[
 %     before={\vspace{-\parskip}},
 %     itemjoin={\hfill},
+%     label=\Alph*.,
 %     noitemsep,
 %   ]
 %     \item 2
@@ -144,30 +177,55 @@
 %   \end{enumerate*}
 % \end{question}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{minted/alert.out}
-% produces\\
-% \input{minted/alert.out}
-% \noindent
-% Although the same effect can be achieved using \LaTeX's formatting macros directly, the \textsf{alert} ensures consistent formatting.
+% \bigskip  ^^A FORMATTING
 %
-% The \textsf{blank} macro may be used to insert a ``blank''---useful for fill-in-the-blank questions.
-% For example,
+% \noindent
+% \input{minted/alert.out}
+% \bigskip  ^^A FORMATTING
+%
+% \noindent
+% Although the same effect can be achieved using \LaTeX's formatting macros directly, using |\alert| ensures consistency.
+%
+% \DescribeMacro{blank}
+% Fill-in-the-blank questions are supported by |\blank|:
 % \begin{VerbatimOut}[gobble=1]{minted/fill-in-the-blank.out}
 % \begin{question}
-%   The \blank{} macro supports fill in the blank questions.
+%   $1 + 2 * 3 = \blank$
 % \end{question}
 % \end{VerbatimOut}
-% \inputminted[gobble=1]{latex}{minted/fill-in-the-blank.out}
-% produces\\
-% \input{minted/fill-in-the-blank.out}
+% \bigskip  ^^A FORMATTING
 %
-% The total number of points in the exam is available:
+% \noindent
+% \input{minted/fill-in-the-blank.out}
+% \bigskip  ^^A FORMATTING
+%
+% \noindent
+% The size of the blank is fixed to avoid revealing anything about the answer.
+%
+% Finally, the total number of points in the exam is available.
+% For example,
 % \begin{VerbatimOut}[gobble=1]{minted/totalpoints.out}
 %   This exam contains \total{points} \pointsname{\thepoints}.
 % \end{VerbatimOut}
 % \inputminted[gobble=1]{latex}{minted/totalpoints.out}
-% produces\\
+% produces
+% \bigskip  ^^A FORMATTING
+%
+% \noindent
 % \input{minted/totalpoints.out}
+%
+% \section{Types of Questions}
+%
+% \subsection{True / False}
+%
+% \begin{true/false}
+%   George Washington was the first president of the United States.
+%
+%   \begin{answer}
+%     True
+%   \end{answer}
+% \end{true/false}
+%
 %
 % \StopEventually{
 %  \PrintChanges
@@ -187,7 +245,7 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2022/02/02 %
+    2022/02/21 %
     v0.4.0 %
     Style file for exams%
 ]
