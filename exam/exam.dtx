@@ -245,8 +245,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2022/02/03 %
-    v0.3.1 %
+    2022/02/21 %
+    v0.4.0 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -317,11 +317,6 @@
 % The \textsf{environ} package simplifies collecting the body of an environment for passing it to a macro.
 %    \begin{macrocode}
 \RequirePackage{environ}
-%    \end{macrocode}
-%
-% The \textsf{etoolbox} package is required to support the \textsf{prequestion} and \textsf{postquestion} hooks.
-%    \begin{macrocode}
-\RequirePackage{etoolbox}
 %    \end{macrocode}
 %
 % The \textsf{pgfkeys} package is required to support key-value arguments to macros.
@@ -425,32 +420,6 @@
   \ifexam@option@numbering%
     \end{enumerate}%
   \fi%
-}%
-%    \end{macrocode}
-%
-% \textsf{prequestion} and \textsf{postquestion} must appear before and after the environment's group to have the correct effect (e.g., when \textsf{prequestion} inserts a list \textsf{item}).
-% The \textsf{etoolbox} package provides hooks for this purpose.
-%    \begin{macrocode}
-\BeforeBeginEnvironment{question}{\prequestion}
-\AfterEndEnvironment{question}{\postquestion}
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{prequestion}
-% Define the \textsf{prequestion} macro as a hook for the \textsf{question} environment.
-%    \begin{macrocode}
-\newcommand{\prequestion}{%
-%    \end{macrocode}
-% Do nothing by default.
-%    \begin{macrocode}
-}%
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{postquestion}
-% Define the \textsf{postquestion} macro as a hook for the \textsf{question} environment.
-%    \begin{macrocode}
-\newcommand{\postquestion}{%
 %    \end{macrocode}
 % End horizontal mode to ship out the current box.
 %    \begin{macrocode}
@@ -460,6 +429,9 @@
 }%
 %    \end{macrocode}
 % \end{macro}
+% \changes{0.4.0}{2022/02/02}{
+%   Remove the pre- and post-question macros
+% }
 %
 % \begin{macro}{answer}
 % Define the \textsf{answer} environment.
