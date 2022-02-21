@@ -783,7 +783,7 @@
   \newenvironment{answers}{%
     \begin{enumerate}[
         before={
-          \xapptocmd{\item}{\incorrect}{}{}
+          \xpretocmd{\item}{\incorrect}{}{}
         },
         label=\Alph*.,
     ]
