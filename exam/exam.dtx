@@ -259,7 +259,7 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2022/02/21 %
+    2022/02/26 %
     v0.4.1 %
     Style file for exams%
 ]
@@ -507,10 +507,6 @@
 %    \begin{macrocode}
   \setlength{\answerheight}{#1}%
 %    \end{macrocode}
-% Ensure good height for the first line.
-%    \begin{macrocode}
-  \strut%
-%    \end{macrocode}
 % Start a box.
 %    \begin{macrocode}
   \setbox0=\vbox{%
@@ -596,11 +592,11 @@
 % Typeset the answer and save it for future use.
 %    \begin{macrocode}
   \savebox{\answerbox}{%
-    \parbox{\exam@answer@width}{%
+    \parbox[t]{\exam@answer@width}{%
       \vbox{%
         % prevent vertical space when changing color (see http://goo.gl/FCfjdB)
         \leavevmode\color{answer}%
-        #2%
+        \strut #2%
       }%
     }%
   }%
@@ -633,6 +629,7 @@
     \ifexam@option@key%
       \usebox{\answerbox}%
     \else%
+      \strut%
       \exam@answer@fill%
     \fi%
   }%
