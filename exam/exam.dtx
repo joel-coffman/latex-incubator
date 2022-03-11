@@ -827,7 +827,8 @@
 % Process optional arguments (e.g., the identification of the correct answer).
 %    \begin{macrocode}
     \pgfkeys{%
-      /exam/answer/.is family, /exam/answer,%
+      /exam/multiple choice/option/.is family,%
+      /exam/multiple choice/option,%
       correct/.code={%
         \ifexam@option@key%
           \color{answer}%
