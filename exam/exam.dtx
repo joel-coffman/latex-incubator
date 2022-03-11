@@ -34,6 +34,12 @@
 \usepackage[key]{exam}
 
 
+% enumitem
+\setlist{
+  noitemsep,
+}
+
+
 % package version information
 \input{.version}
 
@@ -159,23 +165,18 @@
 % |\alert| \marg{text} may be used draw attention to specific text, such as negation.
 % For example,
 % \begin{VerbatimOut}[gobble=1]{minted/alert.out}
-% \begin{question}
+% \begin{multiple choice}
 %   Which of the following is \alert{not} a prime number?
 %
 %   \noindent
-%   \begin{enumerate*}[
-%     before={\vspace{-\parskip}},
-%     itemjoin={\hfill},
-%     label=\Alph*.,
-%     noitemsep,
-%   ]
-%     \item 2
-%     \item 3
-%     \item 5
-%     \item 7
-%     \item 9
-%   \end{enumerate*}
-% \end{question}
+%   \begin{options*}
+%     \option 2
+%     \option 3
+%     \option 5
+%     \option 7
+%     \option[correct] 9
+%   \end{options*}
+% \end{multiple choice}
 % \end{VerbatimOut}
 % \bigskip  ^^A FORMATTING
 %
@@ -226,6 +227,19 @@
 %   \end{answer}
 % \end{true/false}
 %
+% \subsection{Multiple Choice}
+%
+% \begin{multiple choice}
+%   Who was the first president of the United States?
+%   \begin{options}
+%     \option Thomas Jefferson
+%     \option[correct] George Washington
+%     \option Benjamin Franklin
+%     \option John Adams
+%     \option Roger Sherman
+%   \end{options}
+% \end{multiple choice}
+%
 %
 % \StopEventually{
 %  \PrintChanges
@@ -245,8 +259,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2022/02/26 %
-    v0.4.0 %
+    2022/03/11 %
+    v0.4.1 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -310,8 +324,15 @@
 % \subsection{Packages}
 % Load required packages.
 %
+% The \textsf{enumitem} package supports customization of list environments.
+%    \begin{macrocode}
+\RequirePackage[inline]{enumitem}
+%    \end{macrocode}
 % \changes{0.3.0}{2021/03/10}{
 %   Remove dependency on \textsf{enumitem} package
+% }
+% \changes{0.4.1}{2022/02/21}{
+%   Add dependency on \textsf{enumitem} package
 % }
 %
 % The \textsf{environ} package simplifies collecting the body of an environment for passing it to a macro.
@@ -749,6 +770,91 @@
 % }
 % \changes{0.2.3}{2019/11/22}{
 %    Handle hanging indents when questions are numbered
+% }
+% \end{macro}
+%
+% \begin{macro}{multiple choice}
+% Define the \mintinline{latex}{multiple choice} environment.
+%    \begin{macrocode}
+\newenvironment{multiple choice}[1][]{%
+%    \end{macrocode}
+% Save the current color.
+%    \begin{macrocode}
+  \colorlet{exam/color/default}{.}%
+%    \end{macrocode}
+% Define the \mintinline{latex}{options} environment.
+% Option labels always use capital letters with a closing parenthesis to differentiate them from the (standard) enumerate labels.
+%    \begin{macrocode}
+  \newenvironment{options}[1][]{%
+    \begin{enumerate}[
+        label=\Alph*),%
+        ##1
+    ]
+  }{%
+    \end{enumerate}
+  }%
+%    \end{macrocode}
+% The \mintinline{latex}{options*} environment sets the options inline.
+%    \begin{macrocode}
+  \newenvironment{options*}[1][]{%
+    \begin{enumerate*}[
+        before={
+          \vspace{-\parskip}
+        },%
+        itemjoin={\hfill},%
+        label=\Alph*),%
+        noitemsep,%
+        ##1
+    ]
+  }{%
+    \end{enumerate*}
+  }%
+%    \end{macrocode}
+%
+% Define the \mintinline{latex}{option} macro with an optional argument.
+%    \begin{macrocode}
+  \newcommand{\option}[1][]{%
+% We're (or should be) in a list environment.
+% Use the default color for the label.
+%    \begin{macrocode}
+    \color{exam/color/default}%
+    \item
+%    \end{macrocode}
+% Use the default color for the content.
+%    \begin{macrocode}
+    \color{exam/color/default}%
+%    \end{macrocode}
+% Process optional arguments (e.g., the identification of the correct answer).
+%    \begin{macrocode}
+    \pgfkeys{%
+      /exam/answer/.is family, /exam/answer,%
+      correct/.code={%
+        \ifexam@option@key%
+          \color{answer}%
+        \fi%
+      },%
+      ##1
+    }
+%    \end{macrocode}
+%    \begin{macrocode}
+  }%
+%    \end{macrocode}
+% Begin the \mintinline{latex}{question} environment.
+%    \begin{macrocode}
+  \begin{question}[#1]%
+%    \end{macrocode}
+%    \begin{macrocode}
+}{%
+%    \end{macrocode}
+% End the \mintinline{latex}{question} environment.
+%    \begin{macrocode}
+  \end{question}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% \changes{0.4.1}{2022/01/31}{
+%    Add the \texttt{multiple choice} environment
 % }
 % \end{macro}
 %
