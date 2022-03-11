@@ -169,13 +169,13 @@
 %   Which of the following is \alert{not} a prime number?
 %
 %   \noindent
-%   \begin{answers*}
-%     \item 2
-%     \item 3
-%     \item 5
-%     \item 7
-%     \item\correct 9
-%   \end{answers*}
+%   \begin{options*}
+%     \option 2
+%     \option 3
+%     \option 5
+%     \option 7
+%     \option[correct] 9
+%   \end{options*}
 % \end{multiple choice}
 % \end{VerbatimOut}
 % \bigskip  ^^A FORMATTING
@@ -231,13 +231,13 @@
 %
 % \begin{multiple choice}
 %   Who was the first president of the United States?
-%   \begin{answers}
-%     \item Thomas Jefferson
-%     \item\correct George Washington
-%     \item Benjamin Franklin
-%     \item John Adams
-%     \item Roger Sherman
-%   \end{answers}
+%   \begin{options}
+%     \option Thomas Jefferson
+%     \option[correct] George Washington
+%     \option Benjamin Franklin
+%     \option John Adams
+%     \option Roger Sherman
+%   \end{options}
 % \end{multiple choice}
 %
 %
@@ -782,28 +782,11 @@
 %    \begin{macrocode}
   \colorlet{exam/color/default}{.}%
 %    \end{macrocode}
-% Define macros for correct and incorrect answers.
-% Correct answers use the color of the answer key; incorrect answers use the default color.
-%    \begin{macrocode}
-  \newcommand{\correct}{%
-    \ifexam@option@key%
-      \color{answer}%
-    \fi%
-  }%
-  \newcommand{\incorrect}{%
-    \ifexam@option@key%
-      \color{exam/color/default}%
-    \fi%
-  }%
-%    \end{macrocode}
-% Define the \mintinline{latex}{answers} environment.
+% Define the \mintinline{latex}{options} environment.
 % Answers always use capital letters.
 %    \begin{macrocode}
-  \newenvironment{answers}[1][]{%
+  \newenvironment{options}[1][]{%
     \begin{enumerate}[
-        before={
-          \xpretocmd{\item}{\incorrect}{}{}
-        },%
         label=\Alph*),%
         ##1
     ]
@@ -813,11 +796,10 @@
 %    \end{macrocode}
 % The \mintinline{latex}{answers*} environment sets the answers inline.
 %    \begin{macrocode}
-  \newenvironment{answers*}[1][]{%
+  \newenvironment{options*}[1][]{%
     \begin{enumerate*}[
         before={
           \vspace{-\parskip}
-          \xpretocmd{\item}{\incorrect}{}{}
         },%
         itemjoin={\hfill},%
         label=\Alph*),%
@@ -826,6 +808,35 @@
     ]
   }{%
     \end{enumerate*}
+  }%
+%    \end{macrocode}
+%
+% Define the \mintinline{latex}{option} macro with an optional argument.
+%    \begin{macrocode}
+  \newcommand{\option}[1][]{%
+% We're (or should be) in a list environment.
+% Use the default color for the label.
+%    \begin{macrocode}
+    \color{exam/color/default}%
+    \item
+%    \end{macrocode}
+% Use the default color for the content.
+%    \begin{macrocode}
+    \color{exam/color/default}%
+%    \end{macrocode}
+% Process optional arguments (e.g., the identification of the correct answer).
+%    \begin{macrocode}
+    \pgfkeys{%
+      /exam/answer/.is family, /exam/answer,%
+      correct/.code={%
+        \ifexam@option@key%
+          \color{answer}%
+        \fi%
+      },%
+      ##1
+    }
+%    \end{macrocode}
+%    \begin{macrocode}
   }%
 %    \end{macrocode}
 % Begin the \mintinline{latex}{question} environment.
