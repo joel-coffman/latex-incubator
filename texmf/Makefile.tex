@@ -65,7 +65,7 @@ PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 %.sty: %.ins %.dtx
 	$(TEX) -draftmode -output-directory=$(directory) $<
 # strip trailing whitespace from package
-	sed -i.bak -E 's/[[:space:]]+$$//' $@ && $(RM) $@.bak
+	cd $(directory); sed -i.bak -E 's/[[:space:]]+$$//' $@ && $(RM) $@.bak
 
 # include packages in the search path
 ifneq ($(CWD),.)  # ...but not if it will cause infinite recursion
