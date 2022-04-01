@@ -23,11 +23,13 @@
 \usepackage{microtype}
 \usepackage{minted}
 
-\usepackage{course}
 \usepackage{email}
 \usepackage{minted-doc}
 
+\usepackage{course}
 
+
+% package version information
 \input{.version}
 
 
@@ -126,8 +128,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{course}[%
-    2019/06/21 %
-    v0.0.2 %
+    2021/10/25 %
+    v0.0.3 %
     Organization of course-specific metadata%
 ]
 %    \end{macrocode}
@@ -141,9 +143,10 @@
 % \subsection{Macros}
 % This section describes the macros in the \textsf{course} package.
 %
-% \begin{macro}{course}
+% \begin{macro}{setcourse}
+% The |setcourse| macro stores the course metadata (e.g., title and description) so it can be used later.
 %    \begin{macrocode}
-\newcommand*{\setcourse}[1]{%
+\newcommand{\setcourse}[1]{%
   \pgfkeys{%
     /course/.cd,%
     description/.store in=\course@description,%
@@ -158,6 +161,15 @@
   }%
   \ignorespaces%
 }
+%    \end{macrocode}
+% \changes{0.0.3}{2021/10/25}{
+%   Allow paragraphs in course metadata
+% }
+% \end{macro}
+%
+% \begin{macro}{course}
+% The |course| macro retrieves the course metadata.
+%    \begin{macrocode}
 \newcommand*{\course}[1]{%
   \ifcsdef{course@#1}{%
     \csname course@#1\endcsname%
