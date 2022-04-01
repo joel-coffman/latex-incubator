@@ -22,18 +22,25 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2020/08/10 v0.4.4 Slides package for presentations]
+  [2021/10/20 v0.5.0 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
 %
 %<*driver>
 \documentclass{ltxdoc}
-\input{.version}
+
 \usepackage{microtype}
 \usepackage{minted}
+
 \usepackage{email}
 \usepackage{theme-doc}
+
+
+% package version information
+\input{.version}
+
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -113,11 +120,9 @@
 %    \begin{macrocode}
   \AtBeginPart
   {
-    \begin{manualtranscript}
-      \begin{frame}
-        \partpage
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}
+      \partpage
+    \end{frame}
   }
 %    \end{macrocode}
 % \changes{0.2.3}{2015/08/15}{
@@ -132,15 +137,13 @@
 %    \begin{macrocode}
   \AtBeginSection[]
   {
-    \begin{manualtranscript}
-      \begin{frame}{Outline}
-        \tableofcontents[
-            currentsection,
-            currentsubsection,
-            subsubsectionstyle=show/shaded/hide,
-        ]
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -152,16 +155,14 @@
 %    \begin{macrocode}
   \AtBeginSubsection[]
   {
-    \begin{manualtranscript}
-      \begin{frame}{Outline}
-        \tableofcontents[
-            currentsection,
-            currentsubsection,
-            subsectionstyle=show/shaded/hide,
-            subsubsectionstyle=show/shaded/hide,
-        ]
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsectionstyle=show/shaded/hide,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -173,16 +174,14 @@
 %    \begin{macrocode}
   \AtBeginSubsubsection[]
   {
-    \begin{manualtranscript}
-      \begin{frame}{Outline}
-        \tableofcontents[
-            currentsection,
-            currentsubsection,
-            subsectionstyle=show/shaded/hide,
-            subsubsectionstyle=show/shaded/hide,
-        ]
-      \end{frame}
-    \end{manualtranscript}
+    \begin{frame}{Outline}
+      \tableofcontents[
+          currentsection,
+          currentsubsection,
+          subsectionstyle=show/shaded/hide,
+          subsubsectionstyle=show/shaded/hide,
+      ]
+    \end{frame}
   }
 %    \end{macrocode}
 % \changes{0.4.3}{2018/09/15}{
@@ -279,14 +278,6 @@
 % Show the notes (i.e., transcript) on the bottom of each handout page.
 %    \begin{macrocode}
   \setbeameroption{show only notes}
-%    \end{macrocode}
-% Insert notes on every slide.
-% The |manualtranscript| environment disables the notes;
-% ending the environment is the same as enabling the notes.
-%    \begin{macrocode}
-  \AtBeginDocument{%
-    \endmanualtranscript%
-  }%
 %    \end{macrocode}
 %    \begin{macrocode}
 \fi
@@ -620,52 +611,14 @@
 % \end{macro}
 %
 % \begin{macro}{manualtranscript}
-% The |manualtranscript| environment disables the automatic creation of a blank transcript for each slide.
-%
-%    \begin{macrocode}
-\newenvironment{manualtranscript}{%
-  \xpatchcmd{\beamer@framenotesbegin}{\beamer@notes{{}}}{\beamer@notes{}}{%
-    \PackageInfo{slides}{%
-      Successfully patched beamer@notes in beamer@framenotesbegin%
-    }%
-  }{%
-    \PackageInfo{slides}{%
-      Error patching beamer@framenotesbegin: notes may not appear on all slides%
-    }%
-  }
-}{%
-  \xpatchcmd{\beamer@framenotesbegin}{\beamer@notes{}}{\beamer@notes{{}}}{%
-    \PackageInfo{slides}{%
-      Successfully patched beamer@notes in beamer@framenotesbegin%
-    }%
-  }{%
-    \PackageInfo{slides}{%
-      Error patching beamer@framenotesbegin: superfluous notes may appear on slides%
-    }%
-  }
-}
-%    \end{macrocode}
+% \changes{0.5.0}{2021/10/20}{
+%   Remove manualtranscript environment
+% }
 % \end{macro}
 %
 % \subsection*{Beamer Internals}
 %
 % \begin{macro}{beamer@outsideframenote}
-% Patch the \mintinline{latex}{note} macro to correct the text width for different aspect ratios.
-%    \begin{macrocode}
-\xpatchcmd{\beamer@outsideframenote}
-    {\textwidth=10.8cm}
-    {\textwidth=\dimexpr\paperwidth - (\Gm@lmargin + \Gm@rmargin)}
-    {%
-      \PackageInfo{slides}{%
-        Successfully patched textwidth in beamer@outsideframenote%
-      }%
-    }%
-    {%
-      \PackageWarning{slides}{%
-        Error patching beamer@outsideframenote; textwidth may be incorrect%
-      }%
-    }%
-%    \end{macrocode}
 % Patch the \mintinline{latex}{note} macro to add indentation for paragraphs after the first and to append a \mintinline{latex}{\par} for consistent spacing across paragraphs.
 % (Note: The unilateral increase of \mintinline{latex}{\parindent} may not be appropriate in all situations.)
 %    \begin{macrocode}

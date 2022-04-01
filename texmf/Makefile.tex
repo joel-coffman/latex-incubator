@@ -23,14 +23,13 @@ CWD != realpath $(CWD)/.. --relative-to=$(CURDIR)
 
 # empty recipes to avoid rebuilding Makefiles via implicit rules
 Makefile: ;
-$(CWD)/Makefile.mk: ;
 
 # add texmf directory to TEXINPUTS environment variable to find included files
 # (e.g., packages)
 TEXINPUTS := .:$(TEXINPUTS):$(CWD)/texmf//:
 
 # define TEX as pdflatex
-TEX=TEXINPUTS=$(TEXINPUTS) pdflatex -shell-escape #-interaction batchmode
+TEX = TEXINPUTS=$(TEXINPUTS) pdflatex -shell-escape
 
 # Define a "Canned Recipe" for compiling PDFs from *.{dtx,tex} files.
 #
@@ -41,7 +40,7 @@ define compile-doc
 @$(RM) $*.sta
 $(TEX) -draftmode $<
 if grep -E '^\\@istfilename' $*.aux; then \
-		makeglossaries $* && $(TEX) -draftmode $<; \
+		makeglossaries -d $(*D) $(*F) && $(TEX) -draftmode $<; \
 fi
 files=$$(sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux); \
 		if grep --quiet -E '\\(citation)' $*.aux $$files; then \
@@ -57,24 +56,28 @@ done
 endef
 
 external := $(basename $(shell find . -name "*.url"))
+ifneq ($(external),)  # .SECONDARY should have prerequisite(s)
+# do not automatically delete external files
 .SECONDARY: $(external)
+endif
 
 DEPENDENCIES = $(wildcard *.bib) $(external) \
-               $(wildcard $(CWD)/include/*.bib) \
-               $(wildcard $(CWD)/include/*.tex)
+               $(wildcard $(CWD)/texmf/include/*.bib) \
+               $(wildcard $(CWD)/texmf/include/*.tex)
 
 PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 
 %.pdf: %.dtx %.sty $(DEPENDENCIES) .version.tex
 	$(compile-doc)
 
-%.pdf: %.tex $(DEPENDENCIES) $(PACKAGES) \
-       $(shell find . -mindepth 2 -name "*.tex")
+%.pdf: %.tex $(DEPENDENCIES) $(PACKAGES)
 	$(compile-doc)
 
 %.sty: directory = $(dir $<)
 %.sty: %.ins %.dtx
 	$(TEX) -draftmode -output-directory=$(directory) $<
+# strip trailing whitespace from package
+	cd $(directory); sed -i.bak -E 's/[[:space:]]+$$//' $@ && $(RM) $@.bak
 
 # include packages in the search path
 ifneq ($(CWD),.)  # ...but not if it will cause infinite recursion
