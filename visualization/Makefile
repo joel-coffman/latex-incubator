@@ -1,24 +1,15 @@
-# use Bash as the shell when interpreting the Makefile
-SHELL := /bin/bash
+documentation := $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 
-.PHONY: all
-all: packages documentation
+documents := $(documentation) \
+             $(patsubst %.tex,%.pdf,\
+                        $(filter-out $(wildcard *.code.tex),$(wildcard *.tex)))
 
-packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
-documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
-
-.PHONY: packages
-packages: $(packages)
-
-.PHONY: documentation
-documentation: $(documentation)
+include $(shell git rev-parse --show-toplevel)/texmf/Makefile.tex
 
 examples:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
 
-$(documentation): $(packages) | examples
+$(documentation): | examples
 
 derivatives += $(patsubst %.dtx,%.sty,$(wildcard *.dtx)) \
                tikzlibrarypgfplots.*.code.tex
-
-include $(shell git rev-parse --show-toplevel)/texmf/Makefile.tex

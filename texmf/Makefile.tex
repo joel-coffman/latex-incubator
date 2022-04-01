@@ -1,9 +1,9 @@
 # vim: syntax=make
-packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
-documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
+packages ?= $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
+documentation ?= $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 
-documents = $(documentation) \
-            $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+documents ?= $(documentation) \
+             $(patsubst %.tex,%.pdf,$(wildcard *.tex))
 
 .PHONY: all
 all: packages documents
