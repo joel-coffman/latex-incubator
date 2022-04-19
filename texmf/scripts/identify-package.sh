@@ -8,8 +8,8 @@ set -x
 docker run --interactive --rm debian:latest /bin/bash <<SCRIPT
 set -x
 
-apt update
-apt install --no-install-recommends --yes apt-file
+apt update --quiet
+apt install --no-install-recommends --quiet --yes apt-file
 
 apt-file update
 for file in $*; do
