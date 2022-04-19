@@ -2,9 +2,16 @@
 
 set -e
 set -u
+
+
+# print help message if executed without arguments
+if [ $# -lt 1 ]; then
+  echo "Usage: $(basename "$0") file [...]"
+  exit
+fi
+
+# search latest Debian image for file(s)
 set -x
-
-
 docker run --interactive --rm debian:latest /bin/bash <<-SCRIPT
 	set -x
 
