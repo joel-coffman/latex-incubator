@@ -5,7 +5,7 @@ set -u
 set -x
 
 
-docker run --rm debian:latest /bin/bash -c "
+docker run --interactive --rm debian:latest /bin/bash <<SCRIPT
 set -x
 
 apt update
@@ -15,4 +15,4 @@ apt-file update
 for file in $*; do
   apt-file search "\$file"
 done
-"
+SCRIPT
