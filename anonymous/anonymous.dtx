@@ -106,7 +106,7 @@
 % \inputminted{latex}{examples/anonymize.tex}
 % appears as
 % \begin{quote}
-%   \makeatletter\anonymous@anonymizetrue\makeatother
+%   \makeatletter\anonymoustrue\makeatother
 %   \input{examples/anonymize.tex}
 % \end{quote}
 % when the |anonymize| package option has been specified and
@@ -123,7 +123,7 @@
 % \inputminted{latex}{examples/anonymize.tex}
 % appears as
 % \begin{quote}
-%   \makeatletter\anonymous@anonymizetrue\makeatother
+%   \makeatletter\anonymoustrue\makeatother
 %   \input{examples/anonymize.tex}
 % \end{quote}
 % (when the |anonymize| package option has been specified).
@@ -151,7 +151,7 @@
 %    \begin{macrocode}
 \ProvidesPackage{anonymous}[%
     2022/04/25 %
-    v0.1.0 %
+    v0.1.1 %
     Anonymize documents for double-blind review%
 ]
 %    \end{macrocode}
@@ -159,11 +159,14 @@
 % \subsection{Options}
 % Declare the \texttt{anonymize} option.
 %    \begin{macrocode}
-\newif\ifanonymous@anonymize
+\newif\ifanonymous
 \DeclareOption{anonymize}{
-  \anonymous@anonymizetrue
+  \anonymoustrue
 }
 %    \end{macrocode}
+% \changes{0.1.1}{2022/04/25}{
+%   Rename conditional to allow use outside package
+% }
 %
 % Process the options.
 %    \begin{macrocode}
@@ -185,7 +188,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\ifanonymous@anonymize%
+\ifanonymous%
   \def\author#1{\global\def\@author{}}%
 \fi
 %    \end{macrocode}
@@ -198,7 +201,7 @@
 %    \begin{macrocode}
 \newcommand*{\anonymize}[2][\anonymize@meta{anonymized for peer review}]{%
   \ignorespaces%
-  \ifanonymous@anonymize#1\else#2\fi%
+  \ifanonymous#1\else#2\fi%
 }
 %    \end{macrocode}
 % \end{macro}
