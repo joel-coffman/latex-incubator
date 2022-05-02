@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2022/04/04 v0.4.5 Style file for resume]
+%<package>  [2022/05/02 v0.4.5 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -224,6 +224,12 @@
 %
 % \subsection{Configuration}
 %
+% Save current parskip length, as it is redefined within list environments (including itemize, enumerate, etc.).
+%    \begin{macrocode}
+\newlength{\resume@old@parskip}
+\setlength{\resume@old@parskip}{\parskip}
+%    \end{macrocode}
+%
 % \changes{0.1.1}{2015/01/25}{
 %   Avoid orphans
 % }
@@ -245,11 +251,14 @@
 %    \begin{macrocode}
 \setlist{
   noitemsep,
-  topsep=-0.5\baselineskip,
+  topsep=-\resume@old@parskip,
 }
 %    \end{macrocode}
 % \changes{0.1.3}{2015/02/10}{
 %   Remove vertical spacing before and after list due to \textsf{parskip} package
+% }
+% \changes{0.4.5}{2022/05/02}{
+%   Use \texttt{parskip} instead of \texttt{baselineskip} around lists
 % }
 %
 % \changes{0.1.3}{2015/02/10}{
@@ -261,11 +270,6 @@
 % \end{macro}
 %
 % \begin{macro}{endlist}
-% Save current parskip length, as it is redefined within list environments (including itemize, enumerate, etc.).
-%    \begin{macrocode}
-\newlength{\resume@old@parskip}
-\setlength{\resume@old@parskip}{\parskip}
-%    \end{macrocode}
 % Save |endlist| macro and redefine it with additional vertical space to match expected output from \textsf{parskip} package.
 %    \begin{macrocode}
 \let\resume@old@endlist=\endlist\relax
