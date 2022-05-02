@@ -34,6 +34,7 @@
 %<*driver>
 \documentclass{ltxdoc}
 
+\usepackage{graphicx}
 \usepackage{minted}
 \usepackage{url}
 
@@ -179,6 +180,22 @@
 % produces\\
 % \input{minted/position.out}
 % When multiple positions have been held at the same organization, ordinary paragraph breaks may be used to separate them.
+%
+% \begin{figure}[!tb]
+%   \centering
+%   \includegraphics[
+%       clip,
+%       trim=0.5in 3.5in 0.5in 0.5in,  ^^A left bottom right top
+%       width=\linewidth,
+%   ]{example}
+%   \caption{
+%     Example resume formatted using this package
+%   }
+%   \label{figure:example}
+% \end{figure}
+%
+% Figure~\ref{figure:example} provides a more complete example that uses the aforementioned commands.
+% \clearpage  ^^A FORMATTING
 %
 %
 % \StopEventually{

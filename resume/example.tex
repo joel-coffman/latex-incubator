@@ -1,0 +1,76 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{libertinus}
+\usepackage{lipsum}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\usepackage{email}
+\usepackage{resume}
+
+
+% url
+\urlstyle{same}
+
+
+\title{John Doe}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+%------------------------------------------------------------------------------
+\begin{personal}
+  \item Street, City, State, ZIP
+  \item (123) 456-7890  % https://en.wikipedia.org/wiki/Fictitious_telephone_number#North_American_Numbering_Plan
+  \item \email{john.doe@example.com}
+\end{personal}
+
+%------------------------------------------------------------------------------
+\section{Education} %----------------------------------------------------------
+
+\institution{Institution}{City, State}
+\degree{Degree}{Year}
+
+\institution{Institution}{City, State}
+\degree{Degree}{Year}
+
+%------------------------------------------------------------------------------
+\section{Experience} %---------------------------------------------------------
+
+\institution{Employer}{City, State}
+\lipsum[1][1-4]
+
+\position{Position}{Year(s)}
+\begin{itemize}
+  \item Achievement
+
+  \item Achievement
+  \begin{itemize}
+    \item Sub-achievement
+    \item Sub-achievement
+  \end{itemize}
+
+  \item Achievement
+\end{itemize}
+
+\position{Position}{Year(s)}
+\begin{itemize}
+  \item Achievement
+  \item Achievement
+\end{itemize}
+
+\institution{Employer}{City, State}
+\position{Position}{Year(s)}
+\lipsum[1][5-9]
+
+%------------------------------------------------------------------------------
+\section{Skills} %-------------------------------------------------------------
+
+\begin{description}
+  \item[Skill] Description
+  \item[Skill] Description
+  \item[Skill] Description
+\end{description}
+
+\end{document}
