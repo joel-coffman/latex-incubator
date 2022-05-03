@@ -250,8 +250,7 @@
 % Remove all vertical spacing between items and paragraphs as well as extra whitespace from \textsf{parskip} package.
 %    \begin{macrocode}
 \setlist{
-  noitemsep,
-  topsep=-\resume@old@parskip,
+  nosep,
 }
 %    \end{macrocode}
 % \changes{0.1.3}{2015/02/10}{
@@ -263,11 +262,15 @@
 % A top-level list should have additional vertical space after it, mimicking the additional space between paragraphs introduced by the \textsf{parskip} package.
 %    \begin{macrocode}
 \setlist[1]{
-  after={\vspace{\resume@old@parskip}},
+  after={\vspace*{\resume@old@parskip}},
+  before={\addtolength{\topsep}{-\resume@old@parskip}},
 }
 %    \end{macrocode}
 % \changes{0.4.6}{2022/05/02}{
 %   Add space after lists to match vertical space between paragraphs
+% }
+% \changes{0.4.7}{2022/05/03}{
+%   Correct vertical space after nested lists
 % }
 %
 % \changes{0.1.3}{2015/02/10}{
