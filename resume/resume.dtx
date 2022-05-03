@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2022/05/02 v0.4.6 Style file for resume]
+%<package>  [2022/05/03 v0.4.7 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -288,13 +288,24 @@
 % \end{macro}
 %
 % \begin{macro}{abstract}
-% Do not indent paragraph at beginning of abstract.
+% Redefine the abstract environment to avoid indenting the first paragraph and suppressing vertical space after it.
+% The definition follows that of the |abstract| environment in the \textsf{article} class.
 %    \begin{macrocode}
-\let\resume@old@abstract=\abstract\relax
-\def\abstract{\resume@old@abstract\noindent\ignorespaces}
+\renewenvironment{abstract}{%
+  \small
+  \begin{quotation}
+    \noindent
+    \ignorespaces
+}{%
+  \end{quotation}
+  \vspace{-\parskip}
+}
 %    \end{macrocode}
 % \changes{0.1.7}{2015/03/18}{
 %   Remove indentation at beginning of abstract
+% }
+% \changes{0.4.7}{2022/05/03}{
+%   Redefine the abstract environment
 % }
 % \end{macro}
 %
