@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2022/05/02 v0.4.6 Style file for resume]
+%<package>  [2022/05/03 v0.4.6 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -563,7 +563,11 @@
     \noprotrusionifhmode%
     #1%
     \hfill #2%
-  }%
+  }\nopagebreak
+%    \end{macrocode}
+% Remove any pargraph skip (e.g., when the position is used in an |\item|).
+%    \begin{macrocode}
+  \vskip-\parskip
 %    \end{macrocode}
 %    \begin{macrocode}
 }
@@ -576,6 +580,9 @@
 % }
 % \changes{0.4.3}{2021/12/23}{
 %   Disable left protrusion to ensure box is ``full width''
+% }
+% \changes{0.4.6}{2022/05/03}{
+%   Remove following paragraph skip (if exists)
 % }
 % \end{macro}
 %
