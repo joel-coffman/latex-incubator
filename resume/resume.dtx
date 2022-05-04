@@ -224,12 +224,6 @@
 %
 % \subsection{Configuration}
 %
-% Save current parskip length, as it is redefined within list environments (including itemize, enumerate, etc.).
-%    \begin{macrocode}
-\newlength{\resume@old@parskip}
-\setlength{\resume@old@parskip}{\parskip}
-%    \end{macrocode}
-%
 % \changes{0.1.1}{2015/01/25}{
 %   Avoid orphans
 % }
@@ -259,6 +253,13 @@
 % \changes{0.4.5}{2022/05/02}{
 %   Use \texttt{parskip} instead of \texttt{baselineskip} around lists
 % }
+%
+% Save current parskip length, as it is redefined within list environments (including itemize, enumerate, etc.).
+%    \begin{macrocode}
+\newlength{\resume@old@parskip}
+\setlength{\resume@old@parskip}{\parskip}
+%    \end{macrocode}
+%
 % A top-level list should have additional vertical space after it, mimicking the additional space between paragraphs introduced by the \textsf{parskip} package.
 %    \begin{macrocode}
 \setlist[1]{
@@ -622,12 +623,12 @@
   }{%
       \usecounter{c@publication}
       \setcounter{c@publication}{\value{c@reference}}%
-      \setlength{\topsep}{-\resume@old@parskip}%
+      \setlength{\topsep}{-\parskip}%
   }%
 }{%
   \setcounter{c@reference}{\value{c@publication}}%
   \end{list}%
-  \addvspace{\resume@old@parskip}%
+  \addvspace{\parskip}%
 }
 %    \end{macrocode}
 % \end{macro}
