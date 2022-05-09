@@ -5,3 +5,5 @@ minted:
 
 $(packages): hyperfix.sty
 $(documentation): email.sty | minted
+
+resume.pdf: example.pdf
