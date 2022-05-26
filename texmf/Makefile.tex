@@ -26,18 +26,16 @@ TEX = TEXINPUTS=$(TEXINPUTS) pdflatex -shell-escape
 #       it to be '='.
 define compile-doc
 @$(RM) $*.sta
-$(TEX) -draftmode $<
+$(TEX) $<
 if grep -E '^\\@istfilename' $*.aux; then \
-		makeglossaries -d $(*D) $(*F) && $(TEX) -draftmode $<; \
+		makeglossaries -d $(*D) $(*F) && $(TEX) $<; \
 fi
 files=$$(sed -n 's/\\@input{\(.*\)}/\1/p' $*.aux); \
 		if grep --quiet -E '\\(citation)' $*.aux $$files; then \
-			BIBINPUTS=$(TEXINPUTS) bibtex $*; \
+			BIBINPUTS=$(TEXINPUTS) bibtex $* && $(TEX) $<; \
 		fi
-$(TEX) -draftmode $<
-if [ -f $*.idx ]; then makeindex $$(if [[ $< == *.dtx ]]; then echo -s gind.ist; fi) -o $*.ind $*.idx; fi
-if [ -f $*.glo ]; then makeindex -s $$(if [[ $< == *.dtx ]]; then echo gglo; else echo $*; fi).ist -o $*.gls $*.glo; fi
-$(TEX) $<
+if [ -f $*.idx ]; then makeindex $$(if [[ $< == *.dtx ]]; then echo -s gind.ist; fi) -o $*.ind $*.idx && $(TEX) $<; fi
+if [ -f $*.glo ]; then makeindex -s $$(if [[ $< == *.dtx ]]; then echo gglo; else echo $*; fi).ist -o $*.gls $*.glo && $(TEX) $<; fi
 while ( grep -q '^LaTeX Warning: Label(s) may have changed' $*.log ) do \
     $(TEX) $<; \
 done
@@ -63,7 +61,7 @@ PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 
 %.sty: directory = $(dir $<)
 %.sty: %.ins %.dtx
-	$(TEX) -draftmode -output-directory=$(directory) $<
+	$(TEX) -output-directory=$(directory) $<
 # strip trailing whitespace from package
 	cd $(directory); sed -i.bak -E 's/[[:space:]]+$$//' $@ && $(RM) $@.bak
 
