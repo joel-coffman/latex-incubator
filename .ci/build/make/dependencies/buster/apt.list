@@ -5,6 +5,7 @@ make
 python3-pip
 texlive
 texlive-font-utils
+texlive-fonts-extra
 texlive-generic-extra
 texlive-latex-extra
 unzip
