@@ -3,7 +3,8 @@ packages ?= $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
 documentation ?= $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
 
 documents ?= $(documentation) \
-             $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+             $(patsubst %.tex,%.pdf,\
+                        $(filter-out $(wildcard *.code.tex),$(wildcard *.tex)))
 
 .PHONY: all
 all: packages documents
