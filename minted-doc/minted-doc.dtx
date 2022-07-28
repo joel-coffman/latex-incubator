@@ -108,8 +108,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{minted-doc}[%
-    2017/07/13 %
-    v0.1.1 %
+    2022/06/29 %
+    v0.1.2 %
     Patches when using minted with docstrip%
 ]
 %    \end{macrocode}
@@ -123,15 +123,32 @@
 %    \end{macrocode}
 %
 % \subsection{Configuration}
-%    \begin{macrocode}
-\AtBeginDocument{%
-%    \end{macrocode}
 % Check if the \textsf{minted} package is loaded.
 %    \begin{macrocode}
-  \@ifpackageloaded{minted}{%
+\@ifpackageloaded{minted}{%
+%    \end{macrocode}
+% |\inputminted| implicitly indents the subsequent line even if there is no paragraph break (i.e., an intervening blank line).
+% Do not indent \emph{unless} there is a paragraph break.
+%    \begin{macrocode}
+  \xapptocmd{\inputminted}{%
+    \noindent%
+    \ignorespaces%
+  }{}{}%
+%    \end{macrocode}
+%    \begin{macrocode}
+}{}
+%    \end{macrocode}
+% \changes{0.1.1}{2017/07/13}{%
+%   Do not indent after \textbackslash inputminted
+% }
+%
+% Check if the version of the \textsf{minted} package is earlier than v2.5.
+%    \begin{macrocode}
+\@ifpackagelater{minted}{2017/07/19}{}{%
 %    \end{macrocode}
 % Patch \textsf{minted} commands to load styles in preamble when the auxiliary file is read so \textsf{docstrip} won't strip comments from styles and actually inject the comment into the package documentation.
 %    \begin{macrocode}
+  \AtBeginDocument{%
     \xpretocmd{\inputminted}{%
       \write\@auxout{\noexpand\minted@checkstyle{#2}}%
     }{}{}%
@@ -140,23 +157,14 @@
 %    \begin{macrocode}
     \minted@checkstyle{default}%
 %    \end{macrocode}
-% |\inputminted| implicitly indents the subsequent line even if there is no paragraph break (i.e., an intervening blank line).
-% Do not indent \emph{unless} there is a paragraph break.
 %    \begin{macrocode}
-    \xapptocmd{\inputminted}{%
-      \noindent%
-      \ignorespaces%
-    }{}{}%
-%    \end{macrocode}
-%    \begin{macrocode}
-  }{%
-  }%
+  }
 %    \end{macrocode}
 %    \begin{macrocode}
 }
 %    \end{macrocode}
-% \changes{0.1.1}{2017/07/13}{%
-%   Do not indent after |\inputminted|
+% \changes{0.1.2}{2022/06/29}{%
+%   Load styles in preamble when using minted prior to v2.5
 % }
 %
 % \subsection{Macros}
