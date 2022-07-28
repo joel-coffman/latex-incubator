@@ -356,6 +356,7 @@
 %    \begin{macrocode}
 \usepgfplotslibrary{categorical}
 \usepgfplotslibrary{colors}
+\usepgfplotslibrary{generic}
 %    \end{macrocode}
 %
 % \subsection{Macros}
@@ -566,6 +567,38 @@
 %
 % \iffalse
 %</tikzlibrarypgfplots.colors.code.tex>
+% \fi
+%
+% \iffalse
+%<*tikzlibrarypgfplots.generic.code.tex>
+% \fi
+%
+% \subsubsection{Generic}
+% This section documents the implementation of the \textsf{generic} library, which contains styles used for a variety of visualizations.
+%
+% Require packages used by this library.
+%    \begin{macrocode}
+\RequirePackage{relsize}
+%    \end{macrocode}
+%
+% Define styles.
+%    \begin{macrocode}
+\pgfplotsset{
+%    \end{macrocode}
+%
+% A subtitle appears beneath the axis title but in a smaller font.
+%    \begin{macrocode}
+  subtitle/.style={
+    align=center,
+    title/.add={}{\\{\smaller #1\par}},
+  },
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</tikzlibrarypgfplots.generic.code.tex>
 % \fi
 %
 % \Finale
