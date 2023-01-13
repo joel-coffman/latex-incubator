@@ -23,15 +23,15 @@ jobs:
           apt update && apt install --no-install-recommends --yes \
               lsb-release
       - uses: actions/checkout@v2
-      - name: Configure Git
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install dependencies
         run: |
           apt update && apt install --no-install-recommends --yes \
               $(cat .ci/build/make/dependencies/$(lsb_release -cs)/apt.list)
           pip3 install --requirement \
               .ci/build/make/dependencies/$(lsb_release -cs)/python.list
+      - name: Configure Git
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
