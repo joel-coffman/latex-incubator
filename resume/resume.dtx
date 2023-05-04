@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2022/02/11 v0.4.4 Style file for resume]
+%<package>  [2022/06/07 v0.4.8 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -34,6 +34,7 @@
 %<*driver>
 \documentclass{ltxdoc}
 
+\usepackage{graphicx}
 \usepackage{minted}
 \usepackage{url}
 
@@ -180,6 +181,22 @@
 % \input{minted/position.out}
 % When multiple positions have been held at the same organization, ordinary paragraph breaks may be used to separate them.
 %
+% \begin{figure}[!tb]
+%   \centering
+%   \includegraphics[
+%       clip,
+%       trim=0.5in 3.5in 0.5in 0.5in,  ^^A left bottom right top
+%       width=\linewidth,
+%   ]{example}
+%   \caption{
+%     Example resume formatted using this package
+%   }
+%   \label{figure:example}
+% \end{figure}
+%
+% Figure~\ref{figure:example} provides a more complete example that uses the aforementioned commands.
+% \clearpage  ^^A FORMATTING
+%
 %
 % \StopEventually{
 %  \PrintChanges
@@ -227,60 +244,73 @@
 % Remove all vertical spacing between items and paragraphs as well as extra whitespace from \textsf{parskip} package.
 %    \begin{macrocode}
 \setlist{
-  noitemsep,
-  topsep=-0.5\baselineskip,
+  nosep,
 }
 %    \end{macrocode}
 % \changes{0.1.3}{2015/02/10}{
 %   Remove vertical spacing before and after list due to \textsf{parskip} package
 % }
-%
-% Replace the standard |\textbullet| for the first-level itemize environment with a smaller bullet symbol.
-%    \begin{macrocode}
-\setlist[itemize,1]{%
-  label={\boldmath$\cdot$},
-}
-%    \end{macrocode}
-% \changes{0.1.3}{2015/02/10}{
-%   Use smaller bullet symbol for first-level itemize environment
+% \changes{0.4.5}{2022/05/02}{
+%   Use \texttt{parskip} instead of \texttt{baselineskip} around lists
 % }
-% \end{macro}
 %
-% \begin{macro}{endlist}
 % Save current parskip length, as it is redefined within list environments (including itemize, enumerate, etc.).
 %    \begin{macrocode}
 \newlength{\resume@old@parskip}
 \setlength{\resume@old@parskip}{\parskip}
 %    \end{macrocode}
-% Save |endlist| macro and redefine it with additional vertical space to match expected output from \textsf{parskip} package.
+%
+% A top-level list should have additional vertical space after it, mimicking the additional space between paragraphs introduced by the \textsf{parskip} package.
 %    \begin{macrocode}
-\let\resume@old@endlist=\endlist\relax
-\def\endlist{%
-  \resume@old@endlist%
-  \vspace{\resume@old@parskip}%
+\setlist[1]{
+  after={\vspace*{\resume@old@parskip}},
+  before={\addtolength{\topsep}{-\resume@old@parskip}},
 }
 %    \end{macrocode}
+% \changes{0.4.6}{2022/05/02}{
+%   Add space after lists to match vertical space between paragraphs
+% }
+% \changes{0.4.7}{2022/05/03}{
+%   Correct vertical space after nested lists
+% }
+%
+% \changes{0.1.3}{2015/02/10}{
+%   Use smaller bullet symbol for first-level itemize environment
+% }
+% \changes{0.4.5}{2022/04/04}{
+%   Use standard bullets for itemize environment
+% }
+% \end{macro}
+%
+% \begin{macro}{endlist}
 % \changes{0.1.3}{2015/02/10}{
 %   Add vertical spacing after list to compensate for negative spacing in setlist
+% }
+% \changes{0.4.6}{2022/05/02}{
+%   Do not redefine \texttt{endlist} macro
 % }
 % \end{macro}
 %
 % \begin{macro}{abstract}
-% Do not indent paragraph at beginning of abstract.
+% Redefine the abstract environment to avoid indenting the first paragraph and suppressing vertical space after it.
+% The definition follows that of the |abstract| environment in the \textsf{article} class.
 %    \begin{macrocode}
-\let\resume@old@abstract=\abstract\relax
-\def\abstract{\resume@old@abstract\noindent\ignorespaces}
+\renewenvironment{abstract}{%
+  \small
+  \begin{quotation}
+    \noindent
+    \ignorespaces
+}{%
+  \end{quotation}
+  \vspace{-\parskip}
+}
 %    \end{macrocode}
 % \changes{0.1.7}{2015/03/18}{
 %   Remove indentation at beginning of abstract
 % }
-% \end{macro}
-%
-% \begin{macro}{abstractname}
-%   Overwrite \textbackslash abstractname so it does not appear.
-%    \begin{macrocode}
-\let\abstractname=\relax
-%    \end{macrocode}
+% \changes{0.4.8}{2022/05/04}{
+%   Redefine the abstract environment
+% }
 % \end{macro}
 %
 % \begin{macro}{maketitle}
@@ -541,7 +571,11 @@
     \noprotrusionifhmode%
     #1%
     \hfill #2%
-  }%
+  }\hfill%
+%    \end{macrocode}
+% Ignore subsequent space, which might introduce a pargraph skip (e.g., when the position is used in an |\item|).
+%    \begin{macrocode}
+  \ignorespaces
 %    \end{macrocode}
 %    \begin{macrocode}
 }
@@ -554,6 +588,12 @@
 % }
 % \changes{0.4.3}{2021/12/23}{
 %   Disable left protrusion to ensure box is ``full width''
+% }
+% \changes{0.4.6}{2022/05/03}{
+%   Remove following paragraph skip (if exists)
+% }
+% \changes{0.4.7}{2022/05/04}{
+%   Ignore subsequent space, which might introduce paragraph skip
 % }
 % \end{macro}
 %
@@ -570,7 +610,7 @@
     \bibitem{##2} \bibentry{##2}
     \if\relax\detokenize{##1}\relax%
     \else%
-      ({\small ##1\% acceptance rate})%
+      ({\small ##1\%~acceptance rate})%
     \fi%
   }%
 %    \end{macrocode}
@@ -590,11 +630,12 @@
   }{%
       \usecounter{c@publication}
       \setcounter{c@publication}{\value{c@reference}}%
-      \setlength{\topsep}{0ex}%
+      \setlength{\topsep}{-\parskip}%
   }%
 }{%
   \setcounter{c@reference}{\value{c@publication}}%
   \end{list}%
+  \addvspace{\parskip}%
 }
 %    \end{macrocode}
 % \end{macro}

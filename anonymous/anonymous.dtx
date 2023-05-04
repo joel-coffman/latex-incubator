@@ -84,7 +84,7 @@
 % \maketitle
 %
 % \begin{abstract}
-% This package facilitates anonymizing documents (e.g., conference papers or journal articles) to facilitate double-blind review.
+% This package facilitates anonymizing documents (e.g., conference papers or journal articles) for double-blind review.
 % In particular, it allows the anonymized and non-anonymized versions of the text to be written in parallel, and changing a package option is all that is required to use the anonymized (or non-anonymized) version.
 % \end{abstract}
 %
@@ -106,7 +106,7 @@
 % \inputminted{latex}{examples/anonymize.tex}
 % appears as
 % \begin{quote}
-%   \makeatletter\anonymous@anonymizetrue\makeatother
+%   \makeatletter\anonymizetrue\makeatother
 %   \input{examples/anonymize.tex}
 % \end{quote}
 % when the |anonymize| package option has been specified and
@@ -123,7 +123,7 @@
 % \inputminted{latex}{examples/anonymize.tex}
 % appears as
 % \begin{quote}
-%   \makeatletter\anonymous@anonymizetrue\makeatother
+%   \makeatletter\anonymizetrue\makeatother
 %   \input{examples/anonymize.tex}
 % \end{quote}
 % (when the |anonymize| package option has been specified).
@@ -150,8 +150,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{anonymous}[%
-    2021/08/18 %
-    v0.1.0 %
+    2022/04/25 %
+    v0.1.1 %
     Anonymize documents for double-blind review%
 ]
 %    \end{macrocode}
@@ -159,11 +159,14 @@
 % \subsection{Options}
 % Declare the \texttt{anonymize} option.
 %    \begin{macrocode}
-\newif\ifanonymous@anonymize
+\newif\ifanonymize
 \DeclareOption{anonymize}{
-  \anonymous@anonymizetrue
+  \anonymizetrue
 }
 %    \end{macrocode}
+% \changes{0.1.1}{2022/04/25}{
+%   Rename conditional to allow use outside package
+% }
 %
 % Process the options.
 %    \begin{macrocode}
@@ -185,7 +188,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\ifanonymous@anonymize%
+\ifanonymize%
   \def\author#1{\global\def\@author{}}%
 \fi
 %    \end{macrocode}
@@ -198,7 +201,7 @@
 %    \begin{macrocode}
 \newcommand*{\anonymize}[2][\anonymize@meta{anonymized for peer review}]{%
   \ignorespaces%
-  \ifanonymous@anonymize#1\else#2\fi%
+  \ifanonymize#1\else#2\fi%
 }
 %    \end{macrocode}
 % \end{macro}

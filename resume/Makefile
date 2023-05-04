@@ -1,14 +1,4 @@
-.PHONY: all
-all: packages documentation
-
-packages = $(patsubst %.dtx,%.sty,$(wildcard *.dtx))
-documentation = $(patsubst %.dtx,%.pdf,$(wildcard *.dtx))
-
-.PHONY: packages
-packages: $(packages)
-
-.PHONY: documentation
-documentation: $(documentation)
+include $(shell git rev-parse --show-toplevel)/texmf/Makefile.tex
 
 minted:
 	if ! [ -d $@ ]; then mkdir --parents $@; fi
@@ -16,4 +6,4 @@ minted:
 $(packages): hyperfix.sty
 $(documentation): email.sty | minted
 
-include $(shell git rev-parse --show-toplevel)/texmf/Makefile.tex
+resume.pdf: example.pdf
