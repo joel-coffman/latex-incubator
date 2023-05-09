@@ -22,7 +22,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{slides}
 %<*package>
-  [2021/10/20 v0.5.0 Slides package for presentations]
+  [2023/05/09 v0.5.1 Slides package for presentations]
 %</package>
 %<package>\RequirePackage{xcolor}
 %<package>\RequirePackage{xpatch}
@@ -616,7 +616,7 @@
 % }
 % \end{macro}
 %
-% \subsection*{Beamer Internals}
+% \subsection{Beamer Internals}
 %
 % \begin{macro}{beamer@outsideframenote}
 % Patch the \mintinline{latex}{note} macro to add indentation for paragraphs after the first and to append a \mintinline{latex}{\par} for consistent spacing across paragraphs.
@@ -640,6 +640,24 @@
 %   Patch \texttt{beamer@outsideframenote} command
 % }
 % \end{macro}
+%
+% \subsection{Overlays}
+%
+% \begin{environment}{beamercolorbox}
+%   Add overlay support to the |beamercolorbox| environment.
+%    \begin{macrocode}
+\renewenvironment<>{beamercolorbox}{%
+  \begin{actionenv}#1%
+  \begin{originalbeamercolorbox}%
+}{%
+  \end{originalbeamercolorbox}%
+  \end{actionenv}%
+}
+%    \end{macrocode}
+% \changes{0.5.1}{2023/05/09}{
+%   Add overlay support for \texttt{beamercolorbox}
+% }
+% \end{environment}
 %
 % \Finale
 \endinput
