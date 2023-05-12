@@ -18,12 +18,18 @@
 %<*driver>
 \documentclass{ltxdoc}
 
+\usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{minted}
 
 \usepackage{reproducible}
 
+
+% enumitem
+\setlist{
+  noitemsep,
+}
 
 % minted
 \setminted{
@@ -80,12 +86,12 @@
 % \maketitle
 %
 % \begin{abstract}
-% Comparing documents compiled by pdf\TeX{}, specifically the resulting PDFs, is non-trivial, and there is no easy mechanism to even identify if a document has changed due to embedded metadata, such as the PDF's creation time.
-% This package ensures that the build is \emph{reproducible}, providing the same output each time that the document is compiled.
+% Comparing documents compiled by pdf\TeX{}, specifically the resulting PDFs, is non-trivial, and there is no easy mechanism even to identify if a document has changed (e.g., using a hash) due to embedded metadata, such as the PDF's creation time.
+% This package ensures that the build is \emph{reproducible}, outputting the same PDF each time that the document is compiled.
 % \end{abstract}
 %
 % \section{Usage}\label{section:usage}
-% Load this package in the preamble:
+% Load this package in the document's preamble:
 % \begin{VerbatimOut}[gobble=2]{./minted/usage.out}
 %   \usepackage{reproducible}
 % \end{VerbatimOut}
@@ -112,34 +118,53 @@
 % \section{Implementation}
 % This section documents the implementation of the package.
 %
-% Require \LaTeXe, specifically pdf\TeX{} 1.40.17, which introduced the primitives used to make reproducible PDFs.
+% Require \LaTeXe, specifically pdf\TeX{} 1.40.17, which introduced the primitives required for reproducible PDFs.
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}[2016-05-20]
 %    \end{macrocode}
 % Identify the package and version.
 %    \begin{macrocode}
 \ProvidesPackage{reproducible}[%
-    2023/05/10 %
+    2023/05/12 %
     v0.1.0 %
     LaTeX package for reproducible builds%
 ]
 %    \end{macrocode}
 %
 % \subsection*{Configuration}\label{section:configuration}
-% Disable metadata that changes each time that the document is compiled.
+% Omit metadata that changes each time that the document is compiled.
 %
-% Omit the creation and modified dates.
-%    \begin{macrocode}
-\pdfinfoomitdate=1  % omit the /CreationDate and /ModDate
-%    \end{macrocode}
-% Omit version information about pdf\TeX.
-%    \begin{macrocode}
-\pdfsuppressptexinfo=1  % omit version info about compiler
-%    \end{macrocode}
 % Omit the identifier in the trailer.
 % The trailer id is optional but strongly recommended, as some workflows may use the trailer id to uniquely identify files.
 %    \begin{macrocode}
 \pdftrailerid{}  % omit /ID from the trailer
+%    \end{macrocode}
+%
+% \paragraph{PDF ``Info'' dictionary}
+% The document information dictionary contains most of the metadata.
+% See Figure~\ref{figure:pdf info dictionary} for the relevant entries.
+%
+% \begin{figure}[tb]
+%   \centering
+%   \begin{description}[
+%       nosep,
+%   ]
+%     \item[CreationDate] the date and time the PDF was created
+%     \item[ModDate] the date and time the PDF was most recently modified
+%   \end{description}
+%   \caption{
+%     Entries in the PDF ``Info'' dictionary
+%   }
+%   \label{figure:pdf info dictionary}
+% \end{figure}
+%
+% Omit the creation and modified dates.
+%    \begin{macrocode}
+\pdfinfoomitdate=1  % omit /CreationDate and /ModDate
+%    \end{macrocode}
+% Omit version information about pdf\TeX.
+%    \begin{macrocode}
+\pdfsuppressptexinfo=1  % omit the pdfTeX version
 %    \end{macrocode}
 %
 % \iffalse
