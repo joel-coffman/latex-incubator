@@ -150,7 +150,9 @@
 %       nosep,
 %   ]
 %     \item[CreationDate] the date and time the PDF was created
+%     \item[Creator] the application that created the original document, such as \LaTeX{} (or \TeX) and possibly including packages (e.g., \textsf{hyperref}).
 %     \item[ModDate] the date and time the PDF was most recently modified
+%     \item[Producer] the application that converted the document to a PDF (e.g., pdf\LaTeX)
 %   \end{description}
 %   \caption{
 %     Entries in the PDF ``Info'' dictionary
@@ -165,6 +167,23 @@
 % Omit version information about pdf\TeX.
 %    \begin{macrocode}
 \pdfsuppressptexinfo=1  % omit the pdfTeX version
+%    \end{macrocode}
+% Omit the producer from the PDF ``Info'' dictionary.
+% The producer includes the pdf\TeX{} version, and using a different version should not cause the output document to change.
+%    \begin{macrocode}
+\AtBeginDocument{
+  \@ifpackageloaded{hyperref}{
+    \hypersetup{
+      pdfinfo={
+        Producer={},
+      }
+    }
+  }{
+    \pdfinfo{
+      /Producer ()
+    }
+  }
+}
 %    \end{macrocode}
 %
 % \iffalse
