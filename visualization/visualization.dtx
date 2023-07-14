@@ -339,8 +339,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{visualization}[%
-    2022/07/28 %
-    v0.1.1 %
+    2023/07/13 %
+    v0.1.2 %
     Data visualization library%
 ]
 %    \end{macrocode}
@@ -477,6 +477,11 @@
     },
     bar width=\baselineskip,
     enlarge y limits={abs=\baselineskip},
+    extra x ticks=1.00,
+    extra x tick labels={},
+    extra x tick style={
+      grid=major,
+    },
     label style={
       font=\smaller,
     },
@@ -510,6 +515,9 @@
   },
 }
 %    \end{macrocode}
+% \changes{0.1.2}{2023/07/13}{
+%    Denote midpoint of Likert scale
+% }
 %
 % \iffalse
 %</tikzlibrarypgfplots.categorical.code.tex>
