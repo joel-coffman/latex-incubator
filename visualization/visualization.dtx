@@ -505,6 +505,11 @@
       xticklabels={},
     },
     explicit axis labels/.default={Disagree}{Agree},
+    extra x ticks=1.00,
+    extra x tick labels={},
+    extra x tick style={
+      grid=major,
+    },
     label style={
       font=\smaller,
     },
@@ -512,6 +517,7 @@
       font=\smaller,
       legend columns=-1,
     },
+    minor tick num=1,
     point meta=explicit symbolic,
     scale only axis,
     tick label style={
@@ -538,6 +544,12 @@
   },
 }
 %    \end{macrocode}
+% \changes{0.1.2}{2023/07/13}{
+%    Add minor tick marks to Likert visualization
+% }
+% \changes{0.1.2}{2023/07/13}{
+%    Denote midpoint of Likert scale
+% }
 % \changes{0.1.2}{2023/07/13}{
 %    Label x axis for Likert visualization
 % }
