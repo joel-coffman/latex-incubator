@@ -339,8 +339,8 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{visualization}[%
-    2022/07/28 %
-    v0.1.1 %
+    2023/07/13 %
+    v0.1.2 %
     Data visualization library%
 ]
 %    \end{macrocode}
@@ -484,6 +484,7 @@
       font=\smaller,
       legend columns=-1,
     },
+    minor tick num=1,
     point meta=explicit symbolic,
     scale only axis,
     tick label style={
@@ -510,6 +511,9 @@
   },
 }
 %    \end{macrocode}
+% \changes{0.1.2}{2023/07/13}{
+%    Add minor tick marks to Likert visualization
+% }
 %
 % \iffalse
 %</tikzlibrarypgfplots.categorical.code.tex>
