@@ -282,6 +282,7 @@
 % \begin{tikzpicture}
 %   \begin{axis}[
 %       likert=5,
+%       explicit axis labels={Disagree}{Agree},
 %       symbolic y coords={Post,Pre},
 %       width=\linewidth - 35pt,
 %       ytick=data,
@@ -477,6 +478,33 @@
     },
     bar width=\baselineskip,
     enlarge y limits={abs=\baselineskip},
+    explicit axis labels/.style 2 args={
+      axis line style={stealth-stealth},
+      after end axis/.append code={
+        \begin{scope}[
+          every node/.style={
+            execute at end node=\strut,
+            fill=white,
+            fill opacity=0.75,
+            font=\smaller,
+            inner sep=1pt,
+            text opacity=0.50,
+          },
+        ]
+          \node[
+              anchor=west,
+              xshift=0.75em,
+          ] at (axis description cs:0,0) {##1};
+          \node[
+              anchor=east,
+              xshift=-0.75em,
+          ] at (axis description cs:1,0) {##2};
+        \end{scope}
+      },
+      xtick={1.00},
+      xticklabels={},
+    },
+    explicit axis labels/.default={Disagree}{Agree},
     extra x ticks=1.00,
     extra x tick labels={},
     extra x tick style={
@@ -498,7 +526,7 @@
     xmin=0.00,
     xmax=2.00,
     xtick={0.00,0.50,1.00,1.50,2.00},
-    xticklabels={$-100\%$,$-50\%$,$0\%$,$+50\%$,$+100\%$},
+    xticklabels={$100\%$,$50\%$,$0\%$,$50\%$,$100\%$},
     x tick label style={
       text opacity=0.5,
     },
@@ -521,6 +549,9 @@
 % }
 % \changes{0.1.2}{2023/07/13}{
 %    Denote midpoint of Likert scale
+% }
+% \changes{0.1.2}{2023/07/13}{
+%    Label x axis for Likert visualization
 % }
 %
 % \iffalse
