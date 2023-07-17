@@ -150,22 +150,41 @@
 % Identify package and version.
 %    \begin{macrocode}
 \ProvidesPackage{anonymous}[%
-    2022/04/25 %
-    v0.1.1 %
+    2023/07/17 %
+    v0.2.0 %
     Anonymize documents for double-blind review%
 ]
 %    \end{macrocode}
 %
 % \subsection{Options}
-% Declare the \texttt{anonymize} option.
+% Declare conditional for anonymizing content.
 %    \begin{macrocode}
 \newif\ifanonymize
+%    \end{macrocode}
+% \changes{0.1.1}{2022/04/25}{
+%   Rename conditional to allow use outside package
+% }
+%
+% Handle the \texttt{anonymize} option.
+%    \begin{macrocode}
 \DeclareOption{anonymize}{
   \anonymizetrue
 }
 %    \end{macrocode}
-% \changes{0.1.1}{2022/04/25}{
-%   Rename conditional to allow use outside package
+%
+% \paragraph{Compatibility}
+% Special handling for classes that also support anonymizing documents.
+%
+% Accept the \texttt{anonymous} option used by \textsf{acmart} as an alias for \texttt{anonymize}.
+%    \begin{macrocode}
+\@ifclassloaded{acmart}{
+  \DeclareOption{anonymous}{
+    \anonymizetrue
+  }
+}{}
+%    \end{macrocode}
+% \changes{0.2.0}{2023/07/17}{
+%   Alias \texttt{anonymize} option if using \textsf{acmart} class
 % }
 %
 % Process the options.
@@ -191,9 +210,14 @@
 % Omit the author(s) when the document should be anonymous.
 %    \begin{macrocode}
 \ifanonymize%
-  \def\author#1{\global\def\@author{}}%
+  \@ifclassloaded{acmart}{}{
+    \def\author#1{\global\def\@author{}}%
+  }
 \fi
 %    \end{macrocode}
+% \changes{0.2.0}{2023/07/17}{
+%   Do not anonymize author(s) if using \textsf{acmart} class
+% }
 % \end{macro}
 %
 % \subsection{Macros}
