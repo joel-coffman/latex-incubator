@@ -487,18 +487,17 @@
             fill=white,
             fill opacity=0.9,
             font=\smaller,
-            inner sep=1pt,
+            inner xsep=5pt,
+            inner ysep=1pt,
             text opacity=0.5,
           },
         ]
           \node[
-              anchor=west,
-              xshift=0.75em,
-          ] at (axis description cs:0,0) {##1};
-          \node[
               anchor=east,
-              xshift=-0.75em,
-          ] at (axis description cs:1,0) {##2};
+          ] at (axis description cs:0.25,0) {##1};
+          \node[
+              anchor=west,
+          ] at (axis description cs:0.75,0) {##2};
         \end{scope}
       },
       xtick={1.00},
