@@ -187,11 +187,14 @@
 \hyphenation{anon-y-mized}
 %    \end{macrocode}
 %
+% \begin{macro}{\author}
+% Omit the author(s) when the document should be anonymous.
 %    \begin{macrocode}
 \ifanonymize%
   \def\author#1{\global\def\@author{}}%
 \fi
 %    \end{macrocode}
+% \end{macro}
 %
 % \subsection{Macros}
 % This section describes the macros in the \textsf{anonymous} package.
