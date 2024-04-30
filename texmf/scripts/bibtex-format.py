@@ -3,9 +3,7 @@
 import bibtexparser
 
 
-with open('references.bib', 'r') as f:
-    library = f.read()
-    library = bibtexparser.parse_string(library)
+library = bibtexparser.parse_file('references.bib')
 
 with open('references_bibtexparser.bib', 'w') as f:
     formatter = bibtexparser.BibtexFormat()
