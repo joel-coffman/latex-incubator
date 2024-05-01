@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 formatter = bibtexparser.BibtexFormat()
 formatter.indent = '  '
-formatter.block_separator = '\n\n'
+formatter.block_separator = '\n'
 formatter.trailing_comma = True
 
 for path in args.paths:
