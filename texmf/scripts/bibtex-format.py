@@ -18,9 +18,13 @@ formatter.block_separator = '\n'
 formatter.trailing_comma = True
 
 for path in args.paths:
-    library = bibtexparser.parse_file(path)
+    # save backup of original file
+    with (open(path, 'r') as original,
+          open(path + '.bak', 'w') as backup):
+        backup.write(original.read())
 
-    root, ext = os.path.splitext(path)
-    with open(root + '_bibtexparser' + ext, 'w') as f:
+    # format the original file
+    library = bibtexparser.parse_file(path)
+    with open(path, 'w') as f:
         library = bibtexparser.write_string(library, bibtex_format=formatter)
         f.write(library)
