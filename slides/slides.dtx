@@ -30,11 +30,16 @@
 %<*driver>
 \documentclass{ltxdoc}
 
+\usepackage{glossaries}
 \usepackage{microtype}
 \usepackage{minted}
 
 \usepackage{email}
 \usepackage{theme-doc}
+
+
+% glossaries
+\loadglsentries{acronyms}
 
 
 % package version information
@@ -286,7 +291,7 @@
 %   Disable |\nofiles| invocation for notes
 % }
 %
-% \subsection{Templates}
+% \subsection{Beamer Templates}
 % Remove navigation symbols at the bottom of slides.
 % The navigation symbols are almost too small to see in many cases and rarely used in practice.
 %    \begin{macrocode}
@@ -327,6 +332,67 @@
 % \changes{0.1.2}{2015/03/23}{
 %   Replace icons in bibliography
 % }
+%
+% \subsection{Commonly-Used Packages}
+% \changes{0.6.0}{2024/05/01}{
+%   Add configuration for commonly-used packages
+% }
+%
+% \paragraph{\textsf{graphicx}}
+% Set default width and height for images to maximize their size while preserving the aspect ratio.
+% The defaults may be overridden by specifying them as normal or ``unset'' by specifying |!| as the value for the key.
+%    \begin{macrocode}
+\@ifpackageloaded{graphicx}{%
+  \setkeys{Gin}{
+    height=0.8\textheight,
+    keepaspectratio,
+    width=\linewidth,
+  }
+}
+%    \end{macrocode}
+%
+% \paragraph{\textsf{minted}}
+% Set common figuration options.
+%    \begin{macrocode}
+\@ifpackageloaded{minted}{%
+  \setminted{
+      autogobble,
+      breaklines,
+  }
+}
+%    \end{macrocode}
+%
+% \paragraph{\textsf{svg}}
+% Do not use \LaTeX to render the text of \gls{SVG} images.
+%    \begin{macrocode}
+\@ifpackageloaded{svg}{%
+  \svgsetup{
+    inkscapelatex=false,
+  }
+}
+%    \end{macrocode}
+%
+% \paragraph{\textsf{url}}
+% Avoid the use of monospace fonts.
+%    \begin{macrocode}
+\@ifpackageloaded{url}{%
+%    \end{macrocode}
+% Do not use monospace font for \glspl{URL}.
+%    \begin{macrocode}
+  \urlstyle{same}
+%    \end{macrocode}
+% Do not use monospace font for paths, including \glspl{DOI} in bibliographic entries.
+%    \begin{macrocode}
+  \ifdefined\path
+    \xpatchcmd{\path}{\urlstyle{tt}}{\urlstyle{same}}{}{
+      \PackageWarning{slides}
+          {Failed to patch \string\path: the font used for paths may differ}
+    }
+  \fi
+%    \end{macrocode}
+%    \begin{macrocode}
+}
+%    \end{macrocode}
 %
 % \section{Commands}
 % \begin{macro}{slides@newblock}
