@@ -292,6 +292,18 @@
 % }
 %
 % \subsection{Beamer Templates}
+% When |allowframebreaks| is used, only include the number (I, II, III, etc.) when the content requires more than one frame.
+%    \begin{macrocode}
+\detbeamertemplate*{frametitle continuation}{only if multiple}{%
+  \ifnum\numexpr\beamer@endpageofframe+1-\beamer@startpageofframe\relax>1
+    \insertcontinuationcountroman
+  \fi%
+}
+%    \end{macrocode}
+% \changes{0.5.2}{2024/05/01}{
+%   Do not number frames with automatic breaks when there is a single frame
+% }
+%
 % Remove navigation symbols at the bottom of slides.
 % The navigation symbols are almost too small to see in many cases and rarely used in practice.
 %    \begin{macrocode}
