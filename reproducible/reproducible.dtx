@@ -1,0 +1,195 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2023 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{minted}
+
+\usepackage{email}
+\usepackage{reproducible}
+
+
+% enumitem
+\setlist{
+  noitemsep,
+}
+
+% minted
+\setminted{
+  autogobble,
+  breaklines,
+}
+
+
+\input{.version}
+
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{reproducible.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.1.0}{2023/05/10}{Initial version}
+%
+% \GetFileInfo{reproducible.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{reproducible} package\thanks{This
+% document corresponds to \textsf{reproducible~\fileversion-\version, dated \filedate.}}}
+% \author{Joel Coffman\\\email{joel.coffman@acm.org}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% Comparing documents compiled by pdf\TeX{}, specifically the resulting PDFs, is non-trivial, and there is no easy mechanism even to identify if a document has changed (e.g., using a hash) due to embedded metadata, such as the PDF's creation time.
+% This package ensures that the build is \emph{reproducible}, outputting the same PDF each time that the document is compiled.
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% Load this package in the document's preamble:
+% \begin{VerbatimOut}[gobble=2]{./minted/usage.out}
+%   \usepackage{reproducible}
+% \end{VerbatimOut}
+% \inputminted{tex}{./minted/usage.out}
+%
+% \section{Alternatives}\label{section:alternatives}
+% The following packages provide similar functionality:
+%
+% \paragraph{\textsf{pdfprivacy}}
+% The \textsf{pdfprivacy} package suppresses PDF metadata, including creation and modification timestamps, the application creating the PDF, and pdf\TeX{} version information.
+% Removing all metadata has a comparable effect to using this package.
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe, specifically pdf\TeX{} 1.40.17, which introduced the primitives required for reproducible PDFs.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}[2016-05-20]
+%    \end{macrocode}
+% Identify the package and version.
+%    \begin{macrocode}
+\ProvidesPackage{reproducible}[%
+    2023/05/12 %
+    v0.1.0 %
+    LaTeX package for reproducible builds%
+]
+%    \end{macrocode}
+%
+% \subsection*{Configuration}\label{section:configuration}
+% Omit metadata that changes each time that the document is compiled.
+%
+% Omit the identifier in the trailer.
+% The trailer id is optional but strongly recommended, as some workflows may use the trailer id to uniquely identify files.
+%    \begin{macrocode}
+\pdftrailerid{}  % omit /ID from the trailer
+%    \end{macrocode}
+%
+% \paragraph{PDF ``Info'' dictionary}
+% The document information dictionary contains most of the metadata.
+% See Figure~\ref{figure:pdf info dictionary} for the relevant entries.
+%
+% \begin{figure}[tb]
+%   \centering
+%   \begin{description}[
+%       nosep,
+%   ]
+%     \item[CreationDate] the date and time the PDF was created
+%     \item[Creator] the application that created the original document, such as \LaTeX{} (or \TeX) and possibly including packages (e.g., \textsf{hyperref}).
+%     \item[ModDate] the date and time the PDF was most recently modified
+%     \item[Producer] the application that converted the document to a PDF (e.g., pdf\LaTeX)
+%   \end{description}
+%   \caption{
+%     Entries in the PDF ``Info'' dictionary
+%   }
+%   \label{figure:pdf info dictionary}
+% \end{figure}
+%
+% Omit the creation and modified dates.
+%    \begin{macrocode}
+\pdfinfoomitdate=1  % omit /CreationDate and /ModDate
+%    \end{macrocode}
+% Omit version information about pdf\TeX.
+%    \begin{macrocode}
+\pdfsuppressptexinfo=1  % omit the pdfTeX version
+%    \end{macrocode}
+% Omit the producer from the PDF ``Info'' dictionary.
+% The producer includes the pdf\TeX{} version, and using a different version should not cause the output document to change.
+%    \begin{macrocode}
+\AtBeginDocument{
+  \@ifpackageloaded{hyperref}{
+    \hypersetup{
+      pdfinfo={
+        Producer={},
+      }
+    }
+  }{
+    \pdfinfo{
+      /Producer ()
+    }
+  }
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
