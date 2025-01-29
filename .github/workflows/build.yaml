@@ -40,8 +40,9 @@ jobs:
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
+        if: ${{ matrix.os == 'debian:bullseye' }}
         uses: actions/upload-artifact@v4
         with:
-          name: packages-${{ matrix.os }}
+          name: packages
           path: |
             **/*.zip
