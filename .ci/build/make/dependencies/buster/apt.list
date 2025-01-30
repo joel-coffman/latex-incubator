@@ -2,7 +2,7 @@ curl
 ghostscript
 git
 make
-python3-pip
+python3-pygments python3-pkg-resources
 texlive
 texlive-font-utils
 texlive-fonts-extra

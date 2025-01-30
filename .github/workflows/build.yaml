@@ -10,19 +10,15 @@ on:
 jobs:
   make:
     runs-on: ubuntu-latest
-    container: ${{ matrix.os }}
+    container: debian:${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os:
-          - debian:buster  # TeX Live 2018
-          - debian:bullseye  # TeX Live 2020
-          - debian:bookworm  # TeX Live 2022
+          - buster  # TeX Live 2018
+          - bullseye  # TeX Live 2020
+          - bookworm  # TeX Live 2022
     steps:
-      - name: Install lsb_release
-        run: |
-          apt update && apt install --no-install-recommends --yes \
-              lsb-release
       - name: Install Git
         run: |
           apt update && apt install --no-install-recommends --yes \
@@ -35,13 +31,11 @@ jobs:
       - name: Install dependencies
         run: |
           apt update && apt install --no-install-recommends --yes \
-              $(cat .ci/build/make/dependencies/$(lsb_release -cs)/apt.list)
-          pip3 install --requirement \
-              .ci/build/make/dependencies/$(lsb_release -cs)/python.list
+              $(cat .ci/build/make/dependencies/${{ matrix.os }}/apt.list)
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
-        if: ${{ matrix.os == 'debian:bookworm' }}
+        if: ${{ matrix.os == 'bookworm' }}
         uses: actions/upload-artifact@v4
         with:
           name: packages
