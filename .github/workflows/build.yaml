@@ -10,18 +10,14 @@ on:
 jobs:
   make:
     runs-on: ubuntu-latest
-    container: ${{ matrix.os }}
+    container: debian:${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os:
-          - debian:buster  # TeX Live 2018
-          - debian:bullseye  # TeX Live 2020
+          - buster  # TeX Live 2018
+          - bullseye  # TeX Live 2020
     steps:
-      - name: Install lsb_release
-        run: |
-          apt update && apt install --no-install-recommends --yes \
-              lsb-release
       - name: Install Git
         run: |
           apt update && apt install --no-install-recommends --yes \
@@ -34,13 +30,13 @@ jobs:
       - name: Install dependencies
         run: |
           apt update && apt install --no-install-recommends --yes \
-              $(cat .ci/build/make/dependencies/$(lsb_release -cs)/apt.list)
+              $(cat .ci/build/make/dependencies/${{ matrix.os }}/apt.list)
           pip3 install --requirement \
-              .ci/build/make/dependencies/$(lsb_release -cs)/python.list
+              .ci/build/make/dependencies/${{ matrix.os }}/python.list
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
-        if: ${{ matrix.os == 'debian:bullseye' }}
+        if: ${{ matrix.os == 'bullseye' }}
         uses: actions/upload-artifact@v4
         with:
           name: packages
