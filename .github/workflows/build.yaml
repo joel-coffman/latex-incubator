@@ -31,8 +31,6 @@ jobs:
         run: |
           apt update && apt install --no-install-recommends --yes \
               $(cat .ci/build/make/dependencies/${{ matrix.os }}/apt.list)
-          pip3 install --requirement \
-              .ci/build/make/dependencies/${{ matrix.os }}/python.list
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
