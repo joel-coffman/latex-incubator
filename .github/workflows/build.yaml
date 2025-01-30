@@ -17,6 +17,7 @@ jobs:
         os:
           - buster  # TeX Live 2018
           - bullseye  # TeX Live 2020
+          - bookworm  # TeX Live 2022
     steps:
       - name: Install Git
         run: |
@@ -34,7 +35,7 @@ jobs:
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
-        if: ${{ matrix.os == 'bullseye' }}
+        if: ${{ matrix.os == 'bookworm' }}
         uses: actions/upload-artifact@v4
         with:
           name: packages
