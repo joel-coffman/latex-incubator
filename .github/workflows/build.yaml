@@ -17,6 +17,7 @@ jobs:
         os:
           - debian:buster  # TeX Live 2018
           - debian:bullseye  # TeX Live 2020
+          - debian:bookworm  # TeX Live 2022
     steps:
       - name: Install lsb_release
         run: |
@@ -40,7 +41,7 @@ jobs:
       - name: make
         run: make --jobs=$(nproc) --output-sync
       - name: Archive artifacts
-        if: ${{ matrix.os == 'debian:bullseye' }}
+        if: ${{ matrix.os == 'debian:bookworm' }}
         uses: actions/upload-artifact@v4
         with:
           name: packages
