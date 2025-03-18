@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2025/01/29 v0.4.9 Style file for resume]
+%<package>  [2025/03/16 v0.5.0 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -317,14 +317,22 @@
 % \end{macro}
 %
 % \begin{macro}{maketitle}
-%   Redefine maketitle to print the title in small capitals.
+%   Redefine maketitle to print the author in small capitals.
 %    \begin{macrocode}
 \renewcommand{\maketitle}{%
   \thispagestyle{plain}%
   %
   \begin{center}%
-    \huge%
-    \textsc{\@title}%
+    {\huge%
+      \textsc{\@author}%
+      \par%
+    }%
+    \ifdefined\@title%
+      {\Large%
+        \@title%
+        \par%
+      }%
+    \fi%
     \@thanks%
   \end{center}%
 }
@@ -338,6 +346,19 @@
 % \changes{0.4.0}{2017/08/24}{
 %   Remove negative vertical space after title
 % }
+% \changes{0.5.0}{2025/03/16}{
+%   Use author as the ``title'' and the title as the subtitle
+% }
+% \end{macro}
+%
+% \begin{macro}{title}
+%   Make the title optional---i.e., there should not be an error if it is not defined.
+%    \begin{macrocode}
+\let\@title=\undefined\relax%
+\renewcommand{\title}[1]{%
+  \def\@title{#1}%
+}
+%    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{noprotrusionifhmode}
