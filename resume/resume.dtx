@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2025/03/16 v0.5.0 Style file for resume]
+%<package>  [2025/03/20 v0.5.1 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -299,6 +299,13 @@
 % The definition follows that of the |abstract| environment in the \textsf{article} class.
 %    \begin{macrocode}
 \renewenvironment{abstract}{%
+  \ifdefined\@title%
+    \vspace{0.5ex}%
+    \begin{center}
+      {\Large\@title\par}%
+    \end{center}%
+    \nopagebreak\vspace{-0.75\baselineskip}\nopagebreak%
+  \fi%
   \small
   \begin{quotation}
     \noindent
@@ -314,6 +321,9 @@
 % \changes{0.4.8}{2022/05/04}{
 %   Redefine the abstract environment
 % }
+% \changes{0.5.1}{2025/03/20}{
+%   Display the title (if defined) before the abstract
+% }
 % \end{macro}
 %
 % \begin{macro}{maketitle}
@@ -327,12 +337,6 @@
       \textsc{\@author}%
       \par%
     }%
-    \ifdefined\@title%
-      {\Large%
-        \@title%
-        \par%
-      }%
-    \fi%
     \@thanks%
   \end{center}%
 }
@@ -348,6 +352,9 @@
 % }
 % \changes{0.5.0}{2025/03/16}{
 %   Use author as the ``title'' and the title as the subtitle
+% }
+% \changes{0.5.1}{2025/03/18}{
+%   Use the title as the abstract name
 % }
 % \end{macro}
 %
