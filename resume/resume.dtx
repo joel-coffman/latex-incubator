@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2025/03/18 v0.5.1 Style file for resume]
+%<package>  [2025/03/20 v0.5.1 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -301,12 +301,10 @@
 \renewenvironment{abstract}{%
   \ifdefined\@title%
     \vspace{0.5ex}%
-    \begin{minipage}{\linewidth}%
-      \centering%
-      \bfseries%
-      \MakeUppercase{\@title}%
-    \end{minipage}%
-    \nopagebreak\vspace{-0.875\baselineskip}\nopagebreak%
+    \begin{center}
+      {\Large\@title\par}%
+    \end{center}%
+    \nopagebreak\vspace{-0.75\baselineskip}\nopagebreak%
   \fi%
   \small
   \begin{quotation}
@@ -323,7 +321,7 @@
 % \changes{0.4.8}{2022/05/04}{
 %   Redefine the abstract environment
 % }
-% \changes{0.5.1}{2025/03/18}{
+% \changes{0.5.1}{2025/03/20}{
 %   Display the title (if defined) before the abstract
 % }
 % \end{macro}
