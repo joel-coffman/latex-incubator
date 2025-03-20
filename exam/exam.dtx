@@ -259,8 +259,8 @@
 % The spaces between the date, version, and description are significant.
 %    \begin{macrocode}
 \ProvidesPackage{exam}[%
-    2022/03/11 %
-    v0.4.1 %
+    2025/03/20 %
+    v0.4.2 %
     Style file for exams%
 ]
 %    \end{macrocode}
@@ -815,12 +815,7 @@
 %    \begin{macrocode}
   \newcommand{\option}[1][]{%
 % We're (or should be) in a list environment.
-% Use the default color for the label.
-%    \begin{macrocode}
-    \color{exam/color/default}%
-    \item
-%    \end{macrocode}
-% Use the default color for the content.
+% Use the default color for the label and content (unless modified later).
 %    \begin{macrocode}
     \color{exam/color/default}%
 %    \end{macrocode}
@@ -836,6 +831,10 @@
       },%
       ##1
     }
+%    \end{macrocode}
+% Display the label using the current color.
+%    \begin{macrocode}
+    \item
 %    \end{macrocode}
 %    \begin{macrocode}
   }%
@@ -856,6 +855,9 @@
 %    \end{macrocode}
 % \changes{0.4.1}{2022/01/31}{
 %    Add the \texttt{multiple choice} environment
+% }
+% \changes{0.4.2}{2025/03/20}{
+%    Use a consistent color for the item label
 % }
 % \end{macro}
 %
