@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2025/03/20 v0.5.1 Style file for resume]
+%<package>  [2025/04/21 v0.5.2 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -649,9 +649,17 @@
 %   Add publication macro
 % }
 %
-% Start subsection for publications.
+% Start subsection for publications if title specified.
+%
+% \paragraph{Note}
+% Because the title can be empty, it should be an optional argument instead of a mandatory argument.
+% For backward compatibility, that change is intentionally being deferred as is \textbf{not} included in v0.5.2..
 %    \begin{macrocode}
-  \subsection{#1}%
+  \if\relax\detokenize{#1}\relax%
+    \addvspace{\parskip}%
+  \else%
+    \subsection{#1}%
+  \fi%
 %    \end{macrocode}
 % List for publications.
 %    \begin{macrocode}
@@ -669,6 +677,9 @@
   \addvspace{\parskip}%
 }
 %    \end{macrocode}
+% \changes{0.5.2}{2025/04/21}{
+%   Do not start (sub)section if argument is empty
+% }
 % \end{macro}
 %
 % \Finale
