@@ -73,6 +73,7 @@ PACKAGES = $(wildcard *.cls) $(wildcard *.sty)
 	$(compile-doc)
 
 %.pdf: %.tex $(DEPENDENCIES) $(PACKAGES)
+	chktex --quiet $<
 	$(compile-doc)
 
 %.sty: directory = $(dir $<)
