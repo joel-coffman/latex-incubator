@@ -17,7 +17,7 @@ for path in $@; do
   cp "$path" "$path.bak"
 
   # format the original file
-  npx bibtex-tidy --modify \
+  bibtex-tidy --modify \
       --space=2 \
       --blank-lines --no-align \
       --curly --months --remove-empty-fields \
