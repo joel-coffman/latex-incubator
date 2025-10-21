@@ -15,7 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - buster  # TeX Live 2018
           - bullseye  # TeX Live 2020
           - bookworm  # TeX Live 2022
     steps:
