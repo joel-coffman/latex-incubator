@@ -18,7 +18,7 @@
 % \iffalse
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{resume}
-%<package>  [2022/06/07 v0.4.8 Style file for resume]
+%<package>  [2025/03/20 v0.5.1 Style file for resume]
 %<package>\RequirePackage{enumitem}
 %<package>\RequirePackage{microtype}
 %<package>\RequirePackage[
@@ -263,7 +263,7 @@
 % A top-level list should have additional vertical space after it, mimicking the additional space between paragraphs introduced by the \textsf{parskip} package.
 %    \begin{macrocode}
 \setlist[1]{
-  after={\vspace*{\resume@old@parskip}},
+  after={\vspace{\resume@old@parskip}},
   before={\addtolength{\topsep}{-\resume@old@parskip}},
 }
 %    \end{macrocode}
@@ -272,6 +272,9 @@
 % }
 % \changes{0.4.7}{2022/05/03}{
 %   Correct vertical space after nested lists
+% }
+% \changes{0.4.9}{2025/01/29}{
+%   Remove vertical space after page break
 % }
 %
 % \changes{0.1.3}{2015/02/10}{
@@ -296,6 +299,13 @@
 % The definition follows that of the |abstract| environment in the \textsf{article} class.
 %    \begin{macrocode}
 \renewenvironment{abstract}{%
+  \ifdefined\@title%
+    \vspace{0.5ex}%
+    \begin{center}
+      {\Large\@title\par}%
+    \end{center}%
+    \nopagebreak\vspace{-0.75\baselineskip}\nopagebreak%
+  \fi%
   \small
   \begin{quotation}
     \noindent
@@ -311,17 +321,22 @@
 % \changes{0.4.8}{2022/05/04}{
 %   Redefine the abstract environment
 % }
+% \changes{0.5.1}{2025/03/20}{
+%   Display the title (if defined) before the abstract
+% }
 % \end{macro}
 %
 % \begin{macro}{maketitle}
-%   Redefine maketitle to print the title in small capitals.
+%   Redefine maketitle to print the author in small capitals.
 %    \begin{macrocode}
 \renewcommand{\maketitle}{%
   \thispagestyle{plain}%
   %
   \begin{center}%
-    \huge%
-    \textsc{\@title}%
+    {\huge%
+      \textsc{\@author}%
+      \par%
+    }%
     \@thanks%
   \end{center}%
 }
@@ -335,6 +350,22 @@
 % \changes{0.4.0}{2017/08/24}{
 %   Remove negative vertical space after title
 % }
+% \changes{0.5.0}{2025/03/16}{
+%   Use author as the ``title'' and the title as the subtitle
+% }
+% \changes{0.5.1}{2025/03/18}{
+%   Use the title as the abstract name
+% }
+% \end{macro}
+%
+% \begin{macro}{title}
+%   Make the title optional---i.e., there should not be an error if it is not defined.
+%    \begin{macrocode}
+\let\@title=\undefined\relax%
+\renewcommand{\title}[1]{%
+  \def\@title{#1}%
+}
+%    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{noprotrusionifhmode}
