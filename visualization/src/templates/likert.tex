@@ -1,0 +1,41 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{pgfplots}
+
+
+% pgfplots
+\usepgfplotslibrary{categorical}
+
+
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}[
+      likert={{ scale | length }},
+      legend style={
+        font=\scriptsize,
+      },
+      symbolic y coords={ {{- groups | join(',') -}} },
+      width=\linewidth - 35pt,
+      ytick=data,
+  ]
+    \addplot[offset] coordinates {
+    {% for group, offset in offsets.items() %}
+      ({{ offset }},{{ group }})
+    {% endfor %}
+    };
+
+    {% for option in scale %}
+    \addplot+ coordinates {
+      {%- for group in groups -%}
+      {%- set totals = responses[option] -%}
+      {%- if 0 < totals[group] %}
+      ({{ '%0.6f' % (totals[group] / respondents[group]) | float }},{{ group }}) [{{ totals[group] }}]
+      {%- endif -%}
+      {%- endfor %}
+    };  % {{ option }}
+    {%- endfor %}
+
+    \legend{ {{- groups | join(',') -}} };
+  \end{axis}
+\end{tikzpicture}
+\end{document}
