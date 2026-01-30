@@ -1,0 +1,167 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2024 by Joel Coffman
+%
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\usepackage{symfoot}
+
+
+\input{.version}
+
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{symfoot.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+% {Upper-case   \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{0.0.1}{2023/02/07}{Initial version}
+%
+% \GetFileInfo{symfoot.sty}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\@ne}
+% \DoNotIndex{\advance,\begingroup,\catcode,\closein}
+% \DoNotIndex{\closeout,\day,\def,\edef,\else,\empty,\endgroup}
+% \DoNotIndex{\global,\let,\relax}
+%
+% \title{The \textsf{symfoot} package\thanks{%
+%    This document corresponds to \textsf{symfoot~\fileversion-\version, dated \filedate.}
+% }}
+% \author{Joel Coffman\\\texttt{joel.coffman@acm.org}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% Footnote numbering with symbols (rather than numbers)
+% \end{abstract}
+%
+% \section{Usage}\label{section:usage}
+% A ``symbolic'' footnote uses a symbol as the mark instead of a number,\symfootnote{%
+%   For example, this footnote was created using \texttt{\textbackslash symfootnote}.
+% } but you can also use ``traditional'' footnotes, too.\footnote{%
+%   For example, this footnote was created using \texttt{\textbackslash footnote}.
+% }
+%
+% \StopEventually{
+%   \PrintChanges
+%   \PrintIndex
+% }
+%
+% \appendix
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Implementation}
+% This section documents the implementation of the package.
+%
+% Require \LaTeXe.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+% Identify package and version.
+%    \begin{macrocode}
+\ProvidesPackage{symfoot}[%
+    2023/02/07 %
+    v0.0.1 %
+    Footnotes tnumbered using symbols%
+]
+%    \end{macrocode}
+%
+% \section{Counters}
+% This section describes the counters in the \textsf{symfoot} package.
+%
+%    \begin{macrocode}
+\newcounter{symfootnote}
+\setcounter{symfootnote}{1}
+%    \end{macrocode}
+%
+% \subsection{Macros}
+% This section describes the macros in the \textsf{symfoot} package.
+%
+% \begin{macro}{symfootnote}
+%    \begin{macrocode}
+\newcommand{\symfootnote}[2][\arabic{symfootnote}]{%
+  \stepcounter{symfootnote}%
+  \symfootnotemark{#1}%
+  \symfootnotetext{#2}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{symfootnotemark}
+%    \begin{macrocode}
+\newcommand{\symfootnotemark}[1][\arabic{symfootnote}]{%
+  \let\oldthefootnote=\thefootnote%
+  \setcounter{symfootnote}{#1}%
+  \renewcommand{\thefootnote}{%
+    \fnsymbol{symfootnote}%
+  }%
+  \footnotemark[#1]%
+  \let\thefootnote=\oldthefootnote%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{symfootnotetext}
+%    \begin{macrocode}
+\newcommand{\symfootnotetext}[2][\arabic{symfootnote}]{%
+  \let\oldthefootnote=\thefootnote%
+  \setcounter{symfootnote}{#1}%
+  \renewcommand{\thefootnote}{%
+    \fnsymbol{symfootnote}%
+  }%
+  \footnotetext[#1]{#2}%
+  \let\thefootnote=\oldthefootnote%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
